@@ -1,0 +1,160 @@
+﻿@model AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.AsignacionCursoDocenteViewModel
+
+@{
+    ViewData["Title"] = "Matrícula curso - docente";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<section class="space-y-6">
+    <div class="rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white shadow-sm">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+                <p class="text-sm font-medium text-blue-100">Asignación académica</p>
+                <h2 class="mt-2 text-3xl font-extrabold">Asignar curso - docente</h2>
+                <p class="mt-3 max-w-2xl text-blue-100">
+                    Asigna un curso a un docente dentro del período académico correspondiente.
+                </p>
+            </div>
+
+            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15">
+                <i data-lucide="user-plus" class="h-8 w-8"></i>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-800">
+            <div class="flex items-start gap-3">
+                <i data-lucide="check-circle-2" class="mt-0.5 h-5 w-5"></i>
+                <p class="text-sm font-semibold">@TempData["Success"]</p>
+            </div>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="rounded-2xl border border-red-200 bg-red-50 p-5 text-red-800">
+            <div class="flex items-start gap-3">
+                <i data-lucide="x-circle" class="mt-0.5 h-5 w-5"></i>
+                <p class="text-sm font-semibold">@TempData["Error"]</p>
+            </div>
+        </div>
+    }
+
+    <div class="flex justify-end">
+        <a asp-action="ListAsignarCursoDocente" asp-controller="Secretaria"
+           class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100">
+            <i data-lucide="list" class="h-4 w-4"></i>
+            Listado de asignaciones de docentes
+        </a>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-3">
+        <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:col-span-2">
+            <div class="border-b border-slate-200 pb-5">
+                <h3 class="text-lg font-bold text-slate-950">Datos de la asignación</h3>
+                <p class="mt-1 text-sm text-slate-500">
+                    Selecciona el curso, docente y período académico.
+                </p>
+            </div>
+
+            <form asp-action="AsignarCursoDocente" asp-controller="Secretaria" method="post" class="mt-6 space-y-5">
+                @Html.AntiForgeryToken()
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-700">Curso</label>
+                    <div class="relative">
+                        <i data-lucide="book-open" class="absolute left-4 top-3.5 h-5 w-5 text-slate-400"></i>
+
+                        <select name="cursoId"
+                                required
+                                class="w-full appearance-none rounded-xl border border-slate-300 bg-white py-3 pl-12 pr-4 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100">
+                            <option value="">Seleccionar un curso</option>
+
+                            @foreach (var curso in Model.Cursos)
+                            {
+                                <option value="@curso.id">@curso.nombreCurso (@curso.codigoCurso)</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-700">Docente</label>
+                    <div class="relative">
+                        <i data-lucide="school" class="absolute left-4 top-3.5 h-5 w-5 text-slate-400"></i>
+
+                        <select name="docenteId"
+                                required
+                                class="w-full appearance-none rounded-xl border border-slate-300 bg-white py-3 pl-12 pr-4 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100">
+                            <option value="">Seleccionar un docente</option>
+
+                            @foreach (var docente in Model.Docentes)
+                            {
+                                <option value="@docente.id">@docente.nombreCompleto (@docente.especialidad)</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-700">Período académico</label>
+                    <div class="relative">
+                        <i data-lucide="calendar-days" class="absolute left-4 top-3.5 h-5 w-5 text-slate-400"></i>
+
+                        <select name="periodoId"
+                                required
+                                class="w-full appearance-none rounded-xl border border-slate-300 bg-white py-3 pl-12 pr-4 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100">
+                            <option value="">Seleccionar un período académico</option>
+
+                            @foreach (var periodo in Model.Periodos)
+                            {
+                                <option value="@periodo.id" selected="@(periodo.esActivo ? "selected" : null)">
+                                    @periodo.nombrePeriodo @(periodo.esActivo ? "(Activo)" : "")
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-3 pt-3 sm:flex-row sm:justify-end">
+                    <a asp-action="Dashboard" asp-controller="Secretaria"
+                       class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        Cancelar
+                    </a>
+
+                    <button type="submit"
+                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700">
+                        <i data-lucide="save" class="h-4 w-4"></i>
+                        Asignar docente
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="space-y-6">
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                    <i data-lucide="info" class="h-6 w-6"></i>
+                </div>
+
+                <h3 class="mt-5 font-bold text-slate-950">Información</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600">
+                    Esta acción vincula un curso con un docente para el período académico seleccionado.
+                </p>
+            </div>
+
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                    <i data-lucide="shield-check" class="h-6 w-6"></i>
+                </div>
+
+                <h3 class="mt-5 font-bold text-slate-950">Recomendación</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600">
+                    Verifica que el período activo sea correcto antes de guardar la asignación.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

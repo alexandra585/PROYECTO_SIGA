@@ -1,0 +1,175 @@
+﻿@model AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.DirectorDashboardViewModel
+
+@{
+    ViewData["Title"] = "Panel principal del Director";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<section class="space-y-6">
+    <div class="rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white shadow-sm">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+                <p class="text-sm font-medium text-blue-100">Panel de control institucional</p>
+                <h2 class="mt-2 text-3xl font-extrabold">Bienvenido al módulo de la alta dirección</h2>
+                <p class="mt-3 text-blue-100">
+                    Período activo: <span class="font-semibold text-white">@Model.PeriodoActivo</span>
+                </p>
+            </div>
+
+            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15">
+                <i data-lucide="briefcase-business" class="h-8 w-8"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500">Secretarias</p>
+                    <h3 class="mt-2 text-4xl font-extrabold text-slate-950">@Model.TotalSecretarias</h3>
+                    <p class="mt-1 text-sm text-slate-500">Personal administrativo</p>
+                </div>
+
+                <div class="rounded-xl bg-purple-50 p-3 text-purple-600">
+                    <i data-lucide="badge-help" class="h-7 w-7"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500">Docentes</p>
+                    <h3 class="mt-2 text-4xl font-extrabold text-slate-950">@Model.TotalDocentes</h3>
+                    <p class="mt-1 text-sm text-slate-500">Profesores registrados</p>
+                </div>
+
+                <div class="rounded-xl bg-blue-50 p-3 text-blue-600">
+                    <i data-lucide="school" class="h-7 w-7"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500">Estudiantes</p>
+                    <h3 class="mt-2 text-4xl font-extrabold text-slate-950">@Model.TotalEstudiantes</h3>
+                    <p class="mt-1 text-sm text-slate-500">Alumnos registrados</p>
+                </div>
+
+                <div class="rounded-xl bg-emerald-50 p-3 text-emerald-600">
+                    <i data-lucide="graduation-cap" class="h-7 w-7"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500">Apoderados</p>
+                    <h3 class="mt-2 text-4xl font-extrabold text-slate-950">@Model.TotalApoderados</h3>
+                    <p class="mt-1 text-sm text-slate-500">Tutores registrados</p>
+                </div>
+
+                <div class="rounded-xl bg-cyan-50 p-3 text-cyan-600">
+                    <i data-lucide="users-round" class="h-7 w-7"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500">Cursos</p>
+                    <h3 class="mt-2 text-4xl font-extrabold text-slate-950">@Model.TotalCursos</h3>
+                    <p class="mt-1 text-sm text-slate-500">Asignaturas disponibles</p>
+                </div>
+
+                <div class="rounded-xl bg-amber-50 p-3 text-amber-600">
+                    <i data-lucide="book-open" class="h-7 w-7"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500">Matrículas activas</p>
+                    <h3 class="mt-2 text-4xl font-extrabold text-slate-950">@Model.TotalMatriculasActivas</h3>
+                    <p class="mt-1 text-sm text-slate-500">Inscripciones en curso</p>
+                </div>
+
+                <div class="rounded-xl bg-rose-50 p-3 text-rose-600">
+                    <i data-lucide="user-check" class="h-7 w-7"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white shadow-sm">
+        <div class="border-b border-slate-200 px-6 py-5">
+            <h3 class="text-lg font-bold text-slate-950">Acciones rápidas</h3>
+            <p class="mt-1 text-sm text-slate-500">
+                Gestiona las áreas principales del sistema académico.
+            </p>
+        </div>
+
+        <div class="grid gap-5 p-6 md:grid-cols-3">
+            <a asp-action="ListUsuario" asp-controller="CRUDUsuario"
+               class="group rounded-2xl border border-slate-200 bg-slate-50 p-6 transition hover:border-slate-300 hover:bg-slate-100">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-700 text-white">
+                    <i data-lucide="shield-check" class="h-6 w-6"></i>
+                </div>
+                <h4 class="mt-5 font-bold text-slate-950 group-hover:text-slate-700">Administración del sistema</h4>
+                <p class="mt-2 text-sm text-slate-600">Gestiona usuarios y accesos del sistema.</p>
+            </a>
+
+            <a asp-action="ListSecretaria" asp-controller="CRUDSecretaria"
+               class="group rounded-2xl border border-purple-200 bg-purple-50 p-6 transition hover:border-purple-300 hover:bg-purple-100">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-600 text-white">
+                    <i data-lucide="badge-help" class="h-6 w-6"></i>
+                </div>
+                <h4 class="mt-5 font-bold text-slate-950 group-hover:text-purple-700">Gestión de secretarias</h4>
+                <p class="mt-2 text-sm text-slate-600">Administra el personal administrativo y secretarias.</p>
+            </a>
+
+            <a asp-action="ListDocente" asp-controller="CRUDDocente"
+               class="group rounded-2xl border border-slate-200 bg-slate-50 p-6 transition hover:border-blue-200 hover:bg-blue-50">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white">
+                    <i data-lucide="school" class="h-6 w-6"></i>
+                </div>
+                <h4 class="mt-5 font-bold text-slate-950 group-hover:text-blue-700">Gestión de docentes</h4>
+                <p class="mt-2 text-sm text-slate-600">Administra docentes registrados en la institución.</p>
+            </a>
+
+            <a asp-action="ListEstudiante" asp-controller="CRUDEstudiante"
+               class="group rounded-2xl border border-slate-200 bg-slate-50 p-6 transition hover:border-emerald-200 hover:bg-emerald-50">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 text-white">
+                    <i data-lucide="users-round" class="h-6 w-6"></i>
+                </div>
+                <h4 class="mt-5 font-bold text-slate-950 group-hover:text-emerald-700">Gestión de estudiantes</h4>
+                <p class="mt-2 text-sm text-slate-600">Consulta, registra y administra estudiantes.</p>
+            </a>
+
+            <a asp-action="ListApoderado" asp-controller="CRUDApoderado"
+               class="group rounded-2xl border border-slate-200 bg-slate-50 p-6 transition hover:border-cyan-200 hover:bg-cyan-50">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-500 text-white">
+                    <i data-lucide="users-round" class="h-6 w-6"></i>
+                </div>
+                <h4 class="mt-5 font-bold text-slate-950 group-hover:text-cyan-700">Gestión de apoderados</h4>
+                <p class="mt-2 text-sm text-slate-600">Administra apoderados, contacto y estudiantes a cargo.</p>
+            </a>
+
+            <a asp-action="ListCurso" asp-controller="CRUDCurso"
+               class="group rounded-2xl border border-slate-200 bg-slate-50 p-6 transition hover:border-amber-200 hover:bg-amber-50">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500 text-white">
+                    <i data-lucide="book-open" class="h-6 w-6"></i>
+                </div>
+                <h4 class="mt-5 font-bold text-slate-950 group-hover:text-amber-700">Gestión de cursos</h4>
+                <p class="mt-2 text-sm text-slate-600">Administra asignaturas y estructura académica.</p>
+            </a>
+        </div>
+    </div>
+</section>

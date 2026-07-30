@@ -1,0 +1,154 @@
+﻿@model AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.LoginViewModel
+
+@{
+    Layout = null;
+    ViewData["Title"] = "Iniciar Sesión - SIGA";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="icon" type="image/png" href="~/favicon.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="~/css/Auth/IniciarSesion.css" />
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <main class="flex min-h-screen items-center justify-center px-6 py-10">
+        <div class="w-full max-w-md">
+            <div class="mb-8 text-center">
+                <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg">
+                    <i data-lucide="graduation-cap" class="h-7 w-7"></i>
+                </div>
+
+                <h1 class="mt-5 text-3xl font-extrabold text-slate-950">Bienvenido</h1>
+                <p class="mt-2 text-sm text-slate-500">Ingresa al Sistema Integral de Gestión Académica</p>
+            </div>
+
+            <div class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl">
+                @if (!string.IsNullOrEmpty(ViewBag.Error))
+                {
+                    <div class="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert" id="errorAlert">
+                        @ViewBag.Error
+                    </div>
+                }
+
+                @if (TempData["Mensaje"] != null)
+                {
+                    <div class="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700" role="alert" id="successAlert">
+                        @TempData["Mensaje"]
+                    </div>
+                }
+
+                <form asp-action="IniciarSesion" asp-controller="Auth" method="post" class="space-y-5" id="loginForm">
+                    @Html.AntiForgeryToken()
+                    <div>
+                        <label asp-for="email" class="mb-2 block text-sm font-semibold text-slate-700">Correo electrónico</label>
+                        <div class="relative">
+                            <i data-lucide="mail" class="absolute left-4 top-3.5 h-5 w-5 text-slate-400"></i>
+                            <input asp-for="email"
+                                   class="w-full rounded-xl border border-slate-300 bg-white py-3 pl-12 pr-4 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                                   placeholder="correo@ejemplo.com"
+                                   autocomplete="email" />
+                        </div>
+                        <span asp-validation-for="email" class="mt-1 block text-sm text-red-600"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="contrasenia" class="mb-2 block text-sm font-semibold text-slate-700">Contraseña</label>
+                        <div class="relative">
+                            <i data-lucide="lock" class="absolute left-4 top-3.5 h-5 w-5 text-slate-400"></i>
+
+                            <input asp-for="contrasenia"
+                                   id="passwordInput"
+                                   class="w-full rounded-xl border border-slate-300 bg-white py-3 pl-12 pr-12 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                                   placeholder="••••••••"
+                                   autocomplete="current-password" />
+
+                            <button type="button"
+                                    id="togglePassword"
+                                    class="absolute right-4 top-3.5 text-slate-400 transition hover:text-blue-600"
+                                    aria-label="Mostrar contraseña">
+                                <i id="eyeIcon" data-lucide="eye" class="h-5 w-5"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="contrasenia" class="mt-1 block text-sm text-red-600"></span>
+                    </div>
+
+                    <button type="submit" id="submitBtn"
+                            class="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-blue-700">
+                        Ingresar
+                        <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                    </button>
+
+                    <p class="text-center text-sm text-slate-500">
+                        ¿Olvidaste tu contraseña?
+                        <a asp-action="RecuperarContrasenia" asp-controller="Auth" class="font-semibold text-blue-600 hover:text-blue-700">
+                            Recupérala
+                        </a>
+                    </p>
+
+                    <p class="text-center text-sm text-slate-500">
+                        <a asp-action="Inicio" asp-controller="Inicio" class="font-medium text-slate-600 hover:text-blue-600">
+                            Ir a página principal
+                        </a>
+                    </p>
+                </form>
+            </div>
+
+            <p class="mt-6 text-center text-xs text-slate-400">
+                © @DateTime.Now.Year - Institución Educativa 2002 Virgen María del Rosario
+            </p>
+        </div>
+    </main>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/Auth/IniciarSesion.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            lucide.createIcons();
+
+            const passwordInput = document.getElementById("passwordInput");
+            const togglePassword = document.getElementById("togglePassword");
+
+            togglePassword.addEventListener("click", function () {
+                const isPassword = passwordInput.type === "password";
+
+                passwordInput.type = isPassword ? "text" : "password";
+                togglePassword.setAttribute(
+                    "aria-label",
+                    isPassword ? "Ocultar contraseña" : "Mostrar contraseña"
+                );
+
+                togglePassword.innerHTML = isPassword
+                    ? '<i data-lucide="eye-off" class="h-5 w-5"></i>'
+                    : '<i data-lucide="eye" class="h-5 w-5"></i>';
+
+                lucide.createIcons();
+            });
+        });
+
+        (function () {
+            var successAlert = document.getElementById('successAlert');
+            if (successAlert) {
+                setTimeout(function () {
+                    if (successAlert) {
+                        successAlert.style.opacity = '0';
+                        successAlert.style.transition = 'opacity 0.3s ease';
+                        setTimeout(function () {
+                            if (successAlert) successAlert.style.display = 'none';
+                        }, 300);
+                    }
+                }, 3000);
+            }
+        })();
+    </script>
+</body>
+</html>

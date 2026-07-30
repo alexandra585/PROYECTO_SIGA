@@ -1,0 +1,213 @@
+﻿@model AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.ReporteAcademicoViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reporte Académico - @Model.NombreCompleto</title>
+
+    <link rel="stylesheet" href="~/css/Estudiante/ReporteAcademicoPDF.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="space-y-6">
+        <div class="banner">
+            <div class="banner-content">
+                <div class="banner-text">
+                    <p>Reporte institucional</p>
+                    <h2>Reporte académico</h2>
+                    <p>Panel de indicadores de rendimiento académico, créditos aprobados y estado de cursos.</p>
+                </div>
+                <div class="banner-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                        <polyline points="10 9 9 9 8 9" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-3">
+            <div class="card col-span-2">
+                <div class="student-header">
+                    <div class="student-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                    </div>
+                    <div class="student-info">
+                        <p>Información del estudiante</p>
+                        <h3>@Model.NombreCompleto</h3>
+                        <p>@Model.Email</p>
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Código</div>
+                        <div class="info-value">@Model.CodigoEstudiante</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Carrera</div>
+                        <div class="info-value">@Model.Carrera</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Semestre actual</div>
+                        <div class="info-value">@Model.SemestreActual</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Cursos registrados</div>
+                        <div class="info-value">@Model.Cursos.Count</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card average-card">
+                <p>Promedio general</p>
+                <div class="average-value">
+                    @Model.PromedioGeneral.ToString("F2")<span>/20</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: @((Model.PromedioGeneral / 20 * 100).ToString("F0"))%"></div>
+                </div>
+                <div class="credits-card">
+                    <p>Créditos aprobados</p>
+                    <p>@Model.TotalCreditosAprobados</p>
+                </div>
+            </div>
+        </div>
+
+        @if (!Model.Cursos.Any())
+        {
+            <div class="empty-message">
+                <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 8v4m0 4h.01M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z" />
+                    </svg>
+                    <div>
+                        <h3 style="font-weight: 700; font-size: 0.85rem;">No hay cursos registrados</h3>
+                        <p style="font-size: 0.7rem; margin-top: 0.125rem;">Cuando tengas cursos registrados, aparecerán en esta sección.</p>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="courses-section">
+                <div class="courses-header">
+                    <div>
+                        <h3>Rendimiento por curso</h3>
+                        <p>Resumen de créditos, promedio final y estado académico.</p>
+                    </div>
+                    <div class="badge-count">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #2563eb;">
+                            <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+                        </svg>
+                        <span>@Model.Cursos.Count registros</span>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="courses-table">
+                        <thead>
+                            <tr>
+                                <th>Curso</th>
+                                <th>Créditos</th>
+                                <th>Promedio final</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var curso in Model.Cursos)
+                            {
+                                <tr>
+                                    <td style="width: 45%;">
+                                        <div class="course-info">
+                                            <div class="course-icon">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div class="course-name">@curso.NombreCurso</div>
+                                                <div class="course-code">@curso.CodigoCurso</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="width: 15%;">
+                                        <span class="credits-badge">@curso.Creditos créditos</span>
+                                    </td>
+                                    <td style="width: 20%;">
+                                        @if (curso.PromedioFinal > 0)
+                                        {
+                                            if (curso.PromedioFinal >= 11)
+                                            {
+                                                <span class="promedio-alto">@curso.PromedioFinal.ToString("F2")</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="promedio-bajo">@curso.PromedioFinal.ToString("F2")</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="promedio-cero">0.00</span>
+                                        }
+                                    </td>
+                                    <td style="width: 20%;">
+                                        @if (curso.Estado == "Aprobado")
+                                        {
+                                            <span class="badge badge-approved">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="20 6 9 17 4 12" />
+                                                </svg>
+                                                @curso.Estado
+                                            </span>
+                                        }
+                                        else if (curso.Estado == "Desaprobado")
+                                        {
+                                            <span class="badge badge-failed">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                                </svg>
+                                                @curso.Estado
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-pending">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <circle cx="12" cy="12" r="10" />
+                                                    <polyline points="12 6 12 12 16 14" />
+                                                </svg>
+                                                @curso.Estado
+                                            </span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+        <div class="footer">
+            <p>Reporte generado el: @DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</p>
+            <p style="margin-top: 0.125rem;">Documento válido emitido por la I. E. Virgen María del Rosario - @DateTime.Now.Year</p>
+        </div>
+    </div>
+
+    <script src="~/js/Estudiante/ReporteAcademicoPDF.js" asp-append-version="true"></script>
+</body>
+</html>

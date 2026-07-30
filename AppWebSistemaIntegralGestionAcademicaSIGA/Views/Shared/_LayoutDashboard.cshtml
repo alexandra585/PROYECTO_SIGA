@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SIGA</title>
+    <link rel="icon" type="image/png" href="~/favicon.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+
+<body class="min-h-screen bg-slate-50 text-slate-900">
+    @{
+        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+        var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+
+        string baseClass = "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors";
+        string activeClass = "bg-blue-50 text-blue-700 font-semibold";
+        string inactiveClass = "text-slate-600 hover:bg-blue-50 hover:text-blue-700";
+
+        var nombreUsuario = Context.Session.GetString("NombreUsuario") ?? "Usuario";
+        var rol = Context.Session.GetString("Rol") ?? string.Empty;
+    }
+
+    <div class="flex min-h-screen">
+        <aside class="hidden w-72 border-r border-slate-200 bg-white lg:flex lg:flex-col">
+            <div class="border-b border-slate-200 px-6 py-5">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600 text-white">
+                        <i data-lucide="graduation-cap" class="h-6 w-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-lg font-bold leading-none">SIGA</p>
+                        <p class="text-xs text-slate-500">Panel académico</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-6 py-5">
+                <div class="rounded-2xl bg-slate-100 p-4">
+                    <p class="text-sm font-semibold text-slate-900">@nombreUsuario</p>
+                    <p class="mt-1 inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+                        @rol
+                    </p>
+                </div>
+            </div>
+
+            <nav class="flex-1 space-y-1 px-4">
+                @if (rol == "Director")
+                {
+                    <a class="@baseClass @(currentController == "Director" && currentAction == "Dashboard" ? activeClass : inactiveClass)" asp-controller="Director" asp-action="Dashboard">
+                        <i data-lucide="layout-dashboard" class="h-5 w-5"></i> Inicio
+                    </a>
+
+                    <a class="@baseClass @(currentController == "CRUDUsuario" ? activeClass : inactiveClass)" asp-controller="CRUDUsuario" asp-action="ListUsuario">
+                        <i data-lucide="users-round" class="h-5 w-5"></i> Usuarios
+                    </a>
+
+                    <a class="@baseClass @(currentController == "CRUDSecretaria" ? activeClass : inactiveClass)" asp-controller="CRUDSecretaria" asp-action="ListSecretaria">
+                        <i data-lucide="clipboard-list" class="h-5 w-5"></i> Secretarias
+                    </a>
+
+                    <a class="@baseClass @(currentController == "CRUDDocente" ? activeClass : inactiveClass)" asp-controller="CRUDDocente" asp-action="ListDocente">
+                        <i data-lucide="school" class="h-5 w-5"></i> Docentes
+                    </a>
+
+                    <a class="@baseClass @(currentController == "CRUDEstudiante" ? activeClass : inactiveClass)" asp-controller="CRUDEstudiante" asp-action="ListEstudiante">
+                        <i data-lucide="graduation-cap" class="h-5 w-5"></i> Estudiantes
+                    </a>
+
+                    <a class="@baseClass @(currentController == "CRUDApoderado" ? activeClass : inactiveClass)" asp-controller="CRUDApoderado" asp-action="ListApoderado">
+                        <i data-lucide="users" class="h-5 w-5"></i> Apoderados
+                    </a>
+
+                    <a class="@baseClass @(currentController == "CRUDCurso" ? activeClass : inactiveClass)" asp-controller="CRUDCurso" asp-action="ListCurso">
+                        <i data-lucide="book-open" class="h-5 w-5"></i> Cursos
+                    </a>
+                }
+
+                @if (rol == "Secretaria")
+                {
+                    <a class="@baseClass @(currentController == "Secretaria" && currentAction == "Dashboard" ? activeClass : inactiveClass)" asp-controller="Secretaria" asp-action="Dashboard">
+                        <i data-lucide="layout-dashboard" class="h-5 w-5"></i> Inicio
+                    </a>
+
+                    <a class="@baseClass @(currentController == "Secretaria" && currentAction == "AsignarCursoDocente" ? activeClass : inactiveClass)" asp-controller="Secretaria" asp-action="AsignarCursoDocente">
+                        <i data-lucide="user-plus" class="h-5 w-5"></i> Asignar docente
+                    </a>
+
+                    <a class="@baseClass @(currentController == "Secretaria" && currentAction == "AsignarCursoEstudiante" ? activeClass : inactiveClass)" asp-controller="Secretaria" asp-action="AsignarCursoEstudiante">
+                        <i data-lucide="user-check" class="h-5 w-5"></i> Matricular estudiante
+                    </a>
+
+                    <a class="@baseClass @(currentController == "Secretaria" && currentAction == "AsignarApoderadoEstudiante" ? activeClass : inactiveClass)" asp-controller="Secretaria" asp-action="AsignarApoderadoEstudiante">
+                        <i data-lucide="users" class="h-5 w-5"></i> Asignar apoderado
+                    </a>
+                }
+
+                @if (rol == "Docente")
+                {
+                    <a class="@baseClass @(currentController == "Docente" && currentAction == "Dashboard" ? activeClass : inactiveClass)" asp-controller="Docente" asp-action="Dashboard">
+                        <i data-lucide="layout-dashboard" class="h-5 w-5"></i> Inicio
+                    </a>
+
+                    <a class="@baseClass @(currentController == "Docente" && currentAction == "CursosAsignados" ? activeClass : inactiveClass)" asp-controller="Docente" asp-action="CursosAsignados">
+                        <i data-lucide="book-marked" class="h-5 w-5"></i> Cursos asignados
+                    </a>
+
+                    <a class="@baseClass @(currentController == "Docente" && currentAction == "RegistrarNotas" ? activeClass : inactiveClass)" asp-controller="Docente" asp-action="RegistrarNotas">
+                        <i data-lucide="edit-3" class="h-5 w-5"></i> Registrar notas
+                    </a>
+
+                    <a class="@baseClass @(currentController == "Docente" && currentAction == "RegistrarAsistencias" ? activeClass : inactiveClass)" asp-controller="Docente" asp-action="RegistrarAsistencias">
+                        <i data-lucide="clipboard-check" class="h-5 w-5"></i> Registrar asistencias
+                    </a>
+
+                    <a class="@baseClass @(currentController == "Docente" && currentAction == "ReporteCurso" ? activeClass : inactiveClass)" asp-controller="Docente" asp-action="ReporteCurso">
+                        <i data-lucide="bar-chart-3" class="h-5 w-5"></i> Reporte
+                    </a>
+                }
+
+                @if (rol == "Estudiante")
+                {
+                    <a class="@baseClass @(currentController == "Estudiante" && currentAction == "Dashboard" ? activeClass : inactiveClass)" asp-controller="Estudiante" asp-action="Dashboard">
+                        <i data-lucide="layout-dashboard" class="h-5 w-5"></i> Inicio
+                    </a>
+
+                    <a class="@baseClass @(currentController == "Estudiante" && currentAction == "MisCursos" ? activeClass : inactiveClass)" asp-controller="Estudiante" asp-action="MisCursos">
+                        <i data-lucide="book-open" class="h-5 w-5"></i> Mis cursos
+                    </a>
+
+                    <a class="@baseClass @(currentController == "Estudiante" && currentAction == "MisNotas" ? activeClass : inactiveClass)" asp-controller="Estudiante" asp-action="MisNotas">
+                        <i data-lucide="badge-check" class="h-5 w-5"></i> Mis notas
+                    </a>
+
+                    <a class="@baseClass @(currentController == "Estudiante" && currentAction == "MisAsistencias" ? activeClass : inactiveClass)" asp-controller="Estudiante" asp-action="MisAsistencias">
+                        <i data-lucide="calendar-check" class="h-5 w-5"></i> Mis asistencias
+                    </a>
+
+                    <a class="@baseClass @(currentController == "Estudiante" && currentAction == "ReporteAcademico" ? activeClass : inactiveClass)" asp-controller="Estudiante" asp-action="ReporteAcademico">
+                        <i data-lucide="line-chart" class="h-5 w-5"></i> Reporte académico
+                    </a>
+                }
+
+                @if (rol == "Apoderado")
+                {
+                    <a class="@baseClass @(currentController == "Apoderado" && currentAction == "Dashboard" ? activeClass : inactiveClass)" asp-controller="Apoderado" asp-action="Dashboard">
+                        <i data-lucide="layout-dashboard" class="h-5 w-5"></i> Inicio
+                    </a>
+
+                    <a class="@baseClass @(currentController == "Apoderado" && currentAction == "FilterLibreta" ? activeClass : inactiveClass)" asp-controller="Apoderado" asp-action="FilterLibreta">
+                        <i data-lucide="clipboard-list" class="h-5 w-5"></i> Libreta de notas
+                    </a>
+                }
+            </nav>
+
+            <div class="border-t border-slate-200 p-4">
+                <a asp-controller="Auth" asp-action="CerrarSesion"
+                   class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-red-600 hover:bg-red-50">
+                    <i data-lucide="log-out" class="h-5 w-5"></i>
+                    Cerrar sesión
+                </a>
+            </div>
+        </aside>
+
+        <div class="flex flex-1 flex-col">
+            <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/90 px-6 py-4 backdrop-blur">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-xl font-bold text-slate-950">@ViewData["Title"]</h1>
+                        <p class="text-sm text-slate-500">Sistema Integral de Gestión Académica</p>
+                    </div>
+
+                    <a asp-controller="Auth" asp-action="CerrarSesion"
+                       class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 lg:hidden">
+                        <i data-lucide="log-out" class="h-4 w-4"></i>
+                        Salir
+                    </a>
+                </div>
+            </header>
+
+            <main class="flex-1 relative flex flex-col min-h-0">
+                <div class="flex-1 overflow-y-auto max-h-[calc(99vh-140px)] p-6 pb-8">
+                    @RenderBody()
+                </div>
+
+                <div class="pointer-events-none absolute bottom-0 left-0 w-full h-8 backdrop-blur-md bg-gradient-to-t from-slate-50/90 to-transparent border-t border-gray/10 z-10"></div>
+            </main>
+
+            <footer class="border-t border-slate-200 bg-white px-6 py-5 text-sm text-slate-500">
+                <div class="mx-auto max-w-7xl">
+                    &copy; @DateTime.Now.Year - Institución Educativa 2002 Virgen María del Rosario
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+            lucide.createIcons();
+    </script>
+</body>
+</html>

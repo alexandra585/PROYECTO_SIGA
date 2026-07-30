@@ -1,0 +1,171 @@
+﻿@model List<AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.NotaDetalleViewModel>
+
+@{
+    ViewData["Title"] = "Detalle de notas";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<section class="space-y-6">
+    <div class="rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white shadow-sm">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+                <p class="text-sm font-medium text-blue-100">Reporte académico</p>
+                <h2 class="mt-2 text-3xl font-extrabold">Detalle de notas</h2>
+                <p class="mt-3 max-w-2xl text-blue-100">
+                    Visualiza tus calificaciones por instrumento de evaluación, fecha, peso porcentual y observaciones.
+                </p>
+            </div>
+
+            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15">
+                <i data-lucide="chart-no-axes-column" class="h-8 w-8"></i>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="MisCursos" asp-controller="Estudiante"
+           class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+            <i data-lucide="arrow-left" class="h-4 w-4"></i>
+            Regresar a mis cursos
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-amber-800">
+            <div class="flex items-start gap-4">
+                <i data-lucide="triangle-alert" class="mt-0.5 h-6 w-6"></i>
+                <div>
+                    <h3 class="font-bold">No hay notas registradas</h3>
+                    <p class="mt-1 text-sm">Cuando se registren tus evaluaciones, aparecerán en esta sección.</p>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="grid gap-6 md:grid-cols-3">
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-slate-500">Evaluaciones</p>
+                        <h3 class="mt-2 text-3xl font-extrabold text-slate-950">@Model.Count</h3>
+                    </div>
+                    <div class="rounded-xl bg-blue-50 p-3 text-blue-600">
+                        <i data-lucide="clipboard-list" class="h-7 w-7"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-slate-500">Promedio registrado</p>
+                        <h3 class="mt-2 text-3xl font-extrabold text-emerald-600">
+                            @(Model.Any(n => n.NotaObtenida > 0) ? Model.Where(n => n.NotaObtenida > 0).Average(n => n.NotaObtenida).ToString("F2") : "0.00")
+                        </h3>
+                    </div>
+                    <div class="rounded-xl bg-emerald-50 p-3 text-emerald-600">
+                        <i data-lucide="bar-chart-3" class="h-7 w-7"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-slate-500">Peso acumulado</p>
+                        <h3 class="mt-2 text-3xl font-extrabold text-indigo-600">@Model.Sum(n => n.PesoPorcentual)%</h3>
+                    </div>
+                    <div class="rounded-xl bg-indigo-50 p-3 text-indigo-600">
+                        <i data-lucide="percent" class="h-7 w-7"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded-3xl border border-slate-200 bg-white shadow-sm">
+            <div class="flex flex-col gap-3 border-b border-slate-200 px-6 py-5 md:flex-row md:items-center md:justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-950">Calificaciones registradas</h3>
+                    <p class="mt-1 text-sm text-slate-500">Detalle de cada instrumento de evaluación.</p>
+                </div>
+
+                <span class="inline-flex w-fit items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">
+                    <i data-lucide="list-checks" class="h-4 w-4"></i>
+                    @Model.Count registros
+                </span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+                            <th class="px-6 py-4 font-bold">Evaluación</th>
+                            <th class="px-6 py-4 font-bold">Fecha</th>
+                            <th class="px-6 py-4 font-bold">Peso</th>
+                            <th class="px-6 py-4 font-bold">Nota</th>
+                            <th class="px-6 py-4 font-bold">Observaciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-slate-100">
+                        @foreach (var nota in Model)
+                        {
+                            <tr class="transition hover:bg-slate-50">
+                                <td class="px-6 py-5">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                                            <i data-lucide="file-check-2" class="h-5 w-5"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-950">@nota.TipoEvaluacion</p>
+                                            <p class="mt-1 text-xs text-slate-500">Instrumento de evaluación</p>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td class="px-6 py-5 text-slate-600">
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="calendar-days" class="h-4 w-4 text-slate-400"></i>
+                                        @nota.FechaEvaluacion.ToString("dd/MM/yyyy")
+                                    </div>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-bold text-indigo-700">
+                                        @nota.PesoPorcentual%
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-5">
+                                    @if (nota.NotaObtenida > 0)
+                                    {
+                                        if (nota.NotaObtenida >= 13)
+                                        {
+                                            <span class="text-lg font-extrabold text-emerald-600">@nota.NotaObtenida.ToString("F2")</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-lg font-extrabold text-red-600">@nota.NotaObtenida.ToString("F2")</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500">
+                                            No registrada
+                                        </span>
+                                    }
+                                </td>
+
+                                <td class="px-6 py-5 text-slate-600">
+                                    @(nota.Observacion ?? "Ninguna")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</section>

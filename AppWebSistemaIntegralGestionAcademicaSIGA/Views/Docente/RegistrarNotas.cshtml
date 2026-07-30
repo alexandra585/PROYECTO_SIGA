@@ -1,0 +1,233 @@
+﻿@model AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.RegistrarNotaViewModel
+
+@{
+    ViewData["Title"] = "Registrar notas";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+@if (Model != null)
+{
+    <input type="hidden" id="hayEstudiantes" value="@(Model.Estudiantes.Any() ? "true" : "false")" />
+}
+
+<section class="space-y-6">
+    <div class="rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white shadow-sm">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+                <p class="text-sm font-medium text-emerald-100">Gestión docente</p>
+                <h2 class="mt-2 text-3xl font-extrabold">Registrar notas</h2>
+                <p class="mt-3 max-w-2xl text-emerald-100">
+                    Registra calificaciones por estudiante e instrumento de evaluación.
+                </p>
+            </div>
+
+            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15">
+                <i data-lucide="edit-3" class="h-8 w-8"></i>
+            </div>
+        </div>
+    </div>
+
+    @if (ViewBag.Cursos != null)
+    {
+        <div class="rounded-2xl border border-blue-200 bg-blue-50 p-5 text-blue-800">
+            <div class="flex items-start gap-3">
+                <i data-lucide="info" class="mt-0.5 h-5 w-5"></i>
+                <div>
+                    <h3 class="font-bold">Selecciona un curso</h3>
+                    <p class="mt-1 text-sm">Elige el curso en el que deseas registrar las notas.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="border-b border-slate-200 pb-5">
+                <h3 class="text-lg font-bold text-slate-950">Curso asignado</h3>
+                <p class="mt-1 text-sm text-slate-500">
+                    Selecciona un curso para continuar con el registro de calificaciones.
+                </p>
+            </div>
+
+            <form asp-action="RegistrarNotas" asp-controller="Docente" method="get" class="mt-6">
+                <div class="max-w-xl">
+                    <label class="mb-2 block text-sm font-semibold text-slate-700">Curso</label>
+                    <div class="relative">
+                        <i data-lucide="book-open" class="absolute left-4 top-3.5 h-5 w-5 text-slate-400"></i>
+
+                        <select name="cursoDocenteId"
+                                class="w-full appearance-none rounded-xl border border-slate-300 bg-white py-3 pl-12 pr-4 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                                onchange="this.form.submit()">
+                            <option value="">Seleccionar un curso</option>
+                            @foreach (var curso in ViewBag.Cursos as SelectList)
+                            {
+                                <option value="@curso.Value">@curso.Text</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+    else if (Model != null)
+    {
+        <div class="grid gap-6 md:grid-cols-3">
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:col-span-2">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                        <i data-lucide="book-open" class="h-6 w-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-emerald-600">Curso seleccionado</p>
+                        <h3 class="mt-1 text-2xl font-extrabold text-slate-950">@Model.NombreCurso</h3>
+                        <p class="mt-2 text-sm text-slate-500">
+                            Registro curricular de calificaciones estudiantiles.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <p class="text-sm text-slate-500">Estudiantes</p>
+                <h3 class="mt-2 text-3xl font-extrabold text-slate-950">@Model.Estudiantes.Count</h3>
+            </div>
+        </div>
+
+        @if (!Model.Estudiantes.Any())
+        {
+            <div class="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-amber-800">
+                <div class="flex items-start gap-4">
+                    <i data-lucide="info" class="mt-0.5 h-6 w-6"></i>
+                    <div>
+                        <h3 class="font-bold">No hay estudiantes matriculados</h3>
+                        <p class="mt-1 text-sm">Cuando existan estudiantes matriculados en este curso, aparecerán en esta sección.</p>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="rounded-3xl border border-slate-200 bg-white shadow-sm">
+                <div class="flex flex-col gap-3 border-b border-slate-200 px-6 py-5 md:flex-row md:items-center md:justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-950">Matriz de calificaciones</h3>
+                        <p class="mt-1 text-sm text-slate-500">
+                            Ingresa notas entre 0 y 20. Al enfocar una nota podrás agregar observaciones.
+                        </p>
+                    </div>
+
+                    <span class="inline-flex w-fit items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-700">
+                        <i data-lucide="list-checks" class="h-4 w-4"></i>
+                        @Model.Evaluaciones.Count evaluaciones
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[1000px] text-left text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+                                <th class="sticky left-0 z-10 bg-slate-50 px-6 py-4 font-bold">Estudiante</th>
+
+                                @foreach (var eval in Model.Evaluaciones)
+                                {
+                                    <th class="px-6 py-4 text-center font-bold">
+                                        <div class="flex flex-col items-center gap-1">
+                                            <span>@eval.Nombre</span>
+                                            <span class="rounded-full bg-blue-50 px-2 py-1 text-[11px] font-bold text-blue-700">
+                                                @eval.NotaPorcentual%
+                                            </span>
+                                        </div>
+                                    </th>
+                                }
+                            </tr>
+                        </thead>
+
+                        <tbody class="divide-y divide-slate-100">
+                            @foreach (var estudiante in Model.Estudiantes)
+                            {
+                                <tr class="group hover:bg-slate-50">
+                                    <td class="sticky left-0 z-10 bg-white px-6 py-5 group-hover:bg-slate-50">
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                                                <i data-lucide="graduation-cap" class="h-5 w-5"></i>
+                                            </div>
+
+                                            <div>
+                                                <p class="font-bold text-slate-950">@estudiante.NombreCompleto</p>
+                                                <p class="mt-1 text-xs text-slate-500">@estudiante.CodigoEstudiante</p>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    @foreach (var eval in Model.Evaluaciones)
+                                    {
+                                        <td class="px-6 py-5 text-center">
+                                            @{
+                                                decimal? notaExistente = null;
+                                                string obsExistente = "";
+                                                var notasDict = ViewBag.NotasExistentes
+                                                    as Dictionary<int, Dictionary<int, (decimal nota, string observacion)>>;
+
+                                                if (notasDict != null &&
+                                                    notasDict.ContainsKey(estudiante.MatriculaId) &&
+                                                    notasDict[estudiante.MatriculaId].ContainsKey(eval.EvaluacionId))
+                                                {
+                                                    var data = notasDict[estudiante.MatriculaId][eval.EvaluacionId];
+                                                    notaExistente = data.nota;
+                                                    obsExistente = data.observacion ?? "";
+                                                }
+                                            }
+
+                                            <input type="number"
+                                                   class="nota-input mx-auto w-24 rounded-xl border border-slate-300 bg-white px-3 py-2 text-center text-sm font-bold text-slate-900 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                                                   data-matricula-id="@estudiante.MatriculaId"
+                                                   data-evaluacion-id="@eval.EvaluacionId"
+                                                   data-estudiante-nombre="@estudiante.NombreCompleto"
+                                                   data-evaluacion-nombre="@eval.Nombre"
+                                                   value="@(notaExistente.HasValue ? notaExistente.Value.ToString("0.00") : "")"
+                                                   step="0.01"
+                                                   min="0"
+                                                   max="20"
+                                                   placeholder="0.00" />
+
+                                            <div class="mt-2">
+                                                <input type="text"
+                                                       class="obs-input w-44 rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 @(string.IsNullOrWhiteSpace(obsExistente) ? "hidden" : "")"
+                                                       placeholder="Observaciones"
+                                                       value="@obsExistente"
+                                                       data-matricula-id="@estudiante.MatriculaId"
+                                                       data-evaluacion-id="@eval.EvaluacionId" />
+                                            </div>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="flex flex-col gap-3 border-t border-slate-200 px-6 py-5 sm:flex-row sm:justify-end">
+                    <a asp-action="Dashboard" asp-controller="Docente"
+                       class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100">
+                        <i data-lucide="x" class="h-4 w-4"></i>
+                        Cancelar
+                    </a>
+
+                    <a asp-action="RegistrarNotas" asp-controller="Docente"
+                       class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        Regresar
+                    </a>
+
+                    <button id="btnGuardarTodo"
+                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700">
+                        <i data-lucide="save" class="h-4 w-4"></i>
+                        Registrar notas
+                    </button>
+                </div>
+            </div>
+        }
+    }
+</section>
+
+@section Scripts {
+    <script src="~/js/Docente/RegistrarNotas.js" asp-append-version="true"></script>
+}

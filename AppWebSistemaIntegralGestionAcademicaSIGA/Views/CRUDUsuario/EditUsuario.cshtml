@@ -1,0 +1,164 @@
+﻿@model AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.UsuarioViewModel
+
+@{
+    ViewData["Title"] = "Editar usuario";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<section class="space-y-6">
+    <div class="rounded-3xl bg-gradient-to-r from-amber-500 to-orange-500 p-8 text-white shadow-sm">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+                <p class="text-sm font-medium text-amber-100">Administración de usuarios</p>
+                <h2 class="mt-2 text-3xl font-extrabold">Editar usuario</h2>
+                <p class="mt-3 max-w-2xl text-amber-100">
+                    Actualiza la información principal, correo y estado de acceso del usuario.
+                </p>
+            </div>
+
+            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15">
+                <i data-lucide="edit-3" class="h-8 w-8"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-3">
+        <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:col-span-2">
+            <div class="border-b border-slate-200 pb-5">
+                <h3 class="text-lg font-bold text-slate-950">Datos del usuario</h3>
+                <p class="mt-1 text-sm text-slate-500">
+                    Modifica solo los datos permitidos para esta cuenta.
+                </p>
+            </div>
+
+            <form asp-action="EditUsuario" asp-controller="CRUDUsuario" method="post" class="mt-6 space-y-5">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="id" />
+                <input type="hidden" asp-for="rol" />
+                <div class="grid gap-5 md:grid-cols-2">
+                    <div>
+                        <label asp-for="nombreCompleto" class="mb-2 block text-sm font-semibold text-slate-700">Nombre completo *</label>
+                        <div class="relative">
+                            <i data-lucide="user-round" class="absolute left-4 top-3.5 h-5 w-5 text-slate-400"></i>
+                            <input asp-for="nombreCompleto"
+                                   class="w-full rounded-xl border border-slate-300 bg-white py-3 pl-12 pr-4 text-sm outline-none transition focus:border-amber-500 focus:ring-4 focus:ring-amber-100"
+                                   placeholder="Nombre completo"
+                                   required/>
+                        </div>
+                        <span asp-validation-for="nombreCompleto" class="mt-1 block text-sm text-red-600"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="email" class="mb-2 block text-sm font-semibold text-slate-700">Correo electrónico *</label>
+                        <div class="relative">
+                            <i data-lucide="mail" class="absolute left-4 top-3.5 h-5 w-5 text-slate-400"></i>
+                            <input asp-for="email"
+                                   type="email"
+                                   class="w-full rounded-xl border border-slate-300 bg-white py-3 pl-12 pr-4 text-sm outline-none transition focus:border-amber-500 focus:ring-4 focus:ring-amber-100"
+                                   placeholder="correo@ejemplo.com"
+                                   required/>
+                        </div>
+                        <span asp-validation-for="email" class="mt-1 block text-sm text-red-600"></span>
+                    </div>
+                </div>
+
+                <div class="grid gap-5 md:grid-cols-2">
+                    <div>
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">Rol</label>
+                        <div class="relative">
+                            <i data-lucide="shield-check" class="absolute left-4 top-3.5 h-5 w-5 text-slate-400"></i>
+                            <input type="text"
+                                   value="@Model.rol"
+                                   disabled
+                                   class="w-full rounded-xl border border-slate-200 bg-slate-100 py-3 pl-12 pr-4 text-sm font-semibold text-slate-600" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">Estado de cuenta</label>
+
+                        <label class="flex cursor-pointer items-center justify-between rounded-xl border border-slate-300 bg-white px-4 py-3 transition hover:bg-slate-50">
+                            <div class="flex items-center gap-3">
+                                <div class="rounded-xl bg-emerald-50 p-2 text-emerald-600">
+                                    <i data-lucide="power" class="h-5 w-5"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-900">Usuario activo</p>
+                                    <p class="text-xs text-slate-500">Permite el acceso al sistema</p>
+                                </div>
+                            </div>
+
+                            <input asp-for="activo" class="h-5 w-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500" />
+                        </label>
+                    </div>
+                </div>
+
+                @if (Model.rol == "Estudiante")
+                {
+                    <div>
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">Código de estudiante</label>
+                        <div class="relative">
+                            <i data-lucide="graduation-cap" class="absolute left-4 top-3.5 h-5 w-5 text-slate-400"></i>
+                            <input type="text"
+                                   value="@Model.codigoEstudiante"
+                                   disabled
+                                   class="w-full rounded-xl border border-slate-200 bg-slate-100 py-3 pl-12 pr-4 text-sm font-semibold text-slate-600" />
+                        </div>
+                    </div>
+                }
+
+                @if (Model.rol == "Docente")
+                {
+                    <div>
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">Especialidad</label>
+                        <div class="relative">
+                            <i data-lucide="school" class="absolute left-4 top-3.5 h-5 w-5 text-slate-400"></i>
+                            <input type="text"
+                                   value="@Model.especialidad"
+                                   disabled
+                                   class="w-full rounded-xl border border-slate-200 bg-slate-100 py-3 pl-12 pr-4 text-sm font-semibold text-slate-600" />
+                        </div>
+                    </div>
+                }
+
+                <div class="flex flex-col gap-3 pt-3 sm:flex-row sm:justify-end">
+                    <a asp-action="ListUsuario" asp-controller="CRUDUsuario"
+                       class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        Cancelar
+                    </a>
+
+                    <button type="submit"
+                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-600">
+                        <i data-lucide="save" class="h-4 w-4"></i>
+                        Actualizar usuario
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="space-y-6">
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+                    <i data-lucide="info" class="h-6 w-6"></i>
+                </div>
+
+                <h3 class="mt-5 font-bold text-slate-950">Información</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600">
+                    El rol, código de estudiante o especialidad no se editan desde esta pantalla.
+                </p>
+            </div>
+
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-red-50 text-red-600">
+                    <i data-lucide="shield-alert" class="h-6 w-6"></i>
+                </div>
+
+                <h3 class="mt-5 font-bold text-slate-950">Seguridad</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600">
+                    Desactivar una cuenta impedirá que el usuario pueda iniciar sesión.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

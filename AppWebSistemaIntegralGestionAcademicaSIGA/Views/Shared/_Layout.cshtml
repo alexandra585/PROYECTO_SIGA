@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SIGA</title>
+    <link rel="icon" type="image/png" href="~/favicon.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="~/css/Inicio/Inicio.css" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900">
+    <header class="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
+        <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+            <a asp-action="Inicio" asp-controller="Inicio" class="flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white">
+                    <i data-lucide="graduation-cap" class="h-5 w-5"></i>
+                </div>
+                <div>
+                    <p class="text-lg font-bold leading-none">SIGA</p>
+                    <p class="text-xs text-slate-500">Gestión Académica</p>
+                </div>
+            </a>
+            <div class="hidden items-center gap-8 md:flex">
+                <a asp-action="Inicio" asp-controller="Inicio" asp-fragment="inicio" class="text-sm font-medium text-slate-600 hover:text-blue-600">Inicio</a>
+                <a asp-action="Inicio" asp-controller="Inicio" asp-fragment="modulos" class="text-sm font-medium text-slate-600 hover:text-blue-600">Módulos</a>
+                <a asp-action="Inicio" asp-controller="Inicio" asp-fragment="beneficios" class="text-sm font-medium text-slate-600 hover:text-blue-600">Beneficios</a>
+                <a asp-action="Inicio" asp-controller="Inicio" asp-fragment="roles" class="text-sm font-medium text-slate-600 hover:text-blue-600">Roles</a>
+                <a asp-action="Inicio" asp-controller="Inicio" asp-fragment="cobertura" class="text-sm font-medium text-slate-600 hover:text-blue-600">Alcance</a>
+                <a asp-action="Inicio" asp-controller="Inicio" asp-fragment="estadisticas" class="text-sm font-medium text-slate-600 hover:text-blue-600">Indicadores</a>
+                <a asp-action="Inicio" asp-controller="Inicio" asp-fragment="contacto" class="text-sm font-medium text-slate-600 hover:text-blue-600">Contacto</a>
+            </div>
+            <a asp-action="IniciarSesion" asp-controller="Auth"
+               class="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700">
+                Iniciar sesión
+            </a>
+        </nav>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="border-t border-slate-200 bg-white">
+        <div class="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-8 text-sm text-slate-500 md:flex-row md:items-center md:justify-between">
+            <p>&copy; @DateTime.Now.Year - Institución Educativa 2002 Virgen María del Rosario</p>
+            <p>Sistema Integral de Gestión Académica</p>
+        </div>
+    </footer>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+            lucide.createIcons();
+    </script>
+</body>
+</html>
