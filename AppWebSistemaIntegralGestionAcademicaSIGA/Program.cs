@@ -3,7 +3,9 @@ using AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // AGREGAR SERVICIOS AL CONTENEDOR.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    // AGREGAR ACTUALIZACION DE VISTAS EN TIEMPO REAL
+    .AddRazorRuntimeCompilation();
 
 // CONFIGURAR EL APP DATABASE CONTEXT
 builder.Services.AddDatabaseContext(builder.Configuration);

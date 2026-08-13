@@ -12,37 +12,166 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Repositories
     {
         public CRUDSecretariaRepository(IConfiguration configuration) : base(configuration) { }
 
-        public async Task<List<SecretariaViewModel>> ListSecretaria()
+        public async Task<SecretariaListadoViewModel> ListSecretaria(
+            int pagina = 1,
+            int tamanioPagina = 10,
+            string? nombre = null,
+            string? email = null,
+            string? cargo = null,
+            string? telefono = null,
+            bool? activo = true)
         {
-            var secretarias = new List<SecretariaViewModel>();
+            var resultado = new SecretariaListadoViewModel();
+
+            resultado.Paginacion.Pagina = pagina;
+            resultado.Paginacion.TamanioPagina = tamanioPagina;
 
             using (SqlConnection conn = GetConnection())
             {
                 await conn.OpenAsync();
 
-                using (SqlCommand cmd = new SqlCommand("usp_Secretarias", conn))
+                using (SqlCommand cmd = new SqlCommand(
+                    "usp_SecretariasPaginado",
+                    conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    // ==========================================
+                    // PARÁMETROS
+                    // ==========================================
+
+                    cmd.Parameters.AddWithValue(
+                        "@Pagina",
+                        pagina
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@TamanioPagina",
+                        tamanioPagina
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Nombre",
+                        string.IsNullOrWhiteSpace(nombre)
+                            ? DBNull.Value
+                            : nombre
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Email",
+                        string.IsNullOrWhiteSpace(email)
+                            ? DBNull.Value
+                            : email
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Cargo",
+                        string.IsNullOrWhiteSpace(cargo)
+                            ? DBNull.Value
+                            : cargo
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Telefono",
+                        string.IsNullOrWhiteSpace(telefono)
+                            ? DBNull.Value
+                            : telefono
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Activo",
+                        activo.HasValue
+                            ? activo.Value
+                            : DBNull.Value
+                    );
+
+
+                    // ==========================================
+                    // EJECUTAR PROCEDIMIENTO
+                    // ==========================================
+
+                    using (SqlDataReader reader =
+                           await cmd.ExecuteReaderAsync())
                     {
+                        // ==========================================
+                        // PRIMER RESULTADO
+                        // LISTA DE SECRETARIAS
+                        // ==========================================
+
                         while (await reader.ReadAsync())
                         {
-                            secretarias.Add(new SecretariaViewModel
+                            resultado.Secretarias.Add(
+                                new SecretariaViewModel
+                                {
+                                    id = reader.GetInt32(
+                                        reader.GetOrdinal("id")
+                                    ),
+
+                                    nombreCompleto = reader.GetString(
+                                        reader.GetOrdinal("nombreCompleto")
+                                    ),
+
+                                    email = reader.GetString(
+                                        reader.GetOrdinal("email")
+                                    ),
+
+                                    cargo = reader.IsDBNull(
+                                        reader.GetOrdinal("cargo"))
+                                        ? null
+                                        : reader.GetString(
+                                            reader.GetOrdinal("cargo")
+                                        ),
+
+                                    telefono = reader.IsDBNull(
+                                        reader.GetOrdinal("telefono"))
+                                        ? null
+                                        : reader.GetString(
+                                            reader.GetOrdinal("telefono")
+                                        ),
+
+                                    activo = reader.GetBoolean(
+                                        reader.GetOrdinal("activo")
+                                    ),
+
+                                    fechaRegistro = reader.GetDateTime(
+                                        reader.GetOrdinal("fechaRegistro")
+                                    )
+                                }
+                            );
+                        }
+
+
+                        // ==========================================
+                        // SEGUNDO RESULTADO
+                        // TOTAL DE REGISTROS
+                        // ==========================================
+
+                        if (await reader.NextResultAsync())
+                        {
+                            if (await reader.ReadAsync())
                             {
-                                id = reader.GetInt32(reader.GetOrdinal("id")),
-                                nombreCompleto = reader.GetString(reader.GetOrdinal("nombreCompleto")),
-                                email = reader.GetString(reader.GetOrdinal("email")),
-                                cargo = reader.IsDBNull(reader.GetOrdinal("cargo")) ? null : reader.GetString(reader.GetOrdinal("cargo")),
-                                telefono = reader.IsDBNull(reader.GetOrdinal("telefono")) ? null : reader.GetString(reader.GetOrdinal("telefono")),
-                                activo = reader.GetBoolean(reader.GetOrdinal("activo")),
-                                fechaRegistro = reader.GetDateTime(reader.GetOrdinal("fechaRegistro"))
-                            });
+                                resultado.Paginacion.TotalRegistros =
+                                    reader.GetInt32(
+                                        reader.GetOrdinal("totalRegistros")
+                                    );
+                            }
                         }
                     }
                 }
             }
-            return secretarias;
+
+
+            // ==========================================
+            // GUARDAR FILTROS
+            // ==========================================
+
+            resultado.Nombre = nombre;
+            resultado.Email = email;
+            resultado.Cargo = cargo;
+            resultado.Telefono = telefono;
+            resultado.Activo = activo;
+
+            return resultado;
         }
 
         public async Task<SecretariaViewModel> SecretariaId(int id)

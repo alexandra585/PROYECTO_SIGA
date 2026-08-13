@@ -15,14 +15,28 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.WEB.Controllers
             _crudUsuarioRepository = crudUsuarioRepository;
         }
 
-        // ===============
-        // LISTAR USUARIOS
-        // ===============
+        // ===============================
+        // LISTAR USUARIOS CON PAGINACIÓN
+        // ===============================
         [HttpGet]
-        public async Task<IActionResult> ListUsuario()
+        public async Task<IActionResult> ListUsuario(
+            int pagina = 1,
+            int tamanioPagina = 1, // 10
+            string? nombre = null,
+            string? email = null,
+            string? rol = null,
+            bool? activo = null)
         {
-            var usuarios = await _crudUsuarioRepository.ListUsuario();
-            return View(usuarios);
+            var resultado = await _crudUsuarioRepository.ListUsuario(
+                pagina,
+                tamanioPagina,
+                nombre,
+                email,
+                rol,
+                activo
+            );
+
+            return View(resultado);
         }
 
         // =============

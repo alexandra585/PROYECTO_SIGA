@@ -4,7 +4,15 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Interfaces
 {
     public interface ICRUDSecretariaRepository
     {
-        Task<List<SecretariaViewModel>> ListSecretaria(); // listo usp
+        Task<SecretariaListadoViewModel> ListSecretaria(
+            int pagina = 1,
+            int tamanioPagina = 10,
+            string? nombre = null,
+            string? email = null,
+            string? cargo = null,
+            string? telefono = null,
+            bool? activo = true
+        ); // listado con paginado
         Task<SecretariaViewModel> SecretariaId(int id); // listo usp
         Task<int> CreateUsuarioSecretaria(SecretariaViewModel model); // listo usp
         Task<bool> CreateSecretaria(int id, SecretariaViewModel model); // listo usp

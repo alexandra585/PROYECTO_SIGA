@@ -12,39 +12,161 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Repositories
     {
         public CRUDApoderadoRepository(IConfiguration configuration) : base(configuration) { }
 
-        public async Task<List<ApoderadoViewModel>> ListApoderado()
+        public async Task<ApoderadoListadoViewModel> ListApoderadoPaginado(
+            int pagina,
+            int tamanioPagina,
+            string? nombre = null,
+            string? email = null,
+            string? dni = null,
+            string? telefono = null,
+            string? direccion = null,
+            int? cantidadHijos = null,
+            bool? activo = null)
         {
-            var apoderados = new List<ApoderadoViewModel>();
+            var resultado = new ApoderadoListadoViewModel();
 
             using (SqlConnection conn = GetConnection())
             {
                 await conn.OpenAsync();
 
-                using (SqlCommand cmd = new SqlCommand("usp_Apoderados", conn))
+                using (SqlCommand cmd = new SqlCommand("usp_ApoderadosPaginado", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
+                    cmd.Parameters.AddWithValue("@Pagina", pagina);
+                    cmd.Parameters.AddWithValue("@TamanioPagina", tamanioPagina);
+
+                    cmd.Parameters.AddWithValue(
+                        "@Nombre",
+                        string.IsNullOrWhiteSpace(nombre) ? DBNull.Value : nombre
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Email",
+                        string.IsNullOrWhiteSpace(email) ? DBNull.Value : email
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Dni",
+                        string.IsNullOrWhiteSpace(dni) ? DBNull.Value : dni
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Telefono",
+                        string.IsNullOrWhiteSpace(telefono) ? DBNull.Value : telefono
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Direccion",
+                        string.IsNullOrWhiteSpace(direccion) ? DBNull.Value : direccion
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@CantidadHijos",
+                        cantidadHijos.HasValue ? cantidadHijos.Value : DBNull.Value
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Activo",
+                        activo.HasValue ? activo.Value : DBNull.Value
+                    );
+
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
+                        // ==========================================
+                        // PRIMER RESULTADO: APODERADOS
+                        // ==========================================
+
                         while (await reader.ReadAsync())
                         {
-                            apoderados.Add(new ApoderadoViewModel
+                            resultado.Apoderados.Add(new ApoderadoViewModel
                             {
                                 id = reader.GetInt32(reader.GetOrdinal("id")),
-                                nombreCompleto = reader.GetString(reader.GetOrdinal("nombreCompleto")),
-                                email = reader.GetString(reader.GetOrdinal("email")),
-                                activo = reader.GetBoolean(reader.GetOrdinal("activo")),
-                                fechaRegistro = reader.GetDateTime(reader.GetOrdinal("fechaRegistro")),
-                                telefono = reader.GetString(reader.GetOrdinal("telefono")),
-                                dni = reader.GetString(reader.GetOrdinal("dni")),
-                                direccion = reader.GetString(reader.GetOrdinal("direccion")),
-                                cantidadHijos = reader.GetInt32(reader.GetOrdinal("cantidadHijos"))
+
+                                nombreCompleto = reader.GetString(
+                                    reader.GetOrdinal("nombreCompleto")
+                                ),
+
+                                email = reader.GetString(
+                                    reader.GetOrdinal("email")
+                                ),
+
+                                activo = reader.GetBoolean(
+                                    reader.GetOrdinal("activo")
+                                ),
+
+                                fechaRegistro = reader.GetDateTime(
+                                    reader.GetOrdinal("fechaRegistro")
+                                ),
+
+                                telefono = reader.IsDBNull(
+                                    reader.GetOrdinal("telefono")
+                                )
+                                    ? null
+                                    : reader.GetString(
+                                        reader.GetOrdinal("telefono")
+                                    ),
+
+                                dni = reader.IsDBNull(
+                                    reader.GetOrdinal("dni")
+                                )
+                                    ? null
+                                    : reader.GetString(
+                                        reader.GetOrdinal("dni")
+                                    ),
+
+                                direccion = reader.IsDBNull(
+                                    reader.GetOrdinal("direccion")
+                                )
+                                    ? null
+                                    : reader.GetString(
+                                        reader.GetOrdinal("direccion")
+                                    ),
+
+                                cantidadHijos = reader.GetInt32(
+                                    reader.GetOrdinal("cantidadHijos")
+                                )
                             });
+                        }
+
+                        // ==========================================
+                        // SEGUNDO RESULTADO: TOTAL REGISTROS
+                        // ==========================================
+
+                        if (await reader.NextResultAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                resultado.Paginacion.TotalRegistros =
+                                    reader.GetInt32(
+                                        reader.GetOrdinal("totalRegistros")
+                                    );
+                            }
                         }
                     }
                 }
             }
-            return apoderados;
+
+            // ==========================================
+            // CONFIGURAR PAGINACIÓN
+            // ==========================================
+
+            resultado.Paginacion.Pagina = pagina;
+            resultado.Paginacion.TamanioPagina = tamanioPagina;
+
+            // ==========================================
+            // CONSERVAR FILTROS
+            // ==========================================
+
+            resultado.Nombre = nombre;
+            resultado.Email = email;
+            resultado.Dni = dni;
+            resultado.Telefono = telefono;
+            resultado.Direccion = direccion;
+            resultado.CantidadHijos = cantidadHijos;
+            resultado.Activo = activo;
+
+            return resultado;
         }
 
         public async Task<ApoderadoViewModel> ApoderadoId(int id)

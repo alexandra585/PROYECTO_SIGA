@@ -19,10 +19,28 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.WEB.Controllers
         // LISTAR ESTUDIANTES
         // ==================
         [HttpGet]
-        public async Task<IActionResult> ListEstudiante()
+        public async Task<IActionResult> ListEstudiante(
+            int pagina = 1,
+            int tamanioPagina = 1, // 10
+            string? nombre = null,
+            string? email = null,
+            string? codigoEstudiante = null,
+            string? nombreCarrera = null,
+            int? semestreActual = null,
+            bool? activo = true)
         {
-            var estudiantes = await _crudEstudianteRepository.ListEstudiante();
-            return View(estudiantes);
+            var resultado = await _crudEstudianteRepository.ListEstudiante(
+                pagina,
+                tamanioPagina,
+                nombre,
+                email,
+                codigoEstudiante,
+                nombreCarrera,
+                semestreActual,
+                activo
+            );
+
+            return View(resultado);
         }
 
         // ================

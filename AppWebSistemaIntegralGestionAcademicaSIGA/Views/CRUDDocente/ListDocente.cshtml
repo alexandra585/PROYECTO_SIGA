@@ -1,4 +1,4 @@
-﻿@model List<AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.DocenteViewModel>
+﻿@model AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.DocenteListadoViewModel
 
 @{
     ViewData["Title"] = "Lista de docentes";
@@ -6,6 +6,11 @@
 }
 
 <section class="space-y-6">
+
+    <!-- ========================================== -->
+    <!-- ENCABEZADO -->
+    <!-- ========================================== -->
+
     <div class="rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white shadow-sm">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
@@ -22,6 +27,10 @@
         </div>
     </div>
 
+
+    <!-- ========================================== -->
+    <!-- MENSAJES -->
+    <!-- ========================================== -->
     @if (TempData["Success"] != null)
     {
         <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-800">
@@ -42,19 +51,29 @@
         </div>
     }
 
+
+    <!-- ========================================== -->
+    <!-- ESTADÍSTICAS -->
+    <!-- ========================================== -->
+
     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="grid w-full gap-4 sm:grid-cols-2">
             <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <p class="text-sm text-slate-500">Activos</p>
-                <h3 class="mt-2 text-3xl font-extrabold text-emerald-600">@Model.Count(d => d.activo)</h3>
+                <h3 class="mt-2 text-3xl font-extrabold text-emerald-600">@Model.Docentes.Count(d => d.activo)</h3>
             </div>
 
             <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <p class="text-sm text-slate-500">Inactivos</p>
-                <h3 class="mt-2 text-3xl font-extrabold text-red-600">@Model.Count(d => !d.activo)</h3>
+                <h3 class="mt-2 text-3xl font-extrabold text-red-600">@Model.Docentes.Count(d => !d.activo)</h3>
             </div>
         </div>
     </div>
+
+
+    <!-- ========================================== -->
+    <!-- BOTÓN NUEVO DOCENTE -->
+    <!-- ========================================== -->
 
     <div class="flex justify-end">
         <a asp-action="CreateDocente" asp-controller="CRUDDocente"
@@ -64,116 +83,650 @@
         </a>
     </div>
 
-    @if (!Model.Any())
+
+    <!-- ========================================== -->
+    <!-- FILTROS -->
+    <!-- ========================================== -->
+
+    <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+
+        <div class="mb-5">
+            <div class="flex items-center gap-2">
+                <i data-lucide="filter" class="h-5 w-5 text-blue-600"></i>
+
+                <h3 class="text-lg font-bold text-slate-950">
+                    Filtrar docentes
+                </h3>
+            </div>
+
+            <p class="mt-1 text-sm text-slate-500">
+                Utiliza los filtros para encontrar docentes registrados.
+            </p>
+        </div>
+
+
+        <form asp-action="ListDocente"
+              asp-controller="CRUDDocente"
+              method="get">
+
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+
+                <!-- Nombre -->
+
+                <div>
+                    <label for="nombre"
+                           class="mb-2 block text-sm font-semibold text-slate-700">
+                        Nombre
+                    </label>
+
+                    <input type="text"
+                           id="nombre"
+                           name="nombre"
+                           value="@Model.Nombre"
+                           placeholder="Buscar por nombre..."
+                           class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+                </div>
+
+
+                <!-- Email -->
+
+                <div>
+                    <label for="email"
+                           class="mb-2 block text-sm font-semibold text-slate-700">
+                        Correo
+                    </label>
+
+                    <input type="text"
+                           id="email"
+                           name="email"
+                           value="@Model.Email"
+                           placeholder="Buscar por correo..."
+                           class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+                </div>
+
+
+                <!-- Especialidad -->
+
+                <div>
+                    <label for="especialidad"
+                           class="mb-2 block text-sm font-semibold text-slate-700">
+                        Especialidad
+                    </label>
+
+                    <input type="text"
+                           id="especialidad"
+                           name="especialidad"
+                           value="@Model.Especialidad"
+                           placeholder="Buscar especialidad..."
+                           class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+                </div>
+
+
+                <!-- Grado académico -->
+
+                <div>
+                    <label for="gradoAcademico"
+                           class="mb-2 block text-sm font-semibold text-slate-700">
+                        Grado académico
+                    </label>
+
+                    <input type="text"
+                           id="gradoAcademico"
+                           name="gradoAcademico"
+                           value="@Model.GradoAcademico"
+                           placeholder="Buscar grado académico..."
+                           class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+                </div>
+
+
+                <!-- Estado -->
+
+                <div>
+                    <label for="activo"
+                           class="mb-2 block text-sm font-semibold text-slate-700">
+                        Estado
+                    </label>
+
+                    <select id="activo"
+                            name="activo"
+                            class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+                        @if (Model.Activo == true)
+                        {
+                            <option value="true" selected>Activos</option>
+                        }
+                        else
+                        {
+                            <option value="true">Activos</option>
+                        }
+
+                        @if (Model.Activo == false)
+                        {
+                            <option value="false" selected>Inactivos</option>
+                        }
+                        else
+                        {
+                            <option value="false">Inactivos</option>
+                        }
+
+                        @if (Model.Activo == null)
+                        {
+                            <option value="" selected>Todos</option>
+                        }
+                        else
+                        {
+                            <option value="">Todos</option>
+                        }
+
+                    </select>
+                </div>
+
+            </div>
+
+
+            <!-- BOTONES -->
+
+            <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:justify-end">
+
+                <a asp-action="ListDocente"
+                   asp-controller="CRUDDocente"
+                   class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+
+                    <i data-lucide="rotate-ccw" class="h-4 w-4"></i>
+
+                    Limpiar
+                </a>
+
+                <button type="submit"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700">
+
+                    <i data-lucide="search" class="h-4 w-4"></i>
+
+                    Buscar
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- LISTADO -->
+    <!-- ========================================== -->
+    @if (!Model.Docentes.Any())
     {
         <div class="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-amber-800">
+
             <div class="flex items-start gap-4">
+
                 <i data-lucide="info" class="mt-0.5 h-6 w-6"></i>
+
                 <div>
-                    <h3 class="font-bold">No hay docentes registrados</h3>
-                    <p class="mt-1 text-sm">Cuando registres docentes, aparecerán en esta sección.</p>
+
+                    <h3 class="font-bold">
+                        No se encontraron docentes
+                    </h3>
+
+                    <p class="mt-1 text-sm">
+                        No existen docentes que coincidan con los filtros seleccionados.
+                    </p>
+
                 </div>
+
             </div>
+
         </div>
     }
     else
     {
+
         <div class="rounded-3xl border border-slate-200 bg-white shadow-sm">
+
+            <!-- ========================================== -->
+            <!-- CABECERA TABLA -->
+            <!-- ========================================== -->
+
             <div class="flex flex-col gap-3 border-b border-slate-200 px-6 py-5 md:flex-row md:items-center md:justify-between">
+
                 <div>
-                    <h3 class="text-lg font-bold text-slate-950">Listado de docentes</h3>
-                    <p class="mt-1 text-sm text-slate-500">Consulta y administra docentes registrados.</p>
+
+                    <h3 class="text-lg font-bold text-slate-950">
+                        Listado de docentes
+                    </h3>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        Consulta y administra docentes registrados.
+                    </p>
+
                 </div>
 
                 <span class="inline-flex w-fit items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">
+
                     <i data-lucide="users" class="h-4 w-4"></i>
-                    @Model.Count docentes
+
+                    @Model.Paginacion.TotalRegistros docentes
+
                 </span>
+
             </div>
 
+
+            <!-- ========================================== -->
+            <!-- TABLA -->
+            <!-- ========================================== -->
+
             <div class="overflow-x-auto">
+
                 <table class="w-full min-w-[1000px] text-left text-sm">
+
                     <thead>
+
                         <tr class="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
-                            <th class="px-6 py-4 font-bold">Docente</th>
-                            <th class="px-6 py-4 font-bold">Correo</th>
-                            <th class="px-6 py-4 font-bold">Especialidad</th>
-                            <th class="px-6 py-4 font-bold">Grado académico</th>
-                            <th class="px-6 py-4 font-bold">Estado</th>
-                            <th class="px-6 py-4 text-right font-bold">Acciones</th>
+
+                            <th class="px-6 py-4 font-bold">
+                                Docente
+                            </th>
+
+                            <th class="px-6 py-4 font-bold">
+                                Correo
+                            </th>
+
+                            <th class="px-6 py-4 font-bold">
+                                Especialidad
+                            </th>
+
+                            <th class="px-6 py-4 font-bold">
+                                Grado académico
+                            </th>
+
+                            <th class="px-6 py-4 font-bold">
+                                Estado
+                            </th>
+
+                            <th class="px-6 py-4 text-right font-bold">
+                                Acciones
+                            </th>
+
                         </tr>
+
                     </thead>
 
+
                     <tbody class="divide-y divide-slate-100">
-                        @foreach (var docente in Model)
+
+                        @foreach (var docente in Model.Docentes)
                         {
                             <tr class="transition hover:bg-slate-50">
+
+                                <!-- DOCENTE -->
+
                                 <td class="px-6 py-5">
+
                                     <div class="flex items-center gap-3">
+
                                         <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                                            <i data-lucide="school" class="h-5 w-5"></i>
+
+                                            <i data-lucide="school"
+                                               class="h-5 w-5"></i>
+
                                         </div>
+
                                         <div>
-                                            <p class="font-bold text-slate-950">@docente.nombreCompleto</p>
-                                            <p class="mt-1 text-xs text-slate-500">ID: @docente.id</p>
+
+                                            <p class="font-bold text-slate-950">
+                                                @docente.nombreCompleto
+                                            </p>
+
+                                            <p class="mt-1 text-xs text-slate-500">
+                                                ID: @docente.id
+                                            </p>
+
                                         </div>
+
                                     </div>
+
                                 </td>
 
+
+                                <!-- CORREO -->
+
                                 <td class="px-6 py-5 text-slate-600">
+
                                     <div class="flex items-center gap-2">
-                                        <i data-lucide="mail" class="h-4 w-4 text-slate-400"></i>
+
+                                        <i data-lucide="mail"
+                                           class="h-4 w-4 text-slate-400"></i>
+
                                         @docente.email
+
                                     </div>
+
                                 </td>
 
+
+                                <!-- ESPECIALIDAD -->
+
                                 <td class="px-6 py-5">
+
                                     <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-bold text-indigo-700">
+
                                         @docente.especialidad
+
                                     </span>
+
                                 </td>
+
+
+                                <!-- GRADO ACADÉMICO -->
 
                                 <td class="px-6 py-5 text-slate-600">
+
                                     @docente.gradoAcademico
+
                                 </td>
 
+
+                                <!-- ESTADO -->
+
                                 <td class="px-6 py-5">
+
                                     @if (docente.activo)
                                     {
                                         <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
-                                            <i data-lucide="check-circle-2" class="h-3.5 w-3.5"></i>
+
+                                            <i data-lucide="check-circle-2"
+                                               class="h-3.5 w-3.5"></i>
+
                                             Activo
+
                                         </span>
                                     }
                                     else
                                     {
                                         <span class="inline-flex items-center gap-1 rounded-full bg-red-50 px-3 py-1 text-xs font-bold text-red-700">
-                                            <i data-lucide="x-circle" class="h-3.5 w-3.5"></i>
+
+                                            <i data-lucide="x-circle"
+                                               class="h-3.5 w-3.5"></i>
+
                                             Inactivo
+
                                         </span>
                                     }
+
                                 </td>
+
+
+                                <!-- ACCIONES -->
 
                                 <td class="px-6 py-5">
+
                                     <div class="flex flex-col gap-2 sm:flex-row sm:justify-end">
-                                        <a asp-action="EditDocente" asp-controller="CRUDDocente" asp-route-id="@docente.id"
+
+                                        <a asp-action="EditDocente"
+                                           asp-controller="CRUDDocente"
+                                           asp-route-id="@docente.id"
                                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-600">
-                                            <i data-lucide="edit-3" class="h-4 w-4"></i>
+
+                                            <i data-lucide="edit-3"
+                                               class="h-4 w-4"></i>
+
                                             Editar
+
                                         </a>
 
-                                        <a asp-action="DeleteDocente" asp-controller="CRUDDocente" asp-route-id="@docente.id"
+                                        <a asp-action="DeleteDocente"
+                                           asp-controller="CRUDDocente"
+                                           asp-route-id="@docente.id"
                                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700">
-                                            <i data-lucide="trash-2" class="h-4 w-4"></i>
+
+                                            <i data-lucide="trash-2"
+                                               class="h-4 w-4"></i>
+
                                             Eliminar
+
                                         </a>
+
                                     </div>
+
                                 </td>
+
                             </tr>
                         }
+
                     </tbody>
+
                 </table>
+
+            </div>
+
+
+            <!-- ========================================== -->
+            <!-- PAGINACIÓN -->
+            <!-- ========================================== -->
+            <div class="flex flex-col gap-4 border-t border-slate-200 px-6 py-5 md:flex-row md:items-center md:justify-between">
+
+                <!-- Información -->
+                <div class="text-sm text-slate-500">
+
+                    @if (Model.Paginacion.TotalRegistros > 0)
+                    {
+                        var primerRegistro =
+                            ((Model.Paginacion.Pagina - 1)
+                            * Model.Paginacion.TamanioPagina) + 1;
+
+                        var ultimoRegistro =
+                            Math.Min(
+                                Model.Paginacion.Pagina
+                                * Model.Paginacion.TamanioPagina,
+                                Model.Paginacion.TotalRegistros
+                            );
+
+                        <span>
+                            Mostrando
+                            <span class="font-semibold text-slate-700">
+                                @primerRegistro
+                            </span>
+                            -
+                            <span class="font-semibold text-slate-700">
+                                @ultimoRegistro
+                            </span>
+                            de
+                            <span class="font-semibold text-slate-700">
+                                @Model.Paginacion.TotalRegistros
+                            </span>
+                            registros
+                        </span>
+                    }
+                    else
+                    {
+                        <span>No hay registros</span>
+                    }
+
+                </div>
+
+
+                <!-- Botones -->
+                @if (Model.Paginacion.TotalPaginas > 1)
+                {
+                    <div class="flex items-center gap-1">
+
+                        <!-- ANTERIOR -->
+                        @if (Model.Paginacion.TienePaginaAnterior)
+                        {
+                            <a asp-action="ListDocente"
+                               asp-controller="CRUDDocente"
+                               asp-route-pagina="@(Model.Paginacion.Pagina - 1)"
+                               asp-route-tamanioPagina="@Model.Paginacion.TamanioPagina"
+                               asp-route-nombre="@Model.Nombre"
+                               asp-route-email="@Model.Email"
+                               asp-route-especialidad="@Model.Especialidad"
+                               asp-route-gradoAcademico="@Model.GradoAcademico"
+                               asp-route-activo="@Model.Activo"
+                               class="inline-flex h-9 items-center justify-center gap-1 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+
+                                <i data-lucide="chevron-left" class="h-4 w-4"></i>
+
+                                <span class="hidden sm:inline">Anterior</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="inline-flex h-9 cursor-not-allowed items-center justify-center gap-1 rounded-lg border border-slate-100 bg-slate-50 px-3 text-sm font-medium text-slate-300">
+
+                                <i data-lucide="chevron-left" class="h-4 w-4"></i>
+
+                                <span class="hidden sm:inline">Anterior</span>
+                            </span>
+                        }
+
+
+                        <!-- PRIMERA PÁGINA -->
+                        @if (Model.Paginacion.Pagina == 1)
+                        {
+                            <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-sm font-semibold text-white">
+                                1
+                            </span>
+                        }
+                        else
+                        {
+                            <a asp-action="ListDocente"
+                               asp-controller="CRUDDocente"
+                               asp-route-pagina="1"
+                               asp-route-tamanioPagina="@Model.Paginacion.TamanioPagina"
+                               asp-route-nombre="@Model.Nombre"
+                               asp-route-email="@Model.Email"
+                               asp-route-especialidad="@Model.Especialidad"
+                               asp-route-gradoAcademico="@Model.GradoAcademico"
+                               asp-route-activo="@Model.Activo"
+                               class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+                                1
+                            </a>
+                        }
+
+
+                        @{
+                            int paginaActual = Model.Paginacion.Pagina;
+                            int totalPaginas = Model.Paginacion.TotalPaginas;
+
+                            // Mostrar páginas cercanas a la actual
+                            int inicio = Math.Max(2, paginaActual - 1);
+                            int fin = Math.Min(totalPaginas - 1, paginaActual + 1);
+                        }
+
+
+                        <!-- ... IZQUIERDO -->
+                        @if (inicio > 2)
+                        {
+                            <span class="inline-flex h-9 w-9 items-center justify-center text-sm text-slate-400">
+                                ...
+                            </span>
+                        }
+
+
+                        <!-- PÁGINAS INTERMEDIAS -->
+                        @for (int pagina = inicio; pagina <= fin; pagina++)
+                        {
+                            if (pagina == paginaActual)
+                            {
+                                <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-sm font-semibold text-white">
+                                    @pagina
+                                </span>
+                            }
+                            else
+                            {
+                                <a asp-action="ListDocente"
+                                   asp-controller="CRUDDocente"
+                                   asp-route-pagina="@pagina"
+                                   asp-route-tamanioPagina="@Model.Paginacion.TamanioPagina"
+                                   asp-route-nombre="@Model.Nombre"
+                                   asp-route-email="@Model.Email"
+                                   asp-route-especialidad="@Model.Especialidad"
+                                   asp-route-gradoAcademico="@Model.GradoAcademico"
+                                   asp-route-activo="@Model.Activo"
+                                   class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+
+                                    @pagina
+
+                                </a>
+                            }
+                        }
+
+
+                        <!-- ... DERECHO -->
+                        @if (fin < totalPaginas - 1)
+                        {
+                            <span class="inline-flex h-9 w-9 items-center justify-center text-sm text-slate-400">
+                                ...
+                            </span>
+                        }
+
+
+                        <!-- ÚLTIMA PÁGINA -->
+                        @if (totalPaginas > 1)
+                        {
+                            if (paginaActual == totalPaginas)
+                            {
+                                <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-sm font-semibold text-white">
+                                    @totalPaginas
+                                </span>
+                            }
+                            else
+                            {
+                                <a asp-action="ListDocente"
+                                   asp-controller="CRUDDocente"
+                                   asp-route-pagina="@totalPaginas"
+                                   asp-route-tamanioPagina="@Model.Paginacion.TamanioPagina"
+                                   asp-route-nombre="@Model.Nombre"
+                                   asp-route-email="@Model.Email"
+                                   asp-route-especialidad="@Model.Especialidad"
+                                   asp-route-gradoAcademico="@Model.GradoAcademico"
+                                   asp-route-activo="@Model.Activo"
+                                   class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+
+                                    @totalPaginas
+
+                                </a>
+                            }
+                        }
+
+
+                        <!-- SIGUIENTE -->
+                        @if (Model.Paginacion.TienePaginaSiguiente)
+                        {
+                            <a asp-action="ListDocente"
+                               asp-controller="CRUDDocente"
+                               asp-route-pagina="@(Model.Paginacion.Pagina + 1)"
+                               asp-route-tamanioPagina="@Model.Paginacion.TamanioPagina"
+                               asp-route-nombre="@Model.Nombre"
+                               asp-route-email="@Model.Email"
+                               asp-route-especialidad="@Model.Especialidad"
+                               asp-route-gradoAcademico="@Model.GradoAcademico"
+                               asp-route-activo="@Model.Activo"
+                               class="inline-flex h-9 items-center justify-center gap-1 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+
+                                <span class="hidden sm:inline">Siguiente</span>
+
+                                <i data-lucide="chevron-right" class="h-4 w-4"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="inline-flex h-9 cursor-not-allowed items-center justify-center gap-1 rounded-lg border border-slate-100 bg-slate-50 px-3 text-sm font-medium text-slate-300">
+
+                                <span class="hidden sm:inline">Siguiente</span>
+
+                                <i data-lucide="chevron-right" class="h-4 w-4"></i>
+                            </span>
+                        }
+
+                    </div>
+                }
+
             </div>
         </div>
+
     }
+
 </section>

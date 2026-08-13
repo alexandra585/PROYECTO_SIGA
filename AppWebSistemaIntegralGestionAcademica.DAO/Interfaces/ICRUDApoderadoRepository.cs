@@ -5,7 +5,17 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Interfaces
 {
     public interface ICRUDApoderadoRepository
     {
-        Task<List<ApoderadoViewModel>> ListApoderado(); // listo usp
+        Task<ApoderadoListadoViewModel> ListApoderadoPaginado(
+            int pagina,
+            int tamanioPagina,
+            string? nombre = null,
+            string? email = null,
+            string? dni = null,
+            string? telefono = null,
+            string? direccion = null,
+            int? cantidadHijos = null,
+            bool? activo = null
+        ); // listado con paginacion
         Task<ApoderadoViewModel> ApoderadoId(int id); // listo usp
         Task<int> CreateUsuarioApoderado(ApoderadoViewModel model);  // listo usp
         Task<bool> CreateApoderado(int id, ApoderadoViewModel model);  // listo usp

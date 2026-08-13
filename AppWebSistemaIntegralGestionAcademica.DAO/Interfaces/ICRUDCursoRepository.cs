@@ -4,7 +4,13 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Interfaces
 {
     public interface ICRUDCursoRepository
     {
-        Task<List<CursoViewModel>> ListCurso(); // listo usp
+        Task<CursoListadoViewModel> ListCurso(
+            int pagina = 1,
+            int tamanioPagina = 10,
+            string? codigoCurso = null,
+            string? nombreCurso = null,
+            int? creditos = null
+        ); // listado con paginado
         Task<CursoViewModel> CursoId(int id); // listo usp
         Task<bool> CreateCurso(CursoViewModel model); // listo usp
         Task<bool> UpdateCurso(CursoViewModel model); // listo usp

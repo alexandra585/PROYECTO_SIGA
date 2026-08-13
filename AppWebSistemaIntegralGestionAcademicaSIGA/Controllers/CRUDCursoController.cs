@@ -19,10 +19,23 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.WEB.Controllers
         // LISTAR CURSOS
         // =============
         [HttpGet]
-        public async Task<IActionResult> ListCurso()
+        public async Task<IActionResult> ListCurso(
+            int pagina = 1,
+            int tamanioPagina = 1, // 10
+            string? codigoCurso = null,
+            string? nombreCurso = null,
+            int? creditos = null)
         {
-            var cursos = await _crudCursoRepository.ListCurso();
-            return View(cursos);
+            var resultado = await _crudCursoRepository.ListCurso(
+            pagina,
+            tamanioPagina,
+            codigoCurso,
+            nombreCurso,
+            creditos
+            );
+
+            return View(resultado);
+
         }
 
         // ===========

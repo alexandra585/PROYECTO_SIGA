@@ -12,36 +12,163 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Repositories
     {
         public CRUDDocenteRepository(IConfiguration configuration) : base(configuration) { }
 
-        public async Task<List<DocenteViewModel>> ListDocente()
+        public async Task<DocenteListadoViewModel> ListDocente(
+            int pagina = 1,
+            int tamanioPagina = 10,
+            string? nombre = null,
+            string? email = null,
+            string? especialidad = null,
+            string? gradoAcademico = null,
+            bool? activo = true)
         {
-            var docentes = new List<DocenteViewModel>();
+            var resultado = new DocenteListadoViewModel();
+
+            // ==========================================
+            // CONFIGURAR PAGINACIÓN
+            // ==========================================
+
+            resultado.Paginacion.Pagina = pagina;
+            resultado.Paginacion.TamanioPagina = tamanioPagina;
 
             using (SqlConnection conn = GetConnection())
             {
                 await conn.OpenAsync();
 
-                using (SqlCommand cmd = new SqlCommand("usp_Docentes", conn))
+                using (SqlCommand cmd = new SqlCommand(
+                    "usp_DocentesPaginado",
+                    conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    // ==========================================
+                    // PARÁMETROS
+                    // ==========================================
+
+                    cmd.Parameters.AddWithValue(
+                        "@Pagina",
+                        pagina
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@TamanioPagina",
+                        tamanioPagina
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Nombre",
+                        string.IsNullOrWhiteSpace(nombre)
+                            ? DBNull.Value
+                            : nombre
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Email",
+                        string.IsNullOrWhiteSpace(email)
+                            ? DBNull.Value
+                            : email
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Especialidad",
+                        string.IsNullOrWhiteSpace(especialidad)
+                            ? DBNull.Value
+                            : especialidad
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@GradoAcademico",
+                        string.IsNullOrWhiteSpace(gradoAcademico)
+                            ? DBNull.Value
+                            : gradoAcademico
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Activo",
+                        activo.HasValue
+                            ? activo.Value
+                            : DBNull.Value
+                    );
+
+                    // ==========================================
+                    // EJECUTAR PROCEDIMIENTO
+                    // ==========================================
+
+                    using (SqlDataReader reader =
+                           await cmd.ExecuteReaderAsync())
                     {
+                        // ==========================================
+                        // PRIMER RESULTADO
+                        // LISTA DE DOCENTES
+                        // ==========================================
+
                         while (await reader.ReadAsync())
                         {
-                            docentes.Add(new DocenteViewModel
+                            resultado.Docentes.Add(
+                                new DocenteViewModel
+                                {
+                                    id = reader.GetInt32(
+                                        reader.GetOrdinal("id")
+                                    ),
+
+                                    nombreCompleto = reader.GetString(
+                                        reader.GetOrdinal("nombreCompleto")
+                                    ),
+
+                                    email = reader.GetString(
+                                        reader.GetOrdinal("email")
+                                    ),
+
+                                    especialidad = reader.IsDBNull(
+                                        reader.GetOrdinal("especialidad"))
+                                        ? null
+                                        : reader.GetString(
+                                            reader.GetOrdinal("especialidad")
+                                        ),
+
+                                    gradoAcademico = reader.IsDBNull(
+                                        reader.GetOrdinal("gradoAcademico"))
+                                        ? null
+                                        : reader.GetString(
+                                            reader.GetOrdinal("gradoAcademico")
+                                        ),
+
+                                    activo = reader.GetBoolean(
+                                        reader.GetOrdinal("activo")
+                                    )
+                                }
+                            );
+                        }
+
+                        // ==========================================
+                        // SEGUNDO RESULTADO
+                        // TOTAL DE REGISTROS
+                        // ==========================================
+
+                        if (await reader.NextResultAsync())
+                        {
+                            if (await reader.ReadAsync())
                             {
-                                id = reader.GetInt32(reader.GetOrdinal("id")),
-                                nombreCompleto = reader.GetString(reader.GetOrdinal("nombreCompleto")),
-                                email = reader.GetString(reader.GetOrdinal("email")),
-                                especialidad = reader.IsDBNull(reader.GetOrdinal("especialidad")) ? null : reader.GetString(reader.GetOrdinal("especialidad")),
-                                gradoAcademico = reader.IsDBNull(reader.GetOrdinal("gradoAcademico")) ? null : reader.GetString(reader.GetOrdinal("gradoAcademico")),
-                                activo = reader.GetBoolean(reader.GetOrdinal("activo"))
-                            });
+                                resultado.Paginacion.TotalRegistros =
+                                    reader.GetInt32(
+                                        reader.GetOrdinal("totalRegistros")
+                                    );
+                            }
                         }
                     }
                 }
             }
-            return docentes;
+
+            // ==========================================
+            // GUARDAR FILTROS
+            // ==========================================
+
+            resultado.Nombre = nombre;
+            resultado.Email = email;
+            resultado.Especialidad = especialidad;
+            resultado.GradoAcademico = gradoAcademico;
+            resultado.Activo = activo;
+
+            return resultado;
         }
 
         public async Task<DocenteViewModel> DocenteId(int id)

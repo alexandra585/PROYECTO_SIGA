@@ -33,6 +33,129 @@ BEGIN
 END
 GO
 /*-------------------------------------------------------------------------------------------------*/
+CREATE OR ALTER PROCEDURE usp_UsuariosPaginado
+    @Pagina INT = 1,
+    @TamanioPagina INT = 10,
+    @Nombre NVARCHAR(100) = NULL,
+    @Email NVARCHAR(100) = NULL,
+    @Rol NVARCHAR(20) = NULL,
+    @Activo BIT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- ==========================================
+    -- VALIDAR PAGINACIÓN
+    -- ==========================================
+    IF @Pagina < 1
+        SET @Pagina = 1;
+
+    IF @TamanioPagina < 1
+        SET @TamanioPagina = 10;
+
+    DECLARE @Offset INT;
+
+    SET @Offset = (@Pagina - 1) * @TamanioPagina;
+
+
+    -- ==========================================
+    -- LISTADO DE USUARIOS
+    -- ==========================================
+    SELECT 
+        u.id, 
+        u.nombreCompleto, 
+        u.email, 
+        u.rol, 
+        u.activo, 
+        u.fechaRegistro, 
+        u.numeroIntentos,
+
+        ISNULL(e.codigoEstudiante, '') AS CodigoEstudiante,
+        ISNULL(d.especialidad, '') AS Especialidad
+
+    FROM tb_usuarios u
+
+    LEFT JOIN tb_estudiantes e 
+        ON u.id = e.id
+
+    LEFT JOIN tb_docentes d 
+        ON u.id = d.id
+
+    WHERE 
+        u.rol IN ('Director', 'Secretaria', 'Docente', 'Estudiante', 'Apoderado')
+
+        -- Filtro por nombre
+        AND (
+            @Nombre IS NULL 
+            OR u.nombreCompleto LIKE '%' + @Nombre + '%'
+        )
+
+        -- Filtro por email
+        AND (
+            @Email IS NULL 
+            OR u.email LIKE '%' + @Email + '%'
+        )
+
+        -- Filtro por rol
+        AND (
+            @Rol IS NULL 
+            OR u.rol = @Rol
+        )
+
+        -- Filtro por estado
+        AND (
+            @Activo IS NULL 
+            OR u.activo = @Activo
+        )
+
+    ORDER BY 
+        u.id,
+        u.rol,
+        u.nombreCompleto
+
+    OFFSET @Offset ROWS
+    FETCH NEXT @TamanioPagina ROWS ONLY;
+
+
+    -- ==========================================
+    -- TOTAL DE REGISTROS
+    -- ==========================================
+    SELECT 
+        COUNT(*) AS totalRegistros
+
+    FROM tb_usuarios u
+
+    LEFT JOIN tb_estudiantes e 
+        ON u.id = e.id
+
+    LEFT JOIN tb_docentes d 
+        ON u.id = d.id
+
+    WHERE 
+        u.rol IN ('Director', 'Secretaria', 'Docente', 'Estudiante', 'Apoderado')
+
+        AND (
+            @Nombre IS NULL 
+            OR u.nombreCompleto LIKE '%' + @Nombre + '%'
+        )
+
+        AND (
+            @Email IS NULL 
+            OR u.email LIKE '%' + @Email + '%'
+        )
+
+        AND (
+            @Rol IS NULL 
+            OR u.rol = @Rol
+        )
+
+        AND (
+            @Activo IS NULL 
+            OR u.activo = @Activo
+        );
+END
+GO
+/*-------------------------------------------------------------------------------------------------*/
 IF EXISTS (SELECT * FROM sys.objects WHERE type = 'p' AND name = 'usp_UsuarioId')
     DROP PROCEDURE usp_UsuarioId
 GO
@@ -173,6 +296,131 @@ BEGIN
     INNER JOIN tb_secretarias s ON u.id = s.id
     WHERE u.rol = 'Secretaria' AND u.activo = 1
     ORDER BY u.id, u.nombreCompleto;
+END
+GO
+/*-------------------------------------------------------------------------------------------------*/
+CREATE OR ALTER PROCEDURE usp_SecretariasPaginado
+    @Pagina INT = 1,
+    @TamanioPagina INT = 10,
+    @Nombre NVARCHAR(100) = NULL,
+    @Email NVARCHAR(100) = NULL,
+    @Cargo NVARCHAR(100) = NULL,
+    @Telefono NVARCHAR(20) = NULL,
+    @Activo BIT = 1
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- ==========================================
+    -- VALIDAR PAGINACIÓN
+    -- ==========================================
+    IF @Pagina < 1
+        SET @Pagina = 1;
+
+    IF @TamanioPagina < 1
+        SET @TamanioPagina = 10;
+
+    DECLARE @Offset INT;
+
+    SET @Offset = (@Pagina - 1) * @TamanioPagina;
+
+
+    -- ==========================================
+    -- LISTADO PAGINADO
+    -- ==========================================
+    SELECT 
+        u.id,
+        u.nombreCompleto,
+        u.email,
+        u.activo,
+        u.fechaRegistro,
+        s.cargo,
+        s.telefono
+
+    FROM tb_usuarios u
+
+    INNER JOIN tb_secretarias s 
+        ON u.id = s.id
+
+    WHERE 
+        u.rol = 'Secretaria'
+
+        -- Filtro por nombre
+        AND (
+            @Nombre IS NULL
+            OR u.nombreCompleto LIKE '%' + @Nombre + '%'
+        )
+
+        -- Filtro por email
+        AND (
+            @Email IS NULL
+            OR u.email LIKE '%' + @Email + '%'
+        )
+
+        -- Filtro por cargo
+        AND (
+            @Cargo IS NULL
+            OR s.cargo LIKE '%' + @Cargo + '%'
+        )
+
+        -- Filtro por teléfono
+        AND (
+            @Telefono IS NULL
+            OR s.telefono LIKE '%' + @Telefono + '%'
+        )
+
+        -- Filtro por estado
+        AND (
+            @Activo IS NULL
+            OR u.activo = @Activo
+        )
+
+    ORDER BY 
+        u.id,
+        u.nombreCompleto
+
+    OFFSET @Offset ROWS
+    FETCH NEXT @TamanioPagina ROWS ONLY;
+
+
+    -- ==========================================
+    -- TOTAL DE REGISTROS
+    -- ==========================================
+    SELECT 
+        COUNT(*) AS totalRegistros
+
+    FROM tb_usuarios u
+
+    INNER JOIN tb_secretarias s 
+        ON u.id = s.id
+
+    WHERE 
+        u.rol = 'Secretaria'
+
+        AND (
+            @Nombre IS NULL
+            OR u.nombreCompleto LIKE '%' + @Nombre + '%'
+        )
+
+        AND (
+            @Email IS NULL
+            OR u.email LIKE '%' + @Email + '%'
+        )
+
+        AND (
+            @Cargo IS NULL
+            OR s.cargo LIKE '%' + @Cargo + '%'
+        )
+
+        AND (
+            @Telefono IS NULL
+            OR s.telefono LIKE '%' + @Telefono + '%'
+        )
+
+        AND (
+            @Activo IS NULL
+            OR u.activo = @Activo
+        );
 END
 GO
 /*-------------------------------------------------------------------------------------------------*/
@@ -321,6 +569,130 @@ BEGIN
 END
 GO
 /*-------------------------------------------------------------------------------------------------*/
+CREATE OR ALTER PROCEDURE usp_DocentesPaginado
+    @Pagina INT = 1,
+    @TamanioPagina INT = 10,
+    @Nombre NVARCHAR(100) = NULL,
+    @Email NVARCHAR(100) = NULL,
+    @Especialidad NVARCHAR(100) = NULL,
+    @GradoAcademico NVARCHAR(50) = NULL,
+    @Activo BIT = 1
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- ==========================================
+    -- VALIDAR PAGINACIÓN
+    -- ==========================================
+    IF @Pagina < 1
+        SET @Pagina = 1;
+
+    IF @TamanioPagina < 1
+        SET @TamanioPagina = 10;
+
+    DECLARE @Offset INT;
+
+    SET @Offset = (@Pagina - 1) * @TamanioPagina;
+
+
+    -- ==========================================
+    -- LISTADO PAGINADO
+    -- ==========================================
+    SELECT 
+        u.id, 
+        u.nombreCompleto, 
+        u.email, 
+        u.activo,
+        d.especialidad, 
+        d.gradoAcademico
+
+    FROM tb_usuarios u
+
+    INNER JOIN tb_docentes d 
+        ON u.id = d.id
+
+    WHERE 
+        u.rol = 'Docente'
+
+        -- Filtro por nombre
+        AND (
+            @Nombre IS NULL
+            OR u.nombreCompleto LIKE '%' + @Nombre + '%'
+        )
+
+        -- Filtro por email
+        AND (
+            @Email IS NULL
+            OR u.email LIKE '%' + @Email + '%'
+        )
+
+        -- Filtro por especialidad
+        AND (
+            @Especialidad IS NULL
+            OR d.especialidad LIKE '%' + @Especialidad + '%'
+        )
+
+        -- Filtro por grado académico
+        AND (
+            @GradoAcademico IS NULL
+            OR d.gradoAcademico LIKE '%' + @GradoAcademico + '%'
+        )
+
+        -- Filtro por estado
+        AND (
+            @Activo IS NULL
+            OR u.activo = @Activo
+        )
+
+    ORDER BY 
+        u.id,
+        u.nombreCompleto
+
+    OFFSET @Offset ROWS
+    FETCH NEXT @TamanioPagina ROWS ONLY;
+
+
+    -- ==========================================
+    -- TOTAL DE REGISTROS
+    -- ==========================================
+    SELECT 
+        COUNT(*) AS totalRegistros
+
+    FROM tb_usuarios u
+
+    INNER JOIN tb_docentes d 
+        ON u.id = d.id
+
+    WHERE 
+        u.rol = 'Docente'
+
+        AND (
+            @Nombre IS NULL
+            OR u.nombreCompleto LIKE '%' + @Nombre + '%'
+        )
+
+        AND (
+            @Email IS NULL
+            OR u.email LIKE '%' + @Email + '%'
+        )
+
+        AND (
+            @Especialidad IS NULL
+            OR d.especialidad LIKE '%' + @Especialidad + '%'
+        )
+
+        AND (
+            @GradoAcademico IS NULL
+            OR d.gradoAcademico LIKE '%' + @GradoAcademico + '%'
+        )
+
+        AND (
+            @Activo IS NULL
+            OR u.activo = @Activo
+        );
+END
+GO
+/*-------------------------------------------------------------------------------------------------*/
 IF EXISTS (SELECT * FROM sys.objects WHERE type = 'p' AND name = 'usp_DocenteId')
     DROP PROCEDURE usp_DocenteId
 GO
@@ -464,6 +836,144 @@ BEGIN
     INNER JOIN tb_estudiantes e ON u.id = e.id
     WHERE u.rol = 'Estudiante' AND u.activo = 1
     ORDER BY u.id, u.nombreCompleto;
+END
+GO
+/*-------------------------------------------------------------------------------------------------*/
+CREATE OR ALTER PROCEDURE usp_EstudiantesPaginado
+    @Pagina INT = 1,
+    @TamanioPagina INT = 10,
+    @Nombre NVARCHAR(100) = NULL,
+    @Email NVARCHAR(100) = NULL,
+    @CodigoEstudiante NVARCHAR(20) = NULL,
+    @NombreCarrera NVARCHAR(100) = NULL,
+    @SemestreActual TINYINT = NULL,
+    @Activo BIT = 1
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- ==========================================
+    -- VALIDAR PAGINACIÓN
+    -- ==========================================
+    IF @Pagina < 1
+        SET @Pagina = 1;
+
+    IF @TamanioPagina < 1
+        SET @TamanioPagina = 10;
+
+    DECLARE @Offset INT;
+
+    SET @Offset = (@Pagina - 1) * @TamanioPagina;
+
+
+    -- ==========================================
+    -- LISTADO PAGINADO
+    -- ==========================================
+    SELECT 
+        u.id, 
+        u.nombreCompleto, 
+        u.email, 
+        u.activo,
+        u.fechaRegistro,
+        e.codigoEstudiante, 
+        e.nombreCarrera, 
+        e.semestreActual
+
+    FROM tb_usuarios u
+
+    INNER JOIN tb_estudiantes e 
+        ON u.id = e.id
+
+    WHERE 
+        u.rol = 'Estudiante'
+
+        -- Filtro por nombre
+        AND (
+            @Nombre IS NULL
+            OR u.nombreCompleto LIKE '%' + @Nombre + '%'
+        )
+
+        -- Filtro por email
+        AND (
+            @Email IS NULL
+            OR u.email LIKE '%' + @Email + '%'
+        )
+
+        -- Filtro por código de estudiante
+        AND (
+            @CodigoEstudiante IS NULL
+            OR e.codigoEstudiante LIKE '%' + @CodigoEstudiante + '%'
+        )
+
+        -- Filtro por carrera
+        AND (
+            @NombreCarrera IS NULL
+            OR e.nombreCarrera LIKE '%' + @NombreCarrera + '%'
+        )
+
+        -- Filtro por semestre
+        AND (
+            @SemestreActual IS NULL
+            OR e.semestreActual = @SemestreActual
+        )
+
+        -- Filtro por estado
+        AND (
+            @Activo IS NULL
+            OR u.activo = @Activo
+        )
+
+    ORDER BY 
+        u.id,
+        u.nombreCompleto
+
+    OFFSET @Offset ROWS
+    FETCH NEXT @TamanioPagina ROWS ONLY;
+
+
+    -- ==========================================
+    -- TOTAL DE REGISTROS
+    -- ==========================================
+    SELECT 
+        COUNT(*) AS totalRegistros
+
+    FROM tb_usuarios u
+
+    INNER JOIN tb_estudiantes e 
+        ON u.id = e.id
+
+    WHERE 
+        u.rol = 'Estudiante'
+
+        AND (
+            @Nombre IS NULL
+            OR u.nombreCompleto LIKE '%' + @Nombre + '%'
+        )
+
+        AND (
+            @Email IS NULL
+            OR u.email LIKE '%' + @Email + '%'
+        )
+
+        AND (
+            @CodigoEstudiante IS NULL
+            OR e.codigoEstudiante LIKE '%' + @CodigoEstudiante + '%'
+        )
+
+        AND (
+            @NombreCarrera IS NULL
+            OR e.nombreCarrera LIKE '%' + @NombreCarrera + '%'
+        )
+
+        AND (
+            @SemestreActual IS NULL
+            OR e.semestreActual = @SemestreActual
+        )
+
+        AND (
+            @Activo IS NULL
+            OR u.activo = @Activo
+        );
 END
 GO
 /*-------------------------------------------------------------------------------------------------*/
@@ -641,6 +1151,194 @@ BEGIN
 END
 GO
 /*-------------------------------------------------------------------------------------------------*/
+CREATE OR ALTER PROCEDURE usp_ApoderadosPaginado
+    @Pagina INT = 1,
+    @TamanioPagina INT = 10,
+    @Nombre NVARCHAR(100) = NULL,
+    @Email NVARCHAR(100) = NULL,
+    @Dni NVARCHAR(15) = NULL,
+    @Telefono NVARCHAR(20) = NULL,
+    @Direccion NVARCHAR(200) = NULL,
+    @CantidadHijos INT = NULL,
+    @Activo BIT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- ==========================================
+    -- VALIDAR PAGINACIÓN
+    -- ==========================================
+    IF @Pagina < 1
+        SET @Pagina = 1;
+
+    IF @TamanioPagina < 1
+        SET @TamanioPagina = 10;
+
+    DECLARE @Offset INT;
+
+    SET @Offset = (@Pagina - 1) * @TamanioPagina;
+
+
+    -- ==========================================
+    -- LISTADO PAGINADO
+    -- ==========================================
+    SELECT 
+        u.id,
+        u.nombreCompleto,
+        u.email,
+        u.activo,
+        u.fechaRegistro,
+
+        ISNULL(
+            NULLIF(LTRIM(RTRIM(a.telefono)), ''),
+            'Sin teléfono registrado'
+        ) AS telefono,
+
+        a.dni,
+
+        ISNULL(
+            NULLIF(LTRIM(RTRIM(a.direccion)), ''),
+            'Sin dirección registrada'
+        ) AS direccion,
+
+        COUNT(ae.id) AS cantidadHijos
+
+    FROM tb_usuarios u
+
+    INNER JOIN tb_apoderados a 
+        ON a.id = u.id
+
+    LEFT JOIN tb_apoderadoEstudiante ae 
+        ON ae.apoderadoId = u.id
+        AND ae.activo = 1
+
+    WHERE 
+        u.rol = 'Apoderado'
+
+        -- Filtro por nombre
+        AND (
+            @Nombre IS NULL
+            OR u.nombreCompleto LIKE '%' + @Nombre + '%'
+        )
+
+        -- Filtro por email
+        AND (
+            @Email IS NULL
+            OR u.email LIKE '%' + @Email + '%'
+        )
+
+        -- Filtro por DNI
+        AND (
+            @Dni IS NULL
+            OR a.dni LIKE '%' + @Dni + '%'
+        )
+
+        -- Filtro por teléfono
+        AND (
+            @Telefono IS NULL
+            OR a.telefono LIKE '%' + @Telefono + '%'
+        )
+
+        -- Filtro por dirección
+        AND (
+            @Direccion IS NULL
+            OR a.direccion LIKE '%' + @Direccion + '%'
+        )
+
+        -- Filtro por estado
+        AND (
+            @Activo IS NULL
+            OR u.activo = @Activo
+        )
+
+    GROUP BY 
+        u.id,
+        u.nombreCompleto,
+        u.email,
+        u.activo,
+        u.fechaRegistro,
+        a.telefono,
+        a.dni,
+        a.direccion
+
+    -- Filtro por cantidad de hijos
+    HAVING (
+        @CantidadHijos IS NULL
+        OR COUNT(ae.id) = @CantidadHijos
+    )
+
+    ORDER BY 
+        u.nombreCompleto
+
+    OFFSET @Offset ROWS
+    FETCH NEXT @TamanioPagina ROWS ONLY;
+
+
+    -- ==========================================
+    -- TOTAL DE REGISTROS
+    -- ==========================================
+    SELECT 
+        COUNT(*) AS totalRegistros
+
+    FROM (
+        SELECT 
+            u.id
+
+        FROM tb_usuarios u
+
+        INNER JOIN tb_apoderados a 
+            ON a.id = u.id
+
+        LEFT JOIN tb_apoderadoEstudiante ae 
+            ON ae.apoderadoId = u.id
+            AND ae.activo = 1
+
+        WHERE 
+            u.rol = 'Apoderado'
+
+            AND (
+                @Nombre IS NULL
+                OR u.nombreCompleto LIKE '%' + @Nombre + '%'
+            )
+
+            AND (
+                @Email IS NULL
+                OR u.email LIKE '%' + @Email + '%'
+            )
+
+            AND (
+                @Dni IS NULL
+                OR a.dni LIKE '%' + @Dni + '%'
+            )
+
+            AND (
+                @Telefono IS NULL
+                OR a.telefono LIKE '%' + @Telefono + '%'
+            )
+
+            AND (
+                @Direccion IS NULL
+                OR a.direccion LIKE '%' + @Direccion + '%'
+            )
+
+            AND (
+                @Activo IS NULL
+                OR u.activo = @Activo
+            )
+
+        GROUP BY 
+            u.id
+
+        HAVING (
+            @CantidadHijos IS NULL
+            OR COUNT(ae.id) = @CantidadHijos
+        )
+
+    ) AS ApoderadosFiltrados;
+
+END
+GO
+/*-------------------------------------------------------------------------------------------------*/
 IF EXISTS (SELECT * FROM sys.objects WHERE type = 'p' AND name = 'usp_ApoderadoId')
     DROP PROCEDURE usp_ApoderadoId
 GO
@@ -802,6 +1500,96 @@ BEGIN
         horasPracticas
     FROM tb_cursos
     ORDER BY codigoCurso;
+END
+GO
+/*-------------------------------------------------------------------------------------------------*/
+CREATE OR ALTER PROCEDURE usp_CursosPaginado
+    @Pagina INT = 1,
+    @TamanioPagina INT = 10,
+    @CodigoCurso NVARCHAR(20) = NULL,
+    @NombreCurso NVARCHAR(100) = NULL,
+    @Creditos TINYINT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- ==========================================
+    -- VALIDAR PAGINACIÓN
+    -- ==========================================
+    IF @Pagina < 1
+        SET @Pagina = 1;
+
+    IF @TamanioPagina < 1
+        SET @TamanioPagina = 10;
+
+    DECLARE @Offset INT;
+
+    SET @Offset = (@Pagina - 1) * @TamanioPagina;
+
+
+    -- ==========================================
+    -- LISTADO PAGINADO
+    -- ==========================================
+    SELECT 
+        id,
+        codigoCurso,
+        nombreCurso,
+        creditos,
+        horasTeoricas,
+        horasPracticas
+
+    FROM tb_cursos
+
+    WHERE
+        -- Filtro por código
+        (
+            @CodigoCurso IS NULL
+            OR codigoCurso LIKE '%' + @CodigoCurso + '%'
+        )
+
+        -- Filtro por nombre
+        AND (
+            @NombreCurso IS NULL
+            OR nombreCurso LIKE '%' + @NombreCurso + '%'
+        )
+
+        -- Filtro por créditos
+        AND (
+            @Creditos IS NULL
+            OR creditos = @Creditos
+        )
+
+    ORDER BY 
+        codigoCurso
+
+    OFFSET @Offset ROWS
+    FETCH NEXT @TamanioPagina ROWS ONLY;
+
+
+    -- ==========================================
+    -- TOTAL DE REGISTROS
+    -- ==========================================
+    SELECT 
+        COUNT(*) AS totalRegistros
+
+    FROM tb_cursos
+
+    WHERE
+        (
+            @CodigoCurso IS NULL
+            OR codigoCurso LIKE '%' + @CodigoCurso + '%'
+        )
+
+        AND (
+            @NombreCurso IS NULL
+            OR nombreCurso LIKE '%' + @NombreCurso + '%'
+        )
+
+        AND (
+            @Creditos IS NULL
+            OR creditos = @Creditos
+        );
+
 END
 GO
 /*-------------------------------------------------------------------------------------------------*/
