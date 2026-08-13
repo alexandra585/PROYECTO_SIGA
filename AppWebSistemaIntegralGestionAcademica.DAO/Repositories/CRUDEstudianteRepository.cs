@@ -12,38 +12,191 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Repositories
     {
         public CRUDEstudianteRepository(IConfiguration configuration) : base(configuration) { }
 
-        public async Task<List<EstudianteViewModel>> ListEstudiante()
+        public async Task<EstudianteListadoViewModel> ListEstudiante(
+            int pagina = 1,
+            int tamanioPagina = 10,
+            string? nombre = null,
+            string? email = null,
+            string? codigoEstudiante = null,
+            string? nombreCarrera = null,
+            int? semestreActual = null,
+            bool? activo = true)
         {
-            var estudiantes = new List<EstudianteViewModel>();
+            var resultado = new EstudianteListadoViewModel();
+
+            // ==========================================
+            // CONFIGURAR PAGINACIÓN
+            // ==========================================
+
+            resultado.Paginacion.Pagina = pagina;
+            resultado.Paginacion.TamanioPagina = tamanioPagina;
+
 
             using (SqlConnection conn = GetConnection())
             {
                 await conn.OpenAsync();
 
-                using (SqlCommand cmd = new SqlCommand("usp_Estudiantes", conn))
+                using (SqlCommand cmd = new SqlCommand(
+                    "usp_EstudiantesPaginado",
+                    conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    // ==========================================
+                    // PARÁMETROS DE PAGINACIÓN
+                    // ==========================================
+
+                    cmd.Parameters.AddWithValue(
+                        "@Pagina",
+                        pagina
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@TamanioPagina",
+                        tamanioPagina
+                    );
+
+
+                    // ==========================================
+                    // PARÁMETROS DE FILTROS
+                    // ==========================================
+
+                    cmd.Parameters.AddWithValue(
+                        "@Nombre",
+                        string.IsNullOrWhiteSpace(nombre)
+                            ? DBNull.Value
+                            : nombre
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Email",
+                        string.IsNullOrWhiteSpace(email)
+                            ? DBNull.Value
+                            : email
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@CodigoEstudiante",
+                        string.IsNullOrWhiteSpace(codigoEstudiante)
+                            ? DBNull.Value
+                            : codigoEstudiante
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@NombreCarrera",
+                        string.IsNullOrWhiteSpace(nombreCarrera)
+                            ? DBNull.Value
+                            : nombreCarrera
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@SemestreActual",
+                        semestreActual.HasValue
+                            ? semestreActual.Value
+                            : DBNull.Value
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Activo",
+                        activo.HasValue
+                            ? activo.Value
+                            : DBNull.Value
+                    );
+
+
+                    // ==========================================
+                    // EJECUTAR PROCEDIMIENTO
+                    // ==========================================
+
+                    using (SqlDataReader reader =
+                           await cmd.ExecuteReaderAsync())
                     {
+                        // ==========================================
+                        // PRIMER RESULTADO
+                        // LISTA DE ESTUDIANTES
+                        // ==========================================
+
                         while (await reader.ReadAsync())
                         {
-                            estudiantes.Add(new EstudianteViewModel
+                            resultado.Estudiantes.Add(
+                                new EstudianteViewModel
+                                {
+                                    id = reader.GetInt32(
+                                        reader.GetOrdinal("id")
+                                    ),
+
+                                    nombreCompleto = reader.GetString(
+                                        reader.GetOrdinal("nombreCompleto")
+                                    ),
+
+                                    email = reader.GetString(
+                                        reader.GetOrdinal("email")
+                                    ),
+
+                                    codigoEstudiante = reader.IsDBNull(
+                                        reader.GetOrdinal("codigoEstudiante"))
+                                        ? null
+                                        : reader.GetString(
+                                            reader.GetOrdinal("codigoEstudiante")
+                                        ),
+
+                                    nombreCarrera = reader.IsDBNull(
+                                        reader.GetOrdinal("nombreCarrera"))
+                                        ? null
+                                        : reader.GetString(
+                                            reader.GetOrdinal("nombreCarrera")
+                                        ),
+
+                                    semestreActual = reader.IsDBNull(reader.GetOrdinal("semestreActual"))
+                                        ? 0
+                                        : Convert.ToInt32(reader["semestreActual"]
+                                        ),
+
+                                    activo = reader.GetBoolean(
+                                        reader.GetOrdinal("activo")
+                                    ),
+
+                                    fechaRegistro = reader.GetDateTime(
+                                        reader.GetOrdinal("fechaRegistro")
+                                    )
+                                }
+                            );
+                        }
+
+
+                        // ==========================================
+                        // SEGUNDO RESULTADO
+                        // TOTAL DE REGISTROS
+                        // ==========================================
+
+                        if (await reader.NextResultAsync())
+                        {
+                            if (await reader.ReadAsync())
                             {
-                                id = Convert.ToInt32(reader["id"]),
-                                nombreCompleto = reader["nombreCompleto"].ToString(),
-                                email = reader["email"].ToString(),
-                                codigoEstudiante = reader["codigoEstudiante"].ToString(),
-                                nombreCarrera = reader["nombreCarrera"].ToString(),
-                                semestreActual = Convert.ToInt32(reader["semestreActual"]),
-                                activo = Convert.ToBoolean(reader["activo"]),
-                                fechaRegistro = Convert.ToDateTime(reader["fechaRegistro"])
-                            });
+                                resultado.Paginacion.TotalRegistros =
+                                    reader.GetInt32(
+                                        reader.GetOrdinal("totalRegistros")
+                                    );
+                            }
                         }
                     }
                 }
             }
-            return estudiantes;
+
+
+            // ==========================================
+            // GUARDAR FILTROS
+            // ==========================================
+
+            resultado.Nombre = nombre;
+            resultado.Email = email;
+            resultado.CodigoEstudiante = codigoEstudiante;
+            resultado.NombreCarrera = nombreCarrera;
+            resultado.SemestreActual = semestreActual;
+            resultado.Activo = activo;
+
+
+            return resultado;
         }
 
         public async Task<EstudianteViewModel> EstudianteId(int id)

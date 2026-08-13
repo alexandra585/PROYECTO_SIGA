@@ -883,10 +883,10 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "Microsoft.Extensions.DependencyModel/10.0.11": {
+      "Microsoft.Extensions.DependencyModel/10.0.10": {
         "type": "package",
         "compile": {
-          "lib/net10.0/Microsoft.Extensions.DependencyModel.dll": {
+          "lib/net10.0/_._": {
             "related": ".xml"
           }
         },
@@ -3105,10 +3105,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.DependencyModel/10.0.11": {
-      "sha512": "PJPtFYsZ+r+uz9qqXWUTEyKeJ1EiBGIJtqavkg9ZXijjGSFAk4Fgi5sqIxj+uAyLZwEKgexDUQXhWhvU6l3+og==",
+    "Microsoft.Extensions.DependencyModel/10.0.10": {
+      "sha512": "rfZA1RjR021RPqSmIPovfz2aOd79TGqJ9BengbjnzIISOVwjLmuSDnhCMmiY/1c6iYvGolQ1iNGzkav0u11XEA==",
       "type": "package",
-      "path": "microsoft.extensions.dependencymodel/10.0.11",
+      "path": "microsoft.extensions.dependencymodel/10.0.10",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3129,7 +3129,7 @@
         "lib/net9.0/Microsoft.Extensions.DependencyModel.xml",
         "lib/netstandard2.0/Microsoft.Extensions.DependencyModel.dll",
         "lib/netstandard2.0/Microsoft.Extensions.DependencyModel.xml",
-        "microsoft.extensions.dependencymodel.10.0.11.nupkg.sha512",
+        "microsoft.extensions.dependencymodel.10.0.10.nupkg.sha512",
         "microsoft.extensions.dependencymodel.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -3972,23 +3972,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\PC\\.nuget\\packages\\": {},
+    "C:\\Users\\Dell\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\2.1.VS2026\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj",
+      "projectUniqueName": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj",
       "projectName": "AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY",
-      "projectPath": "D:\\2.1.VS2026\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj",
-      "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-      "outputPath": "D:\\2.1.VS2026\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\obj\\",
+      "projectPath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj",
+      "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4016,7 +4016,7 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.300"
+      "SdkAnalysisLevel": "10.0.400"
     },
     "frameworks": {
       "net10.0": {
@@ -4064,7 +4064,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

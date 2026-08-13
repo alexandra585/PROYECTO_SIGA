@@ -19,10 +19,30 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.WEB.Controllers
         // LISTAR APODERADOS
         // =================
         [HttpGet]
-        public async Task<IActionResult> ListApoderado()
+        public async Task<IActionResult> ListApoderado(
+            int pagina = 1,
+            int tamanioPagina = 1, // 10
+            string? nombre = null,
+            string? email = null,
+            string? dni = null,
+            string? telefono = null,
+            string? direccion = null,
+            int? cantidadHijos = null,
+            bool? activo = null)
         {
-            var apoderados = await _crudApoderadoRepository.ListApoderado();
-            return View(apoderados);
+            var resultado = await _crudApoderadoRepository.ListApoderadoPaginado(
+                pagina,
+                tamanioPagina,
+                nombre,
+                email,
+                dni,
+                telefono,
+                direccion,
+                cantidadHijos,
+                activo
+            );
+
+            return View(resultado);
         }
 
         // ===============

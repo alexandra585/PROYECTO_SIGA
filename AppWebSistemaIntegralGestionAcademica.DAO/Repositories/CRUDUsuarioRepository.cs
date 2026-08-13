@@ -12,39 +12,146 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Repositories
     {
         public CRUDUsuarioRepository(IConfiguration configuration) : base(configuration) { }
 
-        public async Task<List<UsuarioViewModel>> ListUsuario()
+        public async Task<UsuarioListadoViewModel> ListUsuario(
+            int pagina = 1,
+            int tamanioPagina = 10,
+            string? nombre = null,
+            string? email = null,
+            string? rol = null,
+            bool? activo = null)
         {
-            var usuarios = new List<UsuarioViewModel>();
+            var resultado = new UsuarioListadoViewModel();
+
+            resultado.Paginacion.Pagina = pagina;
+            resultado.Paginacion.TamanioPagina = tamanioPagina;
 
             using (SqlConnection conn = GetConnection())
             {
                 await conn.OpenAsync();
 
-                using (SqlCommand cmd = new SqlCommand("usp_Usuarios", conn))
+                using (SqlCommand cmd = new SqlCommand("usp_UsuariosPaginado", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+
+                    // ==========================================
+                    // PARÁMETROS
+                    // ==========================================
+
+                    cmd.Parameters.AddWithValue("@Pagina", pagina);
+
+                    cmd.Parameters.AddWithValue(
+                        "@TamanioPagina",
+                        tamanioPagina
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Nombre",
+                        string.IsNullOrWhiteSpace(nombre)
+                            ? DBNull.Value
+                            : nombre
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Email",
+                        string.IsNullOrWhiteSpace(email)
+                            ? DBNull.Value
+                            : email
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Rol",
+                        string.IsNullOrWhiteSpace(rol)
+                            ? DBNull.Value
+                            : rol
+                    );
+
+                    cmd.Parameters.AddWithValue(
+                        "@Activo",
+                        activo.HasValue
+                            ? activo.Value
+                            : DBNull.Value
+                    );
+
+                    // ==========================================
+                    // PRIMER RESULTADO
+                    // LISTA DE USUARIOS
+                    // ==========================================
 
                     using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
                         {
-                            usuarios.Add(new UsuarioViewModel
+                            resultado.Usuarios.Add(
+                                new UsuarioViewModel
+                                {
+                                    id = reader.GetInt32(
+                                        reader.GetOrdinal("id")
+                                    ),
+
+                                    nombreCompleto = reader.GetString(
+                                        reader.GetOrdinal("nombreCompleto")
+                                    ),
+
+                                    email = reader.GetString(
+                                        reader.GetOrdinal("email")
+                                    ),
+
+                                    rol = reader.GetString(
+                                        reader.GetOrdinal("rol")
+                                    ),
+
+                                    activo = reader.GetBoolean(
+                                        reader.GetOrdinal("activo")
+                                    ),
+
+                                    fechaRegistro = reader.GetDateTime(
+                                        reader.GetOrdinal("fechaRegistro")
+                                    ),
+
+                                    numeroIntentos = reader.GetInt32(
+                                        reader.GetOrdinal("numeroIntentos")
+                                    ),
+
+                                    codigoEstudiante = reader.GetString(
+                                        reader.GetOrdinal("CodigoEstudiante")
+                                    ),
+
+                                    especialidad = reader.GetString(
+                                        reader.GetOrdinal("Especialidad")
+                                    )
+                                }
+                            );
+                        }
+
+                        // ==========================================
+                        // SEGUNDO RESULTADO
+                        // TOTAL DE REGISTROS
+                        // ==========================================
+
+                        if (await reader.NextResultAsync())
+                        {
+                            if (await reader.ReadAsync())
                             {
-                                id = reader.GetInt32(reader.GetOrdinal("id")),
-                                nombreCompleto = reader.GetString(reader.GetOrdinal("nombreCompleto")),
-                                email = reader.GetString(reader.GetOrdinal("email")),
-                                rol = reader.GetString(reader.GetOrdinal("rol")),
-                                activo = reader.GetBoolean(reader.GetOrdinal("activo")),
-                                fechaRegistro = reader.GetDateTime(reader.GetOrdinal("fechaRegistro")),
-                                numeroIntentos = reader.GetInt32(reader.GetOrdinal("numeroIntentos")),
-                                codigoEstudiante = reader.GetString(reader.GetOrdinal("CodigoEstudiante")),
-                                especialidad = reader.GetString(reader.GetOrdinal("Especialidad"))
-                            });
+                                resultado.Paginacion.TotalRegistros =
+                                    reader.GetInt32(
+                                        reader.GetOrdinal("totalRegistros")
+                                    );
+                            }
                         }
                     }
                 }
             }
-            return usuarios;
+
+            // ==========================================
+            // GUARDAR FILTROS
+            // ==========================================
+
+            resultado.Nombre = nombre;
+            resultado.Email = email;
+            resultado.Rol = rol;
+            resultado.Activo = activo;
+
+            return resultado;
         }
 
         public async Task<UsuarioViewModel> UsuarioId(int id)

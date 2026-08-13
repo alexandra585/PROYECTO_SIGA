@@ -19,10 +19,26 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.WEB.Controllers
         // LISTAR SECRETARIAS
         // ==================
         [HttpGet]
-        public async Task<IActionResult> ListSecretaria()
+        public async Task<IActionResult> ListSecretaria(
+            int pagina = 1,
+            int tamanioPagina = 1, // 10
+            string? nombre = null,
+            string? email = null,
+            string? cargo = null,
+            string? telefono = null,
+            bool? activo = true)
         {
-            var secretarias = await _crudSecretariaRepository.ListSecretaria();
-            return View(secretarias);
+            var resultado = await _crudSecretariaRepository.ListSecretaria(
+                pagina,
+                tamanioPagina,
+                nombre,
+                email,
+                cargo,
+                telefono,
+                activo
+            );
+
+            return View(resultado);
         }
 
         // ================

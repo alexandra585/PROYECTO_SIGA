@@ -19,10 +19,28 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.WEB.Controllers
         // LISTAR ESTUDIANTES
         // ==================
         [HttpGet]
-        public async Task<IActionResult> ListEstudiante()
+        public async Task<IActionResult> ListEstudiante(
+            int pagina = 1,
+            int tamanioPagina = 1, // 10
+            string? nombre = null,
+            string? email = null,
+            string? codigoEstudiante = null,
+            string? nombreCarrera = null,
+            int? semestreActual = null,
+            bool? activo = true)
         {
-            var estudiantes = await _crudEstudianteRepository.ListEstudiante();
-            return View(estudiantes);
+            var resultado = await _crudEstudianteRepository.ListEstudiante(
+                pagina,
+                tamanioPagina,
+                nombre,
+                email,
+                codigoEstudiante,
+                nombreCarrera,
+                semestreActual,
+                activo
+            );
+
+            return View(resultado);
         }
 
         // ================
@@ -173,11 +191,11 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.WEB.Controllers
                         return RedirectToAction("ListEstudiante");
                     }
 
+<<<<<<< HEAD
                     TempData["Error"] = "Error al actualizar el estudiante.";
+=======
+                    TempData["Error"] = "Error al actualizar el estudiante";
                     TempData["TipoMensaje"] = "error";
-                }
-                catch (Exception ex)
-                {
                     TempData["Error"] = "Error: " + ex.Message;
                     TempData["TipoMensaje"] = "error";
                 }
@@ -195,7 +213,11 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.WEB.Controllers
 
             if (estudiante == null)
             {
+<<<<<<< HEAD
                 TempData["Error"] = "Estudiante no encontrado.";
+=======
+                TempData["Error"] = "Estudiante no encontrado";
+>>>>>>> d53e46a2f14ae20cc8129ada5c628397513c924c
                 TempData["TipoMensaje"] = "error";
                 return RedirectToAction("ListEstudiante");
             }
@@ -213,18 +235,30 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.WEB.Controllers
 
                 if (resultado)
                 {
+<<<<<<< HEAD
                     TempData["Success"] = "Estudiante eliminado exitosamente.";
+=======
+                    TempData["Success"] = "Estudiante eliminado exitosamente";
+>>>>>>> d53e46a2f14ae20cc8129ada5c628397513c924c
                     TempData["TipoMensaje"] = "success";
                 }
                 else
                 {
+<<<<<<< HEAD
                     TempData["Error"] = "Error al eliminar el estudiante.";
+=======
+                    TempData["Error"] = "Error al eliminar el estudiante";
+>>>>>>> d53e46a2f14ae20cc8129ada5c628397513c924c
                     TempData["TipoMensaje"] = "error";
                 }
             }
             catch (Microsoft.Data.SqlClient.SqlException)
             {
+<<<<<<< HEAD
                 TempData["Error"] = "No se puede eliminar el estudiante porque tiene matrículas asociadas.";
+=======
+                TempData["Error"] = "No se puede eliminar el estudiante porque tiene matrículas asociadas";
+>>>>>>> d53e46a2f14ae20cc8129ada5c628397513c924c
                 TempData["TipoMensaje"] = "error";
             }
             catch (Exception ex)
@@ -235,6 +269,7 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.WEB.Controllers
 
             return RedirectToAction("ListEstudiante");
         }
+<<<<<<< HEAD
 
         // =============================
         // BUSCAR USUARIOS - ESTUDIANTES
@@ -245,5 +280,7 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.WEB.Controllers
             var usuarios = await _crudEstudianteRepository.BuscarUsuarioDisponibleEstudiante(filtro);
             return Json(usuarios);
         }
+=======
+>>>>>>> d53e46a2f14ae20cc8129ada5c628397513c924c
     }
 }

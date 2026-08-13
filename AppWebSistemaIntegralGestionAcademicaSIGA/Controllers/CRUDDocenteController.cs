@@ -19,10 +19,26 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.WEB.Controllers
         // LISTAR DOCENTES
         // ===============
         [HttpGet]
-        public async Task<IActionResult> ListDocente()
+        public async Task<IActionResult> ListDocente(
+            int pagina = 1,
+            int tamanioPagina = 1, // 10
+            string? nombre = null,
+            string? email = null,
+            string? especialidad = null,
+            string? gradoAcademico = null,
+            bool? activo = true)
         {
-            var docentes = await _crudDocenteRepository.ListDocente();
-            return View(docentes);
+            var resultado = await _crudDocenteRepository.ListDocente(
+                pagina,
+                tamanioPagina,
+                nombre,
+                email,
+                especialidad,
+                gradoAcademico,
+                activo
+            );
+
+            return View(resultado);
         }
 
         // =============

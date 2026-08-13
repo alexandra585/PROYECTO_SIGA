@@ -13,9 +13,9 @@
     z-index: 9999;
 }
 
-.modal-overlay.active {
-    display: flex;
-}
+    .modal-overlay.active {
+        display: flex;
+    }
 
 .modal-container {
     width: 100%;
@@ -28,15 +28,15 @@
     position: relative;
 }
 
-.modal-container.success {
-    background: #065f46;
-    color: #ffffff;
-}
+    .modal-container.success {
+        background: #065f46;
+        color: #ffffff;
+    }
 
-.modal-container.error {
-    background: #991b1b;
-    color: #ffffff;
-}
+    .modal-container.error {
+        background: #991b1b;
+        color: #ffffff;
+    }
 
 .modal-icon {
     width: 100px;

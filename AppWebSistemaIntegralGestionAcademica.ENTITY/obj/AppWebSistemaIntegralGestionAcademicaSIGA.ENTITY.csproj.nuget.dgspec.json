@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\2.1.VS2026\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj": {}
+    "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj": {}
   },
   "projects": {
-    "D:\\2.1.VS2026\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj": {
+    "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\2.1.VS2026\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj",
+        "projectUniqueName": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj",
         "projectName": "AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY",
-        "projectPath": "D:\\2.1.VS2026\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj",
-        "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-        "outputPath": "D:\\2.1.VS2026\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\obj\\",
+        "projectPath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj",
+        "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -45,7 +45,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.300"
+        "SdkAnalysisLevel": "10.0.400"
       },
       "frameworks": {
         "net10.0": {
@@ -93,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.400/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

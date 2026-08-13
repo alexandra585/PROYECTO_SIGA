@@ -1,0 +1,15 @@
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\bin\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.deps.json
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\bin\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.runtimeconfig.json
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\bin\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.dll
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\bin\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.pdb
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\obj\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj.AssemblyReference.cache
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\obj\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\obj\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.AssemblyInfoInputs.cache
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\obj\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.AssemblyInfo.cs
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\obj\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj.CoreCompileInputs.cache
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\obj\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.sourcelink.json
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\obj\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.dll
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\obj\Debug\net10.0\refint\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.dll
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\obj\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.pdb
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\obj\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.genruntimeconfig.cache
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademica.ENTITY\obj\Debug\net10.0\ref\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.dll

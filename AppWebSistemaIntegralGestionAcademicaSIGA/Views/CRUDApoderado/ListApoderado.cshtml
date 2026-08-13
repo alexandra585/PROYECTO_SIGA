@@ -1,4 +1,4 @@
-﻿@model List<AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.ApoderadoViewModel>
+﻿@model AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.ApoderadoListadoViewModel
 
 @{
     ViewData["Title"] = "Lista de apoderados";
@@ -6,6 +6,10 @@
 }
 
 <section class="space-y-6">
+
+    <!-- ==========================================
+     CABECERA
+     ========================================== -->
     <div class="rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white shadow-sm">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
@@ -22,6 +26,10 @@
         </div>
     </div>
 
+
+    <!-- ==========================================
+     MENSAJE DE ÉXITO
+     ========================================== -->
     @if (TempData["Success"] != null)
     {
         <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-800">
@@ -32,6 +40,10 @@
         </div>
     }
 
+
+    <!-- ==========================================
+     MENSAJE DE ERROR
+     ========================================== -->
     @if (TempData["Error"] != null)
     {
         <div class="rounded-2xl border border-red-200 bg-red-50 p-5 text-red-800">
@@ -42,22 +54,228 @@
         </div>
     }
 
+
+    <!-- ==========================================
+     FILTROS
+     ========================================== -->
+    <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+
+        <div class="mb-5">
+            <h3 class="text-lg font-bold text-slate-950">
+                Filtros de búsqueda
+            </h3>
+
+            <p class="mt-1 text-sm text-slate-500">
+                Filtra los apoderados según sus datos registrados.
+            </p>
+        </div>
+
+
+        <form asp-action="ListApoderado"
+              asp-controller="CRUDApoderado"
+              method="get"
+              class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+
+
+            <!-- NOMBRE -->
+            <div>
+                <label class="mb-1 block text-sm font-semibold text-slate-700">
+                    Nombre
+                </label>
+
+                <input type="text"
+                       name="nombre"
+                       value="@Model.Nombre"
+                       placeholder="Nombre completo"
+                       class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+            </div>
+
+
+            <!-- EMAIL -->
+            <div>
+                <label class="mb-1 block text-sm font-semibold text-slate-700">
+                    Email
+                </label>
+
+                <input type="text"
+                       name="email"
+                       value="@Model.Email"
+                       placeholder="Correo electrónico"
+                       class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+            </div>
+
+
+            <!-- DNI -->
+            <div>
+                <label class="mb-1 block text-sm font-semibold text-slate-700">
+                    DNI
+                </label>
+
+                <input type="text"
+                       name="dni"
+                       value="@Model.Dni"
+                       placeholder="DNI"
+                       class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+            </div>
+
+
+            <!-- TELÉFONO -->
+            <div>
+                <label class="mb-1 block text-sm font-semibold text-slate-700">
+                    Teléfono
+                </label>
+
+                <input type="text"
+                       name="telefono"
+                       value="@Model.Telefono"
+                       placeholder="Teléfono"
+                       class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+            </div>
+
+
+            <!-- DIRECCIÓN -->
+            <div>
+                <label class="mb-1 block text-sm font-semibold text-slate-700">
+                    Dirección
+                </label>
+
+                <input type="text"
+                       name="direccion"
+                       value="@Model.Direccion"
+                       placeholder="Dirección"
+                       class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+            </div>
+
+
+            <!-- CANTIDAD DE HIJOS -->
+            <div>
+                <label class="mb-1 block text-sm font-semibold text-slate-700">
+                    Cantidad de hijos
+                </label>
+
+                <input type="number"
+                       name="cantidadHijos"
+                       value="@Model.CantidadHijos"
+                       min="0"
+                       placeholder="Cantidad"
+                       class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+            </div>
+
+
+            <!-- ESTADO -->
+            <div>
+                <label class="mb-1 block text-sm font-semibold text-slate-700">
+                    Estado
+                </label>
+
+                <select name="activo"
+                        class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+                    @if (Model.Activo == null)
+                    {
+                        <option value="" selected>
+                            Todos
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="">
+                            Todos
+                        </option>
+                    }
+
+                    @if (Model.Activo == true)
+                    {
+                        <option value="true" selected>
+                            Activo
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="true">
+                            Activo
+                        </option>
+                    }
+
+                    @if (Model.Activo == false)
+                    {
+                        <option value="false" selected>
+                            Inactivo
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="false">
+                            Inactivo
+                        </option>
+                    }
+
+                </select>
+            </div>
+
+
+            <!-- BOTONES -->
+            <div class="flex items-end gap-2">
+
+                <button type="submit"
+                        class="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700">
+
+                    <i data-lucide="search"
+                       class="h-4 w-4"></i>
+
+                    Buscar
+                </button>
+
+
+                <a asp-action="ListApoderado"
+                   asp-controller="CRUDApoderado"
+                   class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+
+                    <i data-lucide="rotate-ccw"
+                       class="h-4 w-4"></i>
+
+                    Limpiar
+                </a>
+
+            </div>
+
+
+            <!-- TAMAÑO DE PÁGINA -->
+            <input type="hidden"
+                   name="tamanioPagina"
+                   value="@Model.Paginacion.TamanioPagina" />
+
+        </form>
+
+    </div>
+
+
+    <!-- ==========================================
+     ESTADÍSTICAS
+     ========================================== -->
     <div class="grid w-full gap-4 sm:grid-cols-4">
+
+
+        <!-- ACTIVOS -->
         <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <p class="text-sm text-slate-500">Activos</p>
-            <h3 class="mt-2 text-3xl font-extrabold text-emerald-600">@Model.Count(a => a.activo)</h3>
+            <h3 class="mt-2 text-3xl font-extrabold text-emerald-600">@Model.Apoderados.Count(a => a.activo)</h3>
         </div>
 
+
+        <!-- INACTIVOS -->
         <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <p class="text-sm text-slate-500">Inactivos</p>
-            <h3 class="mt-2 text-3xl font-extrabold text-red-600">@Model.Count(a => !a.activo)</h3>
+            <h3 class="mt-2 text-3xl font-extrabold text-red-600">@Model.Apoderados.Count(a => !a.activo)</h3>
         </div>
 
+
+        <!-- TOTAL HIJOS -->
         <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm text-slate-500">Total de hijos</p>
-                    <h3 class="mt-2 text-3xl font-extrabold text-indigo-600">@Model.Sum(a => a.cantidadHijos)</h3>
+                    <h3 class="mt-2 text-3xl font-extrabold text-indigo-600">@Model.Apoderados.Sum(a => a.cantidadHijos)</h3>
                 </div>
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
                     <i data-lucide="users" class="h-5 w-5"></i>
@@ -65,21 +283,27 @@
             </div>
         </div>
 
+
+        <!-- DIRECCIONES -->
         <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <p class="text-sm text-slate-500">Dirección registrada</p>
             <div class="mt-2 flex items-center gap-4">
                 <div class="flex-1 rounded-xl bg-emerald-50 p-3 text-center">
-                    <span class="text-2xl font-extrabold text-emerald-600">@Model.Count(a => a.direccion != "Sin dirección registrada")</span>
+                    <span class="text-2xl font-extrabold text-emerald-600">@Model.Apoderados.Count(a => a.direccion != "Sin dirección registrada")</span>
                     <p class="text-xs font-medium text-emerald-700">Con dirección</p>
                 </div>
                 <div class="flex-1 rounded-xl bg-amber-50 p-3 text-center">
-                    <span class="text-2xl font-extrabold text-amber-600">@Model.Count(a => a.direccion == "Sin dirección registrada")</span>
+                    <span class="text-2xl font-extrabold text-amber-600">@Model.Apoderados.Count(a => a.direccion == "Sin dirección registrada")</span>
                     <p class="text-xs font-medium text-amber-700">Sin dirección</p>
                 </div>
             </div>
         </div>
     </div>
 
+
+    <!-- ==========================================
+     BOTÓN NUEVO APODERADO
+     ========================================== -->
     <div class="flex justify-end">
         <a asp-action="CreateApoderado" asp-controller="CRUDApoderado"
            class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700">
@@ -88,159 +312,569 @@
         </a>
     </div>
 
-    @if (!Model.Any())
+
+    <!-- ==========================================
+     SIN RESULTADOS
+     ========================================== -->
+    @if (!Model.Apoderados.Any())
     {
         <div class="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-amber-800">
+
             <div class="flex items-start gap-4">
-                <i data-lucide="info" class="mt-0.5 h-6 w-6"></i>
+
+                <i data-lucide="info"
+                   class="mt-0.5 h-6 w-6"></i>
+
                 <div>
-                    <h3 class="font-bold">No hay apoderados registrados</h3>
-                    <p class="mt-1 text-sm">Cuando registres apoderados, aparecerán en esta sección.</p>
+
+                    <h3 class="font-bold">
+                        No hay apoderados registrados
+                    </h3>
+
+                    <p class="mt-1 text-sm">
+                        No se encontraron apoderados con los filtros seleccionados.
+                    </p>
+
                 </div>
+
             </div>
+
         </div>
     }
     else
     {
+
+        <!-- ==========================================
+         TABLA
+         ========================================== -->
         <div class="rounded-3xl border border-slate-200 bg-white shadow-sm">
+
+            <!-- CABECERA TABLA -->
             <div class="flex flex-col gap-3 border-b border-slate-200 px-6 py-5 md:flex-row md:items-center md:justify-between">
+
                 <div>
-                    <h3 class="text-lg font-bold text-slate-950">Listado de apoderados</h3>
-                    <p class="mt-1 text-sm text-slate-500">Consulta y administra apoderados registrados.</p>
+
+                    <h3 class="text-lg font-bold text-slate-950">
+                        Listado de apoderados
+                    </h3>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        Consulta y administra apoderados registrados.
+                    </p>
+
                 </div>
 
+
                 <span class="inline-flex w-fit items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">
-                    <i data-lucide="users" class="h-4 w-4"></i>
-                    @Model.Count apoderados
+
+                    <i data-lucide="users"
+                       class="h-4 w-4"></i>
+
+                    @Model.Paginacion.TotalRegistros apoderados
+
                 </span>
+
             </div>
 
+
+            <!-- TABLA -->
             <div class="overflow-x-auto">
+
                 <table class="w-full min-w-[1200px] text-left text-sm">
+
                     <thead>
+
                         <tr class="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
-                            <th class="px-6 py-4 font-bold">Apoderado</th>
-                            <th class="px-6 py-4 font-bold">Correo</th>
-                            <th class="px-6 py-4 font-bold">DNI</th>
-                            <th class="px-6 py-4 font-bold">Teléfono</th>
-                            <th class="px-6 py-4 font-bold">Dirección</th>
-                            <th class="px-6 py-4 font-bold">Hijos</th>
-                            <th class="px-6 py-4 font-bold">Estado</th>
-                            <th class="px-6 py-4 text-right font-bold">Acciones</th>
+
+                            <th class="px-6 py-4 font-bold">
+                                Apoderado
+                            </th>
+
+                            <th class="px-6 py-4 font-bold">
+                                Correo
+                            </th>
+
+                            <th class="px-6 py-4 font-bold">
+                                DNI
+                            </th>
+
+                            <th class="px-6 py-4 font-bold">
+                                Teléfono
+                            </th>
+
+                            <th class="px-6 py-4 font-bold">
+                                Dirección
+                            </th>
+
+                            <th class="px-6 py-4 font-bold">
+                                Hijos
+                            </th>
+
+                            <th class="px-6 py-4 font-bold">
+                                Estado
+                            </th>
+
+                            <th class="px-6 py-4 text-right font-bold">
+                                Acciones
+                            </th>
+
                         </tr>
+
                     </thead>
 
+
                     <tbody class="divide-y divide-slate-100">
-                        @foreach (var apoderado in Model)
+
+                        @foreach (var apoderado in Model.Apoderados)
                         {
+
                             <tr class="transition hover:bg-slate-50">
+
+
+                                <!-- APODERADO -->
                                 <td class="px-6 py-5">
+
                                     <div class="flex items-center gap-3">
+
                                         <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                                            <i data-lucide="users-round" class="h-5 w-5"></i>
+
+                                            <i data-lucide="users-round"
+                                               class="h-5 w-5"></i>
+
                                         </div>
+
+
                                         <div>
-                                            <p class="font-bold text-slate-950">@apoderado.nombreCompleto</p>
-                                            <p class="mt-1 text-xs text-slate-500">ID: @apoderado.id</p>
+
+                                            <p class="font-bold text-slate-950">
+                                                @apoderado.nombreCompleto
+                                            </p>
+
+                                            <p class="mt-1 text-xs text-slate-500">
+                                                ID: @apoderado.id
+                                            </p>
+
                                         </div>
+
                                     </div>
+
                                 </td>
 
+
+                                <!-- CORREO -->
                                 <td class="px-6 py-5 text-slate-600">
+
                                     <div class="flex items-center gap-2">
-                                        <i data-lucide="mail" class="h-4 w-4 shrink-0 text-slate-400"></i>
-                                        <span class="break-all">@apoderado.email</span>
+
+                                        <i data-lucide="mail"
+                                           class="h-4 w-4 shrink-0 text-slate-400"></i>
+
+                                        <span class="break-all">
+                                            @apoderado.email
+                                        </span>
+
                                     </div>
+
                                 </td>
 
+
+                                <!-- DNI -->
                                 <td class="px-6 py-5">
+
                                     <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-700">
                                         @apoderado.dni
                                     </span>
+
                                 </td>
 
+
+                                <!-- TELÉFONO -->
                                 <td class="px-6 py-5 text-slate-600">
+
                                     @if (apoderado.telefono == "Sin teléfono registrado")
                                     {
                                         <span class="inline-flex items-center gap-1.5 text-xs font-medium text-amber-700">
-                                            <i data-lucide="phone-off" class="h-3 w-3"></i>
-                                            <span>@apoderado.telefono</span>
+
+                                            <i data-lucide="phone-off"
+                                               class="h-3 w-3"></i>
+
+                                            <span>
+                                                @apoderado.telefono
+                                            </span>
+
                                         </span>
                                     }
                                     else
                                     {
                                         <span class="inline-flex items-center gap-1.5 text-xs font-medium text-blue-700">
-                                            <i data-lucide="phone" class="h-3 w-3"></i>
-                                            <span>@apoderado.telefono</span>
+
+                                            <i data-lucide="phone"
+                                               class="h-3 w-3"></i>
+
+                                            <span>
+                                                @apoderado.telefono
+                                            </span>
+
                                         </span>
                                     }
+
                                 </td>
 
-                                <td class="px-6 py-5 text-slate-600 max-w-[220px]">
+
+                                <!-- DIRECCIÓN -->
+                                <td class="max-w-[220px] px-6 py-5 text-slate-600">
+
                                     @if (apoderado.direccion == "Sin dirección registrada")
                                     {
                                         <span class="inline-flex items-center gap-1.5 text-sm font-medium text-amber-600">
-                                            <i data-lucide="map-pin-off" class="h-3.5 w-3.5"></i>
+
+                                            <i data-lucide="map-pin-off"
+                                               class="h-3.5 w-3.5"></i>
+
                                             @apoderado.direccion
+
                                         </span>
                                     }
                                     else
                                     {
-                                        <span class="inline-flex items-center gap-1.5 text-sm text-slate-600 break-words">
-                                            <i data-lucide="map-pin" class="h-3.5 w-3.5 text-emerald-600"></i>
+                                        <span class="inline-flex items-center gap-1.5 break-words text-sm text-slate-600">
+
+                                            <i data-lucide="map-pin"
+                                               class="h-3.5 w-3.5 text-emerald-600"></i>
+
                                             @apoderado.direccion
+
                                         </span>
                                     }
+
                                 </td>
 
+
+                                <!-- HIJOS -->
                                 <td class="px-6 py-5">
+
                                     <span class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">
-                                        <i data-lucide="user" class="h-3.5 w-3.5"></i>
+
+                                        <i data-lucide="user"
+                                           class="h-3.5 w-3.5"></i>
+
                                         @apoderado.cantidadHijos
+
                                     </span>
+
                                 </td>
 
+
+                                <!-- ESTADO -->
                                 <td class="px-6 py-5">
+
                                     @if (apoderado.activo)
                                     {
                                         <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
-                                            <i data-lucide="check-circle-2" class="h-3.5 w-3.5"></i>
+
+                                            <i data-lucide="check-circle-2"
+                                               class="h-3.5 w-3.5"></i>
+
                                             Activo
+
                                         </span>
                                     }
                                     else
                                     {
                                         <span class="inline-flex items-center gap-1 rounded-full bg-red-50 px-3 py-1 text-xs font-bold text-red-700">
-                                            <i data-lucide="x-circle" class="h-3.5 w-3.5"></i>
+
+                                            <i data-lucide="x-circle"
+                                               class="h-3.5 w-3.5"></i>
+
                                             Inactivo
+
                                         </span>
                                     }
+
                                 </td>
 
+
+                                <!-- ACCIONES -->
                                 <td class="px-6 py-5">
+
                                     <div class="flex flex-col gap-2 sm:flex-row sm:justify-end">
+
                                         <a asp-action="EditApoderado"
                                            asp-controller="CRUDApoderado"
                                            asp-route-id="@apoderado.id"
                                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-600">
-                                            <i data-lucide="edit-3" class="h-4 w-4"></i>
+
+                                            <i data-lucide="edit-3"
+                                               class="h-4 w-4"></i>
+
                                             Editar
+
                                         </a>
+
 
                                         <a asp-action="DeleteApoderado"
                                            asp-controller="CRUDApoderado"
                                            asp-route-id="@apoderado.id"
                                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-red-700">
-                                            <i data-lucide="trash-2" class="h-4 w-4"></i>
+
+                                            <i data-lucide="trash-2"
+                                               class="h-4 w-4"></i>
+
                                             Eliminar
+
                                         </a>
+
                                     </div>
+
                                 </td>
+
                             </tr>
+
                         }
+
                     </tbody>
+
                 </table>
+
+            </div>
+
+
+            <!-- ==========================================
+             PAGINACIÓN
+             ========================================== -->
+            <div class="flex flex-col gap-4 border-t border-slate-200 px-6 py-5 md:flex-row md:items-center md:justify-between">
+
+                <!-- Información -->
+                <div class="text-sm text-slate-500">
+
+                    @if (Model.Paginacion.TotalRegistros > 0)
+                    {
+                        var primerRegistro =
+                            ((Model.Paginacion.Pagina - 1)
+                            * Model.Paginacion.TamanioPagina) + 1;
+
+                        var ultimoRegistro =
+                            Math.Min(
+                                Model.Paginacion.Pagina
+                                * Model.Paginacion.TamanioPagina,
+                                Model.Paginacion.TotalRegistros
+                            );
+
+                        <span>
+                            Mostrando
+                            <span class="font-semibold text-slate-700">
+                                @primerRegistro
+                            </span>
+                            -
+                            <span class="font-semibold text-slate-700">
+                                @ultimoRegistro
+                            </span>
+                            de
+                            <span class="font-semibold text-slate-700">
+                                @Model.Paginacion.TotalRegistros
+                            </span>
+                            registros
+                        </span>
+                    }
+                    else
+                    {
+                        <span>No hay registros</span>
+                    }
+
+                </div>
+
+
+                <!-- Botones -->
+                @if (Model.Paginacion.TotalPaginas > 1)
+                {
+                    <div class="flex items-center gap-1">
+
+                        <!-- ANTERIOR -->
+                        @if (Model.Paginacion.TienePaginaAnterior)
+                        {
+                            <a asp-action="ListApoderado"
+                               asp-controller="CRUDApoderado"
+                               asp-route-pagina="@(Model.Paginacion.Pagina - 1)"
+                               asp-route-tamanioPagina="@Model.Paginacion.TamanioPagina"
+                               asp-route-nombre="@Model.Nombre"
+                               asp-route-email="@Model.Email"
+                               asp-route-dni="@Model.Dni"
+                               asp-route-telefono="@Model.Telefono"
+                               asp-route-direccion="@Model.Direccion"
+                               asp-route-cantidadHijos="@Model.CantidadHijos"
+                               asp-route-activo="@Model.Activo"
+                               class="inline-flex h-9 items-center justify-center gap-1 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+
+                                <i data-lucide="chevron-left" class="h-4 w-4"></i>
+
+                                <span class="hidden sm:inline">Anterior</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="inline-flex h-9 cursor-not-allowed items-center justify-center gap-1 rounded-lg border border-slate-100 bg-slate-50 px-3 text-sm font-medium text-slate-300">
+
+                                <i data-lucide="chevron-left" class="h-4 w-4"></i>
+
+                                <span class="hidden sm:inline">Anterior</span>
+                            </span>
+                        }
+
+
+                        <!-- PRIMERA PÁGINA -->
+                        @if (Model.Paginacion.Pagina == 1)
+                        {
+                            <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-sm font-semibold text-white">
+                                1
+                            </span>
+                        }
+                        else
+                        {
+                            <a asp-action="ListApoderado"
+                               asp-controller="CRUDApoderado"
+                               asp-route-pagina="1"
+                               asp-route-tamanioPagina="@Model.Paginacion.TamanioPagina"
+                               asp-route-nombre="@Model.Nombre"
+                               asp-route-email="@Model.Email"
+                               asp-route-dni="@Model.Dni"
+                               asp-route-telefono="@Model.Telefono"
+                               asp-route-direccion="@Model.Direccion"
+                               asp-route-cantidadHijos="@Model.CantidadHijos"
+                               asp-route-activo="@Model.Activo"
+                               class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+
+                                1
+
+                            </a>
+                        }
+
+
+                        @{
+                            int paginaActual = Model.Paginacion.Pagina;
+                            int totalPaginas = Model.Paginacion.TotalPaginas;
+
+                            // Mostrar páginas cercanas a la actual
+                            int inicio = Math.Max(2, paginaActual - 1);
+                            int fin = Math.Min(totalPaginas - 1, paginaActual + 1);
+                        }
+
+
+                        <!-- ... IZQUIERDO -->
+                        @if (inicio > 2)
+                        {
+                            <span class="inline-flex h-9 w-9 items-center justify-center text-sm text-slate-400">
+                                ...
+                            </span>
+                        }
+
+
+                        <!-- PÁGINAS INTERMEDIAS -->
+                        @for (int pagina = inicio; pagina <= fin; pagina++)
+                        {
+                            if (pagina == paginaActual)
+                            {
+                                <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-sm font-semibold text-white">
+                                    @pagina
+                                </span>
+                            }
+                            else
+                            {
+                                <a asp-action="ListApoderado"
+                                   asp-controller="CRUDApoderado"
+                                   asp-route-pagina="@pagina"
+                                   asp-route-tamanioPagina="@Model.Paginacion.TamanioPagina"
+                                   asp-route-nombre="@Model.Nombre"
+                                   asp-route-email="@Model.Email"
+                                   asp-route-dni="@Model.Dni"
+                                   asp-route-telefono="@Model.Telefono"
+                                   asp-route-direccion="@Model.Direccion"
+                                   asp-route-cantidadHijos="@Model.CantidadHijos"
+                                   asp-route-activo="@Model.Activo"
+                                   class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+
+                                    @pagina
+
+                                </a>
+                            }
+                        }
+
+
+                        <!-- ... DERECHO -->
+                        @if (fin < totalPaginas - 1)
+                        {
+                            <span class="inline-flex h-9 w-9 items-center justify-center text-sm text-slate-400">
+                                ...
+                            </span>
+                        }
+
+
+                        <!-- ÚLTIMA PÁGINA -->
+                        @if (totalPaginas > 1)
+                        {
+                            if (paginaActual == totalPaginas)
+                            {
+                                <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-sm font-semibold text-white">
+                                    @totalPaginas
+                                </span>
+                            }
+                            else
+                            {
+                                <a asp-action="ListApoderado"
+                                   asp-controller="CRUDApoderado"
+                                   asp-route-pagina="@totalPaginas"
+                                   asp-route-tamanioPagina="@Model.Paginacion.TamanioPagina"
+                                   asp-route-nombre="@Model.Nombre"
+                                   asp-route-email="@Model.Email"
+                                   asp-route-dni="@Model.Dni"
+                                   asp-route-telefono="@Model.Telefono"
+                                   asp-route-direccion="@Model.Direccion"
+                                   asp-route-cantidadHijos="@Model.CantidadHijos"
+                                   asp-route-activo="@Model.Activo"
+                                   class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+
+                                    @totalPaginas
+
+                                </a>
+                            }
+                        }
+
+
+                        <!-- SIGUIENTE -->
+                        @if (Model.Paginacion.TienePaginaSiguiente)
+                        {
+                            <a asp-action="ListApoderado"
+                               asp-controller="CRUDApoderado"
+                               asp-route-pagina="@(Model.Paginacion.Pagina + 1)"
+                               asp-route-tamanioPagina="@Model.Paginacion.TamanioPagina"
+                               asp-route-nombre="@Model.Nombre"
+                               asp-route-email="@Model.Email"
+                               asp-route-dni="@Model.Dni"
+                               asp-route-telefono="@Model.Telefono"
+                               asp-route-direccion="@Model.Direccion"
+                               asp-route-cantidadHijos="@Model.CantidadHijos"
+                               asp-route-activo="@Model.Activo"
+                               class="inline-flex h-9 items-center justify-center gap-1 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-900">
+
+                                <span class="hidden sm:inline">Siguiente</span>
+
+                                <i data-lucide="chevron-right" class="h-4 w-4"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="inline-flex h-9 cursor-not-allowed items-center justify-center gap-1 rounded-lg border border-slate-100 bg-slate-50 px-3 text-sm font-medium text-slate-300">
+
+                                <span class="hidden sm:inline">Siguiente</span>
+
+                                <i data-lucide="chevron-right" class="h-4 w-4"></i>
+                            </span>
+                        }
+
+                    </div>
+                }
+
             </div>
         </div>
     }
+
 </section>

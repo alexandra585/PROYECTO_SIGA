@@ -1,6 +1,7 @@
 ﻿function mostrarModal(tipo, mensaje) {
     let modal = document.getElementById('customModal');
 
+    
     if (!modal) {
         modal = document.createElement('div');
         modal.id = 'customModal';
@@ -42,8 +43,6 @@
     const progress = document.getElementById('modalProgress');
     const overlay = document.getElementById('customModal');
 
-    bloquearCampos(true);
-
     if (tipo === 'success') {
         icon.innerHTML = `
             <circle cx="12" cy="12" r="10"/>
@@ -52,7 +51,7 @@
             <circle cx="15" cy="9" r="0.5" fill="currentColor"/>
         `;
         icon.style.color = '#34d399';
-
+        
         badge.innerHTML = `
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
@@ -60,10 +59,10 @@
             </svg>
             Éxito
         `;
-
+        
         title.textContent = '¡Operación Exitosa!';
         container.className = 'modal-container success';
-
+        
     } else {
         icon.innerHTML = `
             <circle cx="12" cy="12" r="10"/>
@@ -72,7 +71,7 @@
             <circle cx="15" cy="9" r="0.5" fill="currentColor"/>
         `;
         icon.style.color = '#f87171';
-
+        
         badge.innerHTML = `
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
@@ -81,7 +80,7 @@
             </svg>
             Error
         `;
-
+        
         title.textContent = '¡Oops! Algo salió mal';
         container.className = 'modal-container error';
     }
@@ -95,22 +94,23 @@
 
     let startTime = Date.now();
     const duration = 3000;
-
+    
     function updateProgress() {
         const elapsed = Date.now() - startTime;
         const progressPercent = Math.min((elapsed / duration) * 100, 100);
-
+        
         progress.style.width = progressPercent + '%';
-
+        
         if (elapsed < duration) {
             requestAnimationFrame(updateProgress);
         } else {
-            setTimeout(function () {
+            setTimeout(function() {
                 cerrarModal();
             }, 200);
         }
     }
 
+    
     setTimeout(updateProgress, 50);
 }
 
@@ -120,36 +120,11 @@ function cerrarModal() {
         modal.classList.remove('active');
         document.body.style.overflow = '';
 
+        
         const progress = document.getElementById('modalProgress');
         if (progress) {
             progress.style.width = '0%';
         }
-    }
-
-    bloquearCampos(false);
-}
-
-function bloquearCampos(bloquear) {
-    const emailInput = document.querySelector('input[name="email"]') || document.getElementById('email');
-    const passwordInput = document.getElementById('passwordInput');
-
-    if (emailInput) {
-        emailInput.readOnly = bloquear;
-        emailInput.style.opacity = bloquear ? '0.65' : '1';
-        emailInput.style.cursor = bloquear ? 'not-allowed' : '';
-    }
-
-    if (passwordInput) {
-        passwordInput.readOnly = bloquear;
-        passwordInput.style.opacity = bloquear ? '0.65' : '1';
-        passwordInput.style.cursor = bloquear ? 'not-allowed' : '';
-    }
-
-    const togglePassword = document.getElementById('togglePassword');
-    if (togglePassword) {
-        togglePassword.disabled = bloquear;
-        togglePassword.style.opacity = bloquear ? '0.5' : '1';
-        togglePassword.style.pointerEvents = bloquear ? 'none' : '';
     }
 }
 
@@ -164,7 +139,7 @@ function bloquearCampos(bloquear) {
                     if (alert) alert.style.display = 'none';
                 }, 300);
             }
-        }, 1500);
+        }, 3000);
     }
 })();
 
@@ -198,8 +173,6 @@ function bloquearCampos(bloquear) {
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
 
-            bloquearCampos(true);
-
             submitBtn.innerHTML = `
                 <span style="
                     display: inline-block;
@@ -211,24 +184,33 @@ function bloquearCampos(bloquear) {
                     border-top-color: #ffffff;
                     animation: spin 0.8s linear infinite;
                 "></span>
-                Ingresando
+                Ingresando...
             `;
 
-            if (!document.getElementById('loginSpinStyle')) {
-                var style = document.createElement('style');
-                style.id = 'loginSpinStyle';
-                style.textContent = `
-                    @keyframes spin {
-                        from { transform: rotate(0deg); }
-                        to { transform: rotate(360deg); }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
+            var style = document.createElement('style');
+            style.textContent = `
+                @keyframes spin {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
 
             setTimeout(function () {
                 form.submit();
-            }, 1500);
+            }, 3000);
+
+            setTimeout(function () {
+                if (isSubmitting) {
+                    isSubmitting = false;
+                    submitBtn.classList.remove('loading');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Ingresar <i data-lucide="arrow-right" class="h-4 w-4"></i>';
+                    if (typeof lucide !== 'undefined') {
+                        lucide.createIcons();
+                    }
+                }
+            }, 30000);
         });
     }
 })();
@@ -251,7 +233,7 @@ function bloquearCampos(bloquear) {
 
 (function () {
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             verificarMensajes();
         });
     } else {
