@@ -1,0 +1,146 @@
+﻿@model AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.AsignacionApoderadoEstudianteViewModel
+
+@{
+    ViewData["Title"] = "Asignar apoderado – estudiante";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<section class="space-y-6">
+    <div class="rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white shadow-sm">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+                <p class="text-sm font-medium text-violet-100">Gestión académica</p>
+                <h2 class="mt-2 text-3xl font-extrabold">Asignar Apoderado – Estudiante</h2>
+                <p class="mt-3 max-w-2xl text-violet-100">
+                    Relacione el apoderado con uno o más estudiantes a cargo. Indique el vínculo de parentesco.
+                </p>
+            </div>
+            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15">
+                <i data-lucide="users" class="h-8 w-8"></i>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-800">
+            <div class="flex items-start gap-3">
+                <i data-lucide="check-circle-2" class="mt-0.5 h-5 w-5"></i>
+                <p class="text-sm font-semibold">@TempData["Success"]</p>
+            </div>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="rounded-2xl border border-red-200 bg-red-50 p-5 text-red-800">
+            <div class="flex items-start gap-3">
+                <i data-lucide="x-circle" class="mt-0.5 h-5 w-5"></i>
+                <p class="text-sm font-semibold">@TempData["Error"]</p>
+            </div>
+        </div>
+    }
+
+    <div class="flex justify-end">
+        <a asp-action="ListAsignarApoderadoEstudiante" asp-controller="Secretaria"
+           class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100">
+            <i data-lucide="list" class="h-4 w-4"></i>
+            Listado de asignaciones de apoderados
+        </a>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-3">
+        <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:col-span-2">
+            <div class="border-b border-slate-200 pb-5">
+                <h3 class="text-lg font-bold text-slate-950">Nueva asignación</h3>
+                <p class="mt-1 text-sm text-slate-500">Solo se muestran apoderados y estudiantes activos.</p>
+            </div>
+
+            <form asp-action="AsignarApoderadoEstudiante" method="post" class="mt-6 space-y-5">
+                @Html.AntiForgeryToken()
+
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-700">Apoderado</label>
+                    <select name="apoderadoId" required
+                            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm shadow-sm focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-200">
+                        <option value="">Seleccionar el apoderado</option>
+                        @foreach (var apo in Model.Apoderados)
+                        {
+                            <option value="@apo.Id">@apo.NombreCompleto</option>
+                        }
+                    </select>
+                </div>
+
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-700">Estudiante</label>
+                    <select name="estudianteId" required
+                            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm shadow-sm focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-200">
+                        <option value="">Seleccionar un estudiante</option>
+                        @foreach (var est in Model.Estudiantes)
+                        {
+                            <option value="@est.Id">@est.NombreCompleto</option>
+                        }
+                    </select>
+                </div>
+
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-700">Parentesco familiar</label>
+                    <select name="parentesco" id="parentescoSelect" required
+                            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm shadow-sm focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-200"
+                            onchange="toggleOtroDetalle()">
+                        <option value="">Seleccionar el parentesco</option>
+                        <option value="Padre">Padre</option>
+                        <option value="Madre">Madre</option>
+                        <option value="Tutor">Tutor</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+
+                <div id="otroDetalleContainer" class="hidden">
+                    <label class="mb-2 block text-sm font-semibold text-slate-700">Especifique el parentesco familiar</label>
+                    <input type="text" name="parentescoDetalle" id="parentescoDetalle"
+                           maxlength="100" placeholder="Ej: Tío, Abuelo, Hermano mayor..."
+                           class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm shadow-sm focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-200" />
+                </div>
+
+                <div class="flex flex-col gap-3 pt-3 sm:flex-row sm:justify-end">
+                    <a asp-action="Dashboard" asp-controller="Secretaria"
+                       class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100">
+                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                        Cancelar
+                    </a>
+                    <button type="submit"
+                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700">
+                        <i data-lucide="save" class="h-4 w-4"></i>
+                        Asignar apoderado
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="space-y-6">
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                    <i data-lucide="info" class="h-6 w-6"></i>
+                </div>
+                <h3 class="mt-5 font-bold text-slate-950">Información</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600">
+                    Un mismo apoderado puede tener varios estudiantes a cargo. La relación se establece mediante el parentesco indicado.
+                </p>
+            </div>
+
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                    <i data-lucide="shield-check" class="h-6 w-6"></i>
+                </div>
+                <h3 class="mt-5 font-bold text-slate-950">Recomendación</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600">
+                    Si eliges <strong>Otro</strong>, recuerda especificar el parentesco en el campo adicional para mantener un registro claro.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/js/Secretaria/AsignarApoderadoEstudiante.js" asp-append-version="true"></script>
+}

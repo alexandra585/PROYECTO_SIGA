@@ -1,0 +1,178 @@
+﻿@model AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.ApoderadoLibretaViewModel
+
+@{
+    ViewData["Title"] = "Resultado del filtro de libreta de notas";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<section class="space-y-6">
+    <div class="rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white shadow-sm">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+                <p class="text-sm font-medium text-violet-100">Seguimiento académico</p>
+                <h2 class="mt-2 text-3xl font-extrabold">Resultado estudiantil de las libretas de notas</h2>
+                <p class="mt-3 max-w-2xl text-violet-100">
+                    Relación de los cursos matriculados y calificaciones por periodo académico.
+                </p>
+            </div>
+            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15">
+                <i data-lucide="graduation-cap" class="h-8 w-8"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col gap-3 sm:flex-row sm:justify-between">
+        <a asp-action="FilterLibreta" asp-controller="Apoderado"
+           class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100">
+            <i data-lucide="arrow-left" class="h-4 w-4"></i>
+            Regresar
+        </a>
+        <a asp-action="Dashboard" asp-controller="Apoderado"
+           class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100">
+            <i data-lucide="layout-dashboard" class="h-4 w-4"></i>
+            Panel principal
+        </a>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="flex items-center gap-4">
+            <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-50 text-violet-600">
+                <i data-lucide="user-round" class="h-7 w-7"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-extrabold text-slate-950">@Model.NombreEstudiante</h3>
+                <p class="mt-1 text-sm text-slate-500">
+                    Código del estudiante: @Model.CodigoEstudiante
+                </p>
+                <p class="mt-1 text-sm text-slate-500">
+                    Parentesco familiar: @Model.Parentesco
+                </p>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Periodos == null || !Model.Periodos.Any())
+    {
+        <div class="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-amber-800">
+            <div class="flex items-start gap-3">
+                <i data-lucide="info" class="mt-0.5 h-5 w-5"></i>
+                <p class="text-sm font-semibold">No hay matrículas ni notas para los filtros seleccionados.</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        @foreach (var periodo in Model.Periodos)
+        {
+            var esActual = periodo.EsActivo;
+            var tieneCursos = periodo.Cursos != null && periodo.Cursos.Any();
+
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                            <i data-lucide="calendar-range" class="h-5 w-5"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-medium uppercase tracking-wide text-slate-500">Periodo académico</p>
+                            <h3 class="text-xl font-extrabold text-slate-950">@periodo.NombrePeriodo</h3>
+                            @if (tieneCursos)
+                            {
+                                <p class="text-xs text-slate-400">@periodo.Cursos.Count() cursos matriculados</p>
+                            }
+                        </div>
+                    </div>
+                    @if (esActual)
+                    {
+                        <span class="inline-flex w-fit items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-xs font-bold uppercase tracking-wide text-emerald-700">
+                            <i data-lucide="sparkles" class="h-3.5 w-3.5"></i>
+                            Actual
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="inline-flex w-fit items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-xs font-bold uppercase tracking-wide text-slate-600">
+                            <i data-lucide="sparkles" class="h-3.5 w-3.5"></i>
+                            Anterior
+                        </span>
+                    }
+                </div>
+
+                @if (tieneCursos)
+                {
+                    <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                        @foreach (var curso in periodo.Cursos)
+                        {
+                            <div class="rounded-2xl border border-slate-200 bg-slate-50/80 p-4">
+                                <div class="flex flex-col gap-2">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <i data-lucide="book-open" class="h-4 w-4 text-violet-600 flex-shrink-0"></i>
+                                            <h4 class="text-sm font-bold text-slate-950 truncate">@curso.NombreCurso</h4>
+                                        </div>
+                                        <p class="mt-0.5 text-xs text-slate-500">@curso.CodigoCurso</p>
+                                        <p class="mt-1.5 flex items-center gap-2 text-xs text-slate-600">
+                                            <i data-lucide="school" class="h-3.5 w-3.5 text-slate-400 flex-shrink-0"></i>
+                                            <span class="truncate">@curso.NombreDocente</span>
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center justify-between border-t border-slate-200 pt-2.5">
+                                        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Promedio</p>
+                                        <p class="text-xl font-extrabold text-slate-950">
+                                            @(curso.Promedio.HasValue ? curso.Promedio.Value.ToString("0.00") : "—")
+                                        </p>
+                                    </div>
+                                </div>
+
+                                @if (curso.Notas != null && curso.Notas.Any())
+                                {
+                                    <div class="mt-3 overflow-x-auto rounded-lg border border-slate-200 bg-white">
+                                        <table class="w-full text-left text-xs">
+                                            <thead>
+                                                <tr class="border-b border-slate-100 bg-slate-50 text-[10px] uppercase tracking-wide text-slate-500">
+                                                    <th class="px-2.5 py-2 font-bold">Evaluación</th>
+                                                    <th class="px-2.5 py-2 font-bold">Nota</th>
+                                                    <th class="px-2.5 py-2 font-bold">Peso</th>
+                                                    <th class="px-2.5 py-2 font-bold">Fecha</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-slate-100">
+                                                @foreach (var nota in curso.Notas)
+                                                {
+                                                    <tr>
+                                                        <td class="px-2.5 py-2 font-medium text-slate-800">@nota.TipoEvaluacion</td>
+                                                        <td class="px-2.5 py-2">
+                                                            <span class="inline-flex rounded-full bg-violet-50 px-2.5 py-0.5 text-[10px] font-bold text-violet-700">
+                                                                @(nota.Nota?.ToString("0.00") ?? "—")
+                                                            </span>
+                                                        </td>
+                                                        <td class="px-2.5 py-2 text-slate-600">
+                                                            @(nota.Peso.HasValue ? $"{nota.Peso:0}%" : "—")
+                                                        </td>
+                                                        <td class="px-2.5 py-2 text-slate-500 text-[10px]">
+                                                            @(nota.FechaEvaluacion?.ToString("dd/MM/yyyy") ?? "—")
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p class="mt-2.5 text-xs text-slate-500">Sin notas registradas.</p>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="mt-5 rounded-2xl border border-dashed border-slate-300 bg-slate-50/50 p-6 text-center">
+                        <p class="text-sm text-slate-500">Sin cursos matriculados en este periodo.</p>
+                    </div>
+                }
+            </div>
+        }
+    }
+</section>

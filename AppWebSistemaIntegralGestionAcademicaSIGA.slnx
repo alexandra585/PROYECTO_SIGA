@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="AppWebSistemaIntegralGestionAcademica.DAO/AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj" />
+  <Project Path="AppWebSistemaIntegralGestionAcademica.ENTITY/AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj" />
+  <Project Path="AppWebSistemaIntegralGestionAcademicaSIGA/AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj" />
+</Solution>

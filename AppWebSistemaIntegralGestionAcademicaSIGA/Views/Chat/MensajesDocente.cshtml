@@ -1,0 +1,179 @@
+﻿@model AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.MensajesDocenteViewModel
+@{
+    ViewData["Title"] = "Mensajes";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    var usuarioId = Context.Session.GetInt32("UsuarioId") ?? 0;
+}
+
+<link rel="stylesheet" href="~/css/Chat/Mensajes.css" asp-append-version="true" />
+
+<div class="chat-shell flex overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <aside class="flex w-full max-w-sm flex-col border-r border-slate-200 bg-slate-50 md:w-96">
+        <div class="flex-shrink-0 border-b border-slate-200 bg-white px-4 py-4">
+            <h2 class="text-lg font-bold text-slate-900">Mensajes</h2>
+            <p class="text-xs text-slate-500">Comunícate con los apoderados de tus estudiantes</p>
+            <div class="relative mt-3">
+                <i data-lucide="search" class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"></i>
+                <input id="buscarApoderado"
+                       type="text"
+                       placeholder="Buscar apoderado"
+                       class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" />
+            </div>
+        </div>
+        <div id="listaApoderados" class="scroll-invisible min-h-0 flex-1">
+            @if (Model.Apoderados == null || !Model.Apoderados.Any())
+            {
+                <div class="flex flex-col items-center justify-center px-6 py-16 text-center">
+                    <div class="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
+                        <i data-lucide="message-circle" class="h-7 w-7 text-slate-400"></i>
+                    </div>
+                    <p class="text-sm font-medium text-slate-600">No hay apoderados disponibles</p>
+                    <p class="mt-1 text-xs text-slate-400">Cuando tengas estudiantes matriculados con apoderado aparecerán aquí.</p>
+                </div>
+            }
+            else
+            {
+                @foreach (var apo in Model.Apoderados)
+                {
+                    <button type="button"
+                            class="apoderado-item group flex w-full items-start gap-3 border-b border-slate-100 px-4 py-3 text-left transition hover:bg-white"
+                            data-apoderado-id="@apo.ApoderadoId"
+                            data-conversacion-id="@(apo.ConversacionId?.ToString() ?? "")"
+                            data-nombre="@apo.NombreCompleto"
+                            data-hijos="@(apo.HijosRelacionados ?? "")">
+                        <div class="relative flex-shrink-0">
+                            <div class="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                                <i data-lucide="user" class="h-5 w-5"></i>
+                            </div>
+                            <span class="estado-online absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-white @(apo.EnLinea ? "bg-emerald-500" : "bg-slate-300")"
+                                  data-apoderado-id="@apo.ApoderadoId"></span>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between gap-2">
+                                <p class="truncate text-sm font-semibold text-slate-900">@apo.NombreCompleto</p>
+                                @if (apo.UltimoMensajeFecha.HasValue)
+                                {
+                                    <span class="flex-shrink-0 text-[10px] text-slate-400">
+                                        @apo.UltimoMensajeFecha.Value.ToString("HH:mm")
+                                    </span>
+                                }
+                            </div>
+                            <p class="truncate text-xs text-slate-500">Hijos: 
+                                @(string.IsNullOrEmpty(apo.HijosRelacionados) ? "Apoderado" : apo.HijosRelacionados)
+                            </p>
+                            <div class="mt-0.5 flex items-center justify-between gap-2">
+                                <p class="ultimo-mensaje truncate text-xs text-slate-400">
+                                    @(apo.UltimoMensaje ?? "Sin mensajes aún")
+                                </p>
+                                @if (apo.MensajesNoLeidos > 0)
+                                {
+                                    <span class="badge-no-leidos flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-blue-600 px-1.5 text-[10px] font-bold text-white">
+                                        @apo.MensajesNoLeidos
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </button>
+                }
+            }
+        </div>
+    </aside>
+    <main class="flex min-h-0 min-w-0 flex-1 flex-col bg-[#eef2f7]">
+        <div id="chatVacio" class="flex flex-1 flex-col items-center justify-center text-center">
+            <div class="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-sm">
+                <i data-lucide="messages-square" class="h-10 w-10 text-slate-300"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-slate-700">Selecciona un apoderado</h3>
+            <p class="mt-1 max-w-xs text-sm text-slate-400">
+                Elige un apoderado de la lista para iniciar o continuar una conversación.
+            </p>
+        </div>
+        <div id="chatActivo" class="hidden flex min-h-0 flex-1 flex-col">
+            <div class="flex flex-shrink-0 items-center justify-between border-b border-slate-200 bg-white px-5 py-3">
+                <div class="flex items-center gap-3">
+                    <div class="relative">
+                        <div id="chatAvatar" class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                            <i data-lucide="user" class="h-5 w-5"></i>
+                        </div>
+                        <span id="chatEstadoOnline" class="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white bg-slate-300"></span>
+                    </div>
+                    <div>
+                        <p id="chatNombreApoderado" class="text-sm font-bold text-slate-900"></p>
+                        <p id="chatHijos" class="text-xs text-slate-500"></p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1">
+                    <button id="btnCerrarChat" type="button" title="Cerrar chat"
+                            class="rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700">
+                        <i data-lucide="x" class="h-5 w-5"></i>
+                    </button>
+                    <div class="relative">
+                        <button id="btnMenuChat" type="button"
+                                class="rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700">
+                            <i data-lucide="more-vertical" class="h-5 w-5"></i>
+                        </button>
+                        <div id="menuChat" class="absolute right-0 top-full z-20 mt-1 hidden w-48 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
+                            <button id="btnVaciarChat" type="button"
+                                    class="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-slate-700 hover:bg-slate-50">
+                                <i data-lucide="eraser" class="h-4 w-4"></i> Vaciar chat
+                            </button>
+                            <button id="btnEliminarChat" type="button"
+                                    class="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-red-600 hover:bg-red-50">
+                                <i data-lucide="trash-2" class="h-4 w-4"></i> Eliminar chat
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="contenedorMensajes" class="scroll-invisible min-h-0 flex-1 px-4 py-4"></div>
+            <div class="flex-shrink-0 border-t border-slate-200 bg-white px-4 py-3">
+                <form id="formEnviarMensaje" class="flex items-end gap-2">
+                    <textarea id="inputMensaje" rows="1" placeholder="Mensaje" maxlength="3000"
+                              class="max-h-[70px] flex-1 resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"></textarea>
+                    <button type="submit"
+                            class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-white transition hover:bg-blue-700 disabled:opacity-50">
+                        <i data-lucide="send" class="h-4 w-4"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+<div id="modalConfirmar" class="modal-overlay hidden">
+    <div class="mx-4 w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl">
+        <div id="modalHeader" class="bg-gradient-to-r from-slate-800 to-slate-700 px-6 py-5">
+            <div class="flex items-center gap-4">
+                <div id="modalIconWrap" class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/20">
+                    <i id="modalIcono" data-lucide="alert-triangle" class="h-6 w-6 text-white"></i>
+                </div>
+                <div>
+                    <h3 id="modalTitulo" class="text-lg font-bold text-white">Confirmar</h3>
+                    <p id="modalSubtitulo" class="text-xs text-slate-300">Acción sobre la conversación</p>
+                </div>
+            </div>
+        </div>
+        <div class="px-6 py-5">
+            <p id="modalTexto" class="text-sm leading-relaxed text-slate-600">¿Estás seguro?</p>
+            <div class="mt-6 flex gap-3">
+                <button id="modalCancelar" type="button"
+                        class="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+                    Cancelar
+                </button>
+                <button id="modalAceptar" type="button"
+                        class="flex-1 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+    <script>
+        window.CHAT_CONFIG = {
+            usuarioId: @usuarioId,
+            hubUrl: '/chathub'
+        };
+    </script>
+    <script src="~/js/Chat/MensajesDocente.js" asp-append-version="true"></script>
+}

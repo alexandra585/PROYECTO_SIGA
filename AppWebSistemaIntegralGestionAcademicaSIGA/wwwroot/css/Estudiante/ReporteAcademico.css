@@ -1,0 +1,10 @@
+﻿@media print {
+    aside,
+    header,
+    footer,
+    button,
+    a[href],
+    .no-print {
+        display: none !important;
+    }
+}

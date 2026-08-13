@@ -1,0 +1,145 @@
+﻿@model AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.ViewModels.ApoderadoDashboardViewModel
+@{
+    ViewData["Title"] = "Panel del apoderado";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<section class="space-y-6">
+    <div class="rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white shadow-sm">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+                <p class="text-sm font-medium text-violet-100">Panel de control familiar</p>
+                <h2 class="mt-2 text-3xl font-extrabold">Bienvenido al módulo del apoderado</h2>
+                <p class="mt-3 max-w-2xl text-violet-100">
+                    Consulta el avance académico de tus hijos y revisa sus notas por periodo.
+                </p>
+            </div>
+            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15">
+                <i data-lucide="users-round" class="h-8 w-8"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-3">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-start justify-between">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                    <i data-lucide="user-round" class="h-6 w-6"></i>
+                </div>
+                <span class="rounded-full bg-violet-50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-violet-600">
+                    Familia
+                </span>
+            </div>
+            <p class="mt-4 text-sm text-slate-500">Hijos a cargo</p>
+            <h3 class="mt-1 text-3xl font-extrabold text-slate-950">@Model.TotalHijos</h3>
+            <div class="mt-4 h-1.5 overflow-hidden rounded-full bg-violet-100">
+                <div class="h-full rounded-full bg-blue-600" style="width: @(Model.TotalHijos > 0 ? 100 : 8)%"></div>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-start justify-between">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                    <i data-lucide="calendar-days" class="h-6 w-6"></i>
+                </div>
+                <span class="rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-blue-600">
+                    Periodo
+                </span>
+            </div>
+            <div class="mt-4 flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500">Periodo activo</p>
+                    <h3 class="text-xl font-extrabold leading-snug text-slate-950">@Model.PeriodoActivo</h3>
+                </div>
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-emerald-700">
+                    <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                    EN CURSO
+                </span>
+            </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-start justify-between">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                    <i data-lucide="clipboard-list" class="h-6 w-6"></i>
+                </div>
+                <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-emerald-700">
+                    Notas
+                </span>
+            </div>
+            <p class="mt-4 text-sm text-slate-500">Acceso rápido</p>
+            <a asp-action="FilterLibreta" asp-controller="Apoderado"
+               class="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700">
+                Ver libreta de notas
+                <i data-lucide="arrow-right" class="h-4 w-4"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white shadow-sm">
+        <div class="flex flex-col gap-3 border-b border-slate-200 px-6 py-5 md:flex-row md:items-center md:justify-between">
+            <div>
+                <h3 class="text-lg font-bold text-slate-950">Estudiantes asociados</h3>
+                <p class="mt-1 text-sm text-slate-500">Relación de estudiantes a tu cargo como apoderado.</p>
+            </div>
+            <span class="inline-flex w-fit items-center gap-2 rounded-full bg-violet-50 px-4 py-2 text-sm font-semibold text-violet-700">
+                <i data-lucide="users" class="h-4 w-4"></i>
+                @Model.TotalHijos estudiante@(Model.TotalHijos == 1 ? "" : "s")
+            </span>
+        </div>
+
+        @if (Model.Hijos == null || !Model.Hijos.Any())
+        {
+            <div class="p-6">
+                <div class="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-amber-800">
+                    <i data-lucide="info" class="mt-0.5 h-5 w-5"></i>
+                    <p class="text-sm font-semibold">Aún no tienes estudiantes vinculados. Contacta con la institución.</p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[700px] text-left text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+                            <th class="px-6 py-4 font-bold">Estudiante</th>
+                            <th class="px-6 py-4 font-bold">Código del estudiante</th>
+                            <th class="px-6 py-4 font-bold">Parentesco familiar</th>
+                            <th class="px-6 py-4 text-right font-bold">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @foreach (var hijo in Model.Hijos)
+                        {
+                            <tr class="transition hover:bg-slate-50">
+                                <td class="px-6 py-5">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                                            <i data-lucide="user-round" class="h-5 w-5"></i>
+                                        </div>
+                                        <p class="font-bold text-slate-950">@hijo.NombreCompleto</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-5 text-slate-600">@hijo.CodigoEstudiante</td>
+                                <td class="px-6 py-5">
+                                    <span class="inline-flex rounded-full bg-indigo-50 px-3 py-1 text-xs font-bold text-indigo-700">
+                                        @hijo.Parentesco
+                                    </span>
+                                </td>
+                                <td class="px-6 py-5 text-right">
+                                    <a asp-action="ResultFilterLibreta" asp-controller="Apoderado"
+                                       asp-route-estudianteId="@hijo.EstudianteId"
+                                       class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100">
+                                        <i data-lucide="clipboard-list" class="h-4 w-4"></i>
+                                        Ver notas
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</section>
