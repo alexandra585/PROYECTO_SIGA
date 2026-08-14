@@ -79,7 +79,7 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.WEB.Controllers
 
                         if (resultado)
                         {
-                            await _crudApoderadoRepository.ActualizarRolUsuarioApoderado(model.id, "Apoderado");
+                            //await _crudApoderadoRepository.ActualizarRolUsuarioApoderado(model.id, "Apoderado");
 
                             TempData["Success"] = "Apoderado registrado exitosamente.";
                             TempData["TipoMensaje"] = "success";
@@ -259,11 +259,11 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.WEB.Controllers
         // ============================
         // BUSCAR USUARIOS - APODERADOS
         // ============================
-        [HttpGet]
+        /*[HttpGet]
         public async Task<IActionResult> BuscarUsuarioDisponibleApoderado(string? filtro)
         {
             var usuarios = await _crudApoderadoRepository.BuscarUsuarioDisponibleApoderado(filtro);
             return Json(usuarios);
-        }
+        }*/
     }
 }

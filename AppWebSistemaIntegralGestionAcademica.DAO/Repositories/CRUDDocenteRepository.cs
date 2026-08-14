@@ -157,10 +157,6 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Repositories
                     }
                 }
             }
-<<<<<<< HEAD
-            return docentes;
-=======
-
             // ==========================================
             // GUARDAR FILTROS
             // ==========================================
@@ -172,7 +168,6 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Repositories
             resultado.Activo = activo;
 
             return resultado;
->>>>>>> d53e46a2f14ae20cc8129ada5c628397513c924c
         }
 
         public async Task<DocenteViewModel> DocenteId(int id)
@@ -317,7 +312,6 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Repositories
                 }
             }
         }
-<<<<<<< HEAD
 
         public async Task<List<UsuarioViewModel>> BuscarUsuarioDisponibleDocente(string? filtro)
         {
@@ -371,7 +365,5 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Repositories
                 }
             }
         }
-=======
->>>>>>> d53e46a2f14ae20cc8129ada5c628397513c924c
     }
 }

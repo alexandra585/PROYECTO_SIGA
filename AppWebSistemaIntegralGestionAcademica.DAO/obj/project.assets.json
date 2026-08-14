@@ -1112,6 +1112,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
+          "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": "10.0.11",
           "Microsoft.EntityFrameworkCore.SqlServer": "10.0.10"
         },
         "compile": {
@@ -2596,10 +2597,10 @@
         "tools/net8.0/any/ef.runtimeconfig.json"
       ]
     },
-    "Microsoft.Extensions.DependencyModel/10.0.10": {
-      "sha512": "rfZA1RjR021RPqSmIPovfz2aOd79TGqJ9BengbjnzIISOVwjLmuSDnhCMmiY/1c6iYvGolQ1iNGzkav0u11XEA==",
+    "Microsoft.Extensions.DependencyModel/10.0.11": {
+      "sha512": "PJPtFYsZ+r+uz9qqXWUTEyKeJ1EiBGIJtqavkg9ZXijjGSFAk4Fgi5sqIxj+uAyLZwEKgexDUQXhWhvU6l3+og==",
       "type": "package",
-      "path": "microsoft.extensions.dependencymodel/10.0.10",
+      "path": "microsoft.extensions.dependencymodel/10.0.11",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2620,7 +2621,7 @@
         "lib/net9.0/Microsoft.Extensions.DependencyModel.xml",
         "lib/netstandard2.0/Microsoft.Extensions.DependencyModel.dll",
         "lib/netstandard2.0/Microsoft.Extensions.DependencyModel.xml",
-        "microsoft.extensions.dependencymodel.10.0.10.nupkg.sha512",
+        "microsoft.extensions.dependencymodel.10.0.11.nupkg.sha512",
         "microsoft.extensions.dependencymodel.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -3257,23 +3258,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Dell\\.nuget\\packages\\": {},
+    "C:\\Users\\Asus\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj",
+      "projectUniqueName": "D:\\Descargas\\Repo merge\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj",
       "projectName": "AppWebSistemaIntegralGestionAcademicaSIGA.DAO",
-      "projectPath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj",
-      "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\obj\\",
+      "projectPath": "D:\\Descargas\\Repo merge\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj",
+      "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
+      "outputPath": "D:\\Descargas\\Repo merge\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3282,6 +3283,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -3289,8 +3291,8 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj": {
-              "projectPath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj"
+            "D:\\Descargas\\Repo merge\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj": {
+              "projectPath": "D:\\Descargas\\Repo merge\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj"
             }
           }
         }
