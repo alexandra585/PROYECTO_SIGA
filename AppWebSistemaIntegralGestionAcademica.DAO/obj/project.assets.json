@@ -3258,23 +3258,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Asus\\.nuget\\packages\\": {},
+    "C:\\Users\\Dell\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Descargas\\Repo merge\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj",
+      "projectUniqueName": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj",
       "projectName": "AppWebSistemaIntegralGestionAcademicaSIGA.DAO",
-      "projectPath": "D:\\Descargas\\Repo merge\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj",
-      "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-      "outputPath": "D:\\Descargas\\Repo merge\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\obj\\",
+      "projectPath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj",
+      "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3283,7 +3283,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -3291,8 +3290,8 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "D:\\Descargas\\Repo merge\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj": {
-              "projectPath": "D:\\Descargas\\Repo merge\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj"
+            "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj": {
+              "projectPath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj"
             }
           }
         }
@@ -3781,7 +3780,7 @@
       "code": "NU1510",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "PackageReference Microsoft.AspNetCore.SignalR.Core no se eliminará. Este paquete está disponible automáticamente y no es necesario hacer referencia a él explícitamente. Quite el elemento PackageReference.",
+      "message": "PackageReference Microsoft.AspNetCore.SignalR.Core will not be pruned. This package is automatically available and does not need to be referenced explicitly. Remove the PackageReference item.",
       "libraryId": "Microsoft.AspNetCore.SignalR.Core",
       "targetGraphs": [
         "net10.0"

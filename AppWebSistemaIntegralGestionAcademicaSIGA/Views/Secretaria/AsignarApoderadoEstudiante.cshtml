@@ -6,141 +6,1823 @@
 }
 
 <section class="space-y-6">
+
+    <!-- ========================================================= -->
+    <!-- ENCABEZADO -->
+    <!-- ========================================================= -->
+
     <div class="rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white shadow-sm">
+
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+
             <div>
-                <p class="text-sm font-medium text-violet-100">Gestión académica</p>
-                <h2 class="mt-2 text-3xl font-extrabold">Asignar Apoderado – Estudiante</h2>
-                <p class="mt-3 max-w-2xl text-violet-100">
-                    Relacione el apoderado con uno o más estudiantes a cargo. Indique el vínculo de parentesco.
+
+                <p class="text-sm font-medium text-blue-100">
+                    Gestión académica
                 </p>
+
+                <h2 class="mt-2 text-3xl font-extrabold">
+                    Asignar Apoderado – Estudiante
+                </h2>
+
+                <p class="mt-3 max-w-2xl text-blue-100">
+                    Relacione un apoderado con un estudiante e indique
+                    el vínculo de parentesco.
+                </p>
+
             </div>
+
             <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15">
-                <i data-lucide="users" class="h-8 w-8"></i>
+
+                <i data-lucide="users"
+                   class="h-8 w-8">
+                </i>
+
             </div>
+
         </div>
+
     </div>
 
+
+    <!-- ========================================================= -->
+    <!-- MENSAJE DE ÉXITO -->
+    <!-- ========================================================= -->
     @if (TempData["Success"] != null)
     {
         <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-800">
+
             <div class="flex items-start gap-3">
-                <i data-lucide="check-circle-2" class="mt-0.5 h-5 w-5"></i>
-                <p class="text-sm font-semibold">@TempData["Success"]</p>
+
+                <i data-lucide="check-circle-2"
+                   class="mt-0.5 h-5 w-5">
+                </i>
+
+                <p class="text-sm font-semibold">
+                    @TempData["Success"]
+                </p>
+
             </div>
+
         </div>
     }
+
+
+    <!-- ========================================================= -->
+    <!-- MENSAJE DE ERROR -->
+    <!-- ========================================================= -->
     @if (TempData["Error"] != null)
     {
         <div class="rounded-2xl border border-red-200 bg-red-50 p-5 text-red-800">
+
             <div class="flex items-start gap-3">
-                <i data-lucide="x-circle" class="mt-0.5 h-5 w-5"></i>
-                <p class="text-sm font-semibold">@TempData["Error"]</p>
+
+                <i data-lucide="x-circle"
+                   class="mt-0.5 h-5 w-5">
+                </i>
+
+                <p class="text-sm font-semibold">
+                    @TempData["Error"]
+                </p>
+
             </div>
+
         </div>
     }
 
-    <div class="flex justify-end">
-        <a asp-action="ListAsignarApoderadoEstudiante" asp-controller="Secretaria"
+
+    <!-- ========================================================= -->
+    <!-- ACCIONES -->
+    <!-- ========================================================= -->
+
+    <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
+
+        <a asp-action="ListAsignarApoderadoEstudiante"
+           asp-controller="Secretaria"
            class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100">
-            <i data-lucide="list" class="h-4 w-4"></i>
-            Listado de asignaciones de apoderados
+
+            <i data-lucide="list"
+               class="h-4 w-4">
+            </i>
+
+            Listado de asignaciones
+
         </a>
+
     </div>
+
+
+    <!-- ========================================================= -->
+    <!-- CONTENIDO -->
+    <!-- ========================================================= -->
 
     <div class="grid gap-6 lg:grid-cols-3">
-        <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:col-span-2">
-            <div class="border-b border-slate-200 pb-5">
-                <h3 class="text-lg font-bold text-slate-950">Nueva asignación</h3>
-                <p class="mt-1 text-sm text-slate-500">Solo se muestran apoderados y estudiantes activos.</p>
+
+
+        <!-- ===================================================== -->
+        <!-- RESUMEN -->
+        <!-- ===================================================== -->
+
+        <div class="flex min-h-[600px] flex-col rounded-3xl border border-slate-200 bg-white shadow-sm lg:col-span-2">
+
+
+            <!-- ================================================= -->
+            <!-- CABECERA -->
+            <!-- ================================================= -->
+
+            <div class="border-b border-slate-200 px-6 py-5">
+
+                <div class="flex items-center justify-between gap-4">
+
+                    <div>
+
+                        <h3 class="text-lg font-bold text-slate-950">
+                            Resumen de la asignación
+                        </h3>
+
+                        <p class="mt-1 text-sm text-slate-500">
+                            Revisa los datos seleccionados antes de confirmar.
+                        </p>
+
+                    </div>
+
+                    <div id="estadoResumen"
+                         class="hidden rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
+
+                        Lista para confirmar
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <form asp-action="AsignarApoderadoEstudiante" method="post" class="mt-6 space-y-5">
-                @Html.AntiForgeryToken()
 
-                <div>
-                    <label class="mb-2 block text-sm font-semibold text-slate-700">Apoderado</label>
-                    <select name="apoderadoId" required
-                            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm shadow-sm focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-200">
-                        <option value="">Seleccionar el apoderado</option>
-                        @foreach (var apo in Model.Apoderados)
-                        {
-                            <option value="@apo.Id">@apo.NombreCompleto</option>
-                        }
-                    </select>
+            <!-- ================================================= -->
+            <!-- ESTADO VACÍO -->
+            <!-- ================================================= -->
+
+            <div id="resumenVacio"
+                 class="flex min-h-[400px] flex-col items-center justify-center px-6 py-12 text-center">
+
+                <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-50 text-violet-600">
+
+                    <i data-lucide="users"
+                       class="h-8 w-8">
+                    </i>
+
                 </div>
 
-                <div>
-                    <label class="mb-2 block text-sm font-semibold text-slate-700">Estudiante</label>
-                    <select name="estudianteId" required
-                            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm shadow-sm focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-200">
-                        <option value="">Seleccionar un estudiante</option>
-                        @foreach (var est in Model.Estudiantes)
-                        {
-                            <option value="@est.Id">@est.NombreCompleto</option>
-                        }
-                    </select>
+                <h4 class="mt-5 text-lg font-bold text-slate-900">
+                    Nueva asignación
+                </h4>
+
+                <p class="mt-2 max-w-md text-sm leading-6 text-slate-500">
+                    Selecciona el apoderado, estudiante y parentesco
+                    para comenzar.
+                </p>
+
+                <button type="button"
+                        onclick="abrirModalAsignacion()"
+                        class="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700">
+
+                    <i data-lucide="plus"
+                       class="h-4 w-4">
+                    </i>
+
+                    Seleccionar datos
+
+                </button>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- RESUMEN SELECCIONADO -->
+            <!-- ================================================= -->
+
+            <div id="resumenAsignacion"
+                 class="hidden flex flex-1 flex-col p-6">
+
+                <div class="grid gap-4">
+
+
+                    <!-- ================================================= -->
+                    <!-- APODERADO -->
+                    <!-- ================================================= -->
+
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+
+                        <div class="flex items-start gap-4">
+
+                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
+
+                                <i data-lucide="user-round"
+                                   class="h-5 w-5">
+                                </i>
+
+                            </div>
+
+                            <div class="min-w-0">
+
+                                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                                    Apoderado
+                                </p>
+
+                                <p id="resumenApoderadoNombre"
+                                   class="mt-1 truncate text-base font-bold text-slate-900">
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- ESTUDIANTE -->
+                    <!-- ================================================= -->
+
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+
+                        <div class="flex items-start gap-4">
+
+                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600">
+
+                                <i data-lucide="graduation-cap"
+                                   class="h-5 w-5">
+                                </i>
+
+                            </div>
+
+                            <div class="min-w-0">
+
+                                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                                    Estudiante
+                                </p>
+
+                                <p id="resumenEstudianteNombre"
+                                   class="mt-1 truncate text-base font-bold text-slate-900">
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- PARENTESCO -->
+                    <!-- ================================================= -->
+
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+
+                        <div class="flex items-start gap-4">
+
+                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
+
+                                <i data-lucide="heart-handshake"
+                                   class="h-5 w-5">
+                                </i>
+
+                            </div>
+
+                            <div class="min-w-0">
+
+                                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                                    Parentesco
+                                </p>
+
+                                <p id="resumenParentesco"
+                                   class="mt-1 truncate text-base font-bold text-slate-900">
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <div>
-                    <label class="mb-2 block text-sm font-semibold text-slate-700">Parentesco familiar</label>
-                    <select name="parentesco" id="parentescoSelect" required
-                            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm shadow-sm focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-200"
-                            onchange="toggleOtroDetalle()">
-                        <option value="">Seleccionar el parentesco</option>
-                        <option value="Padre">Padre</option>
-                        <option value="Madre">Madre</option>
-                        <option value="Tutor">Tutor</option>
-                        <option value="Otro">Otro</option>
-                    </select>
+
+                <!-- ================================================= -->
+                <!-- AVISO -->
+                <!-- ================================================= -->
+
+                <div class="mt-5 flex items-start gap-3 rounded-2xl border border-blue-200 bg-blue-50 p-4 text-blue-800">
+
+                    <i data-lucide="info"
+                       class="mt-0.5 h-5 w-5 shrink-0">
+                    </i>
+
+                    <p class="text-sm leading-6">
+                        Verifica que el apoderado, estudiante y parentesco
+                        sean correctos antes de confirmar la asignación.
+                    </p>
+
                 </div>
 
-                <div id="otroDetalleContainer" class="hidden">
-                    <label class="mb-2 block text-sm font-semibold text-slate-700">Especifique el parentesco familiar</label>
-                    <input type="text" name="parentescoDetalle" id="parentescoDetalle"
-                           maxlength="100" placeholder="Ej: Tío, Abuelo, Hermano mayor..."
-                           class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm shadow-sm focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-200" />
-                </div>
 
-                <div class="flex flex-col gap-3 pt-3 sm:flex-row sm:justify-end">
-                    <a asp-action="Dashboard" asp-controller="Secretaria"
-                       class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100">
-                        <i data-lucide="arrow-left" class="h-4 w-4"></i>
-                        Cancelar
-                    </a>
-                    <button type="submit"
-                            class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700">
-                        <i data-lucide="save" class="h-4 w-4"></i>
-                        Asignar apoderado
-                    </button>
-                </div>
-            </form>
+                <!-- ================================================= -->
+                <!-- FORMULARIO FINAL -->
+                <!-- ================================================= -->
+
+                <form asp-action="AsignarApoderadoEstudiante"
+                      asp-controller="Secretaria"
+                      method="post"
+                      id="formConfirmarAsignacion"
+                      class="mt-auto pt-6">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           id="apoderadoId"
+                           name="apoderadoId" />
+
+                    <input type="hidden"
+                           id="estudianteId"
+                           name="estudianteId" />
+
+                    <input type="hidden"
+                           id="parentesco"
+                           name="parentesco" />
+
+                    <input type="hidden"
+                           id="parentescoDetalle"
+                           name="parentescoDetalle" />
+
+
+                    <div class="flex flex-col gap-3 border-t border-slate-200 pt-5 sm:flex-row sm:justify-end">
+
+
+                        <button type="button"
+                                onclick="abrirModalAsignacion()"
+                                class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
+
+                            <i data-lucide="pencil"
+                               class="h-4 w-4">
+                            </i>
+
+                            Cambiar selección
+
+                        </button>
+
+
+                        <button type="button"
+                                onclick="cancelarAsignacion()"
+                                class="inline-flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-white px-5 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50">
+
+                            <i data-lucide="x"
+                               class="h-4 w-4">
+                            </i>
+
+                            Cancelar
+
+                        </button>
+
+
+                        <button type="submit"
+                                class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700">
+
+                            <i data-lucide="check"
+                               class="h-4 w-4">
+                            </i>
+
+                            Confirmar asignación
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
         </div>
+
+
+        <!-- ===================================================== -->
+        <!-- INFORMACIÓN -->
+        <!-- ===================================================== -->
 
         <div class="space-y-6">
-            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
-                    <i data-lucide="info" class="h-6 w-6"></i>
-                </div>
-                <h3 class="mt-5 font-bold text-slate-950">Información</h3>
-                <p class="mt-2 text-sm leading-6 text-slate-600">
-                    Un mismo apoderado puede tener varios estudiantes a cargo. La relación se establece mediante el parentesco indicado.
-                </p>
-            </div>
+
+
+            <!-- INFORMACIÓN -->
 
             <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
-                    <i data-lucide="shield-check" class="h-6 w-6"></i>
+
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+
+                    <i data-lucide="info"
+                       class="h-6 w-6">
+                    </i>
+
                 </div>
-                <h3 class="mt-5 font-bold text-slate-950">Recomendación</h3>
+
+                <h3 class="mt-5 font-bold text-slate-950">
+                    Información
+                </h3>
+
                 <p class="mt-2 text-sm leading-6 text-slate-600">
-                    Si eliges <strong>Otro</strong>, recuerda especificar el parentesco en el campo adicional para mantener un registro claro.
+                    Un mismo apoderado puede tener varios estudiantes
+                    a cargo. La relación se establece mediante el
+                    parentesco indicado.
                 </p>
+
             </div>
+
+
+            <!-- RECOMENDACIÓN -->
+
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+
+                    <i data-lucide="shield-check"
+                       class="h-6 w-6">
+                    </i>
+
+                </div>
+
+                <h3 class="mt-5 font-bold text-slate-950">
+                    Recomendación
+                </h3>
+
+                <p class="mt-2 text-sm leading-6 text-slate-600">
+                    Si eliges <strong>Otro</strong>, recuerda especificar
+                    el parentesco para mantener un registro claro.
+                </p>
+
+            </div>
+
+
+            <!-- CONFIRMACIÓN -->
+
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+
+                    <i data-lucide="check-check"
+                       class="h-6 w-6">
+                    </i>
+
+                </div>
+
+                <h3 class="mt-5 font-bold text-slate-950">
+                    Confirmación
+                </h3>
+
+                <p class="mt-2 text-sm leading-6 text-slate-600">
+                    La relación no se guardará hasta que confirmes
+                    la asignación desde el resumen.
+                </p>
+
+            </div>
+
         </div>
+
     </div>
+
 </section>
 
-@section Scripts {
-    <script src="~/js/Secretaria/AsignarApoderadoEstudiante.js" asp-append-version="true"></script>
-}
+
+<!-- ============================================================= -->
+<!-- MODAL -->
+<!-- ============================================================= -->
+
+<div id="modalAsignacion"
+     class="fixed inset-0 z-50 hidden">
+
+
+    <!-- FONDO -->
+
+    <div class="absolute inset-0 bg-slate-950/50 backdrop-blur-sm"
+         onclick="cerrarModalAsignacion()">
+    </div>
+
+
+    <!-- CONTENEDOR -->
+
+    <div class="relative flex min-h-full items-center justify-center p-4">
+
+        <div class="w-full max-w-2xl overflow-hidden rounded-3xl bg-white shadow-2xl">
+
+
+            <!-- ================================================= -->
+            <!-- HEADER -->
+            <!-- ================================================= -->
+
+            <div class="flex items-start justify-between border-b border-slate-200 px-6 py-5">
+
+                <div class="flex items-center gap-3">
+
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+
+                        <i data-lucide="users"
+                           class="h-5 w-5">
+                        </i>
+
+                    </div>
+
+                    <div>
+
+                        <h3 class="text-lg font-bold text-slate-950">
+                            Seleccionar asignación
+                        </h3>
+
+                        <p class="mt-1 text-sm text-slate-500">
+                            Busca el apoderado y estudiante.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button type="button"
+                        onclick="cerrarModalAsignacion()"
+                        class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700">
+
+                    <i data-lucide="x"
+                       class="h-5 w-5">
+                    </i>
+
+                </button>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- CONTENIDO -->
+            <!-- ================================================= -->
+
+            <div class="max-h-[75vh] overflow-y-auto p-6">
+
+                <div class="space-y-5">
+
+
+                    <!-- ================================================= -->
+                    <!-- APODERADO -->
+                    <!-- ================================================= -->
+
+                    <div>
+
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">
+                            Apoderado
+                        </label>
+
+                        <div class="relative">
+
+                            <i data-lucide="user-round"
+                               class="absolute left-4 top-3.5 h-5 w-5 text-slate-400">
+                            </i>
+
+                            <input type="text"
+                                   id="buscarApoderado"
+                                   placeholder="Buscar por nombre..."
+                                   autocomplete="off"
+                                   oninput="filtrarApoderados()"
+                                   class="w-full rounded-xl border border-slate-300 bg-white py-3 pl-12 pr-4 text-sm outline-none transition focus:border-violet-500 focus:ring-4 focus:ring-violet-100" />
+
+                        </div>
+
+
+                        <!-- SELECCIONADO -->
+
+                        <div id="apoderadoSeleccionado"
+                             class="mt-3 hidden rounded-xl border border-violet-200 bg-violet-50 p-3">
+
+                            <div class="flex items-center justify-between">
+
+                                <div class="flex items-center gap-3">
+
+                                    <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-100 text-violet-600">
+
+                                        <i data-lucide="user-round"
+                                           class="h-4 w-4">
+                                        </i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <p id="apoderadoSeleccionadoNombre"
+                                           class="text-sm font-bold text-slate-800">
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                                <button type="button"
+                                        onclick="limpiarApoderado()"
+                                        class="text-slate-400 transition hover:text-red-500">
+
+                                    <i data-lucide="x"
+                                       class="h-4 w-4">
+                                    </i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- RESULTADOS -->
+
+                        <div id="resultadosApoderados"
+                             class="mt-2 hidden max-h-48 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-lg">
+
+
+                            <div id="sinResultadosApoderados"
+                                 class="hidden px-4 py-6 text-center text-sm text-slate-500">
+
+                                <i data-lucide="search-x"
+                                   class="mx-auto mb-2 h-6 w-6 text-slate-400">
+                                </i>
+
+                                <p class="font-medium">
+                                    No se encontraron apoderados
+                                </p>
+
+                                <p class="mt-1 text-xs text-slate-400">
+                                    Intenta buscar por otro nombre.
+                                </p>
+
+                            </div>
+
+
+                            @foreach (var apo in Model.Apoderados)
+                            {
+                                <button type="button"
+                                        class="apoderado-item flex w-full items-center gap-3 border-b border-slate-100 px-4 py-3 text-left transition last:border-0 hover:bg-violet-50"
+                                        data-id="@apo.Id"
+                                        data-nombre="@apo.NombreCompleto"
+                                        onclick="seleccionarApoderado(this)">
+
+                                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
+
+                                        <i data-lucide="user-round"
+                                           class="h-4 w-4">
+                                        </i>
+
+                                    </div>
+
+                                    <div class="min-w-0">
+
+                                        <p class="truncate text-sm font-semibold text-slate-800">
+                                            @apo.NombreCompleto
+                                        </p>
+
+                                    </div>
+
+                                </button>
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- ESTUDIANTE -->
+                    <!-- ================================================= -->
+
+                    <div>
+
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">
+                            Estudiante
+                        </label>
+
+                        <div class="relative">
+
+                            <i data-lucide="graduation-cap"
+                               class="absolute left-4 top-3.5 h-5 w-5 text-slate-400">
+                            </i>
+
+                            <input type="text"
+                                   id="buscarEstudiante"
+                                   placeholder="Buscar por nombre..."
+                                   autocomplete="off"
+                                   oninput="filtrarEstudiantes()"
+                                   class="w-full rounded-xl border border-slate-300 bg-white py-3 pl-12 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100" />
+
+                        </div>
+
+
+                        <!-- SELECCIONADO -->
+
+                        <div id="estudianteSeleccionado"
+                             class="mt-3 hidden rounded-xl border border-indigo-200 bg-indigo-50 p-3">
+
+                            <div class="flex items-center justify-between">
+
+                                <div class="flex items-center gap-3">
+
+                                    <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600">
+
+                                        <i data-lucide="graduation-cap"
+                                           class="h-4 w-4">
+                                        </i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <p id="estudianteSeleccionadoNombre"
+                                           class="text-sm font-bold text-slate-800">
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                                <button type="button"
+                                        onclick="limpiarEstudiante()"
+                                        class="text-slate-400 transition hover:text-red-500">
+
+                                    <i data-lucide="x"
+                                       class="h-4 w-4">
+                                    </i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- RESULTADOS -->
+
+                        <div id="resultadosEstudiantes"
+                             class="mt-2 hidden max-h-48 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-lg">
+
+
+                            <div id="sinResultadosEstudiantes"
+                                 class="hidden px-4 py-6 text-center text-sm text-slate-500">
+
+                                <i data-lucide="search-x"
+                                   class="mx-auto mb-2 h-6 w-6 text-slate-400">
+                                </i>
+
+                                <p class="font-medium">
+                                    No se encontraron estudiantes
+                                </p>
+
+                                <p class="mt-1 text-xs text-slate-400">
+                                    Intenta buscar por otro nombre.
+                                </p>
+
+                            </div>
+
+
+                            @foreach (var est in Model.Estudiantes)
+                            {
+                                <button type="button"
+                                        class="estudiante-item flex w-full items-center gap-3 border-b border-slate-100 px-4 py-3 text-left transition last:border-0 hover:bg-indigo-50"
+                                        data-id="@est.Id"
+                                        data-nombre="@est.NombreCompleto"
+                                        onclick="seleccionarEstudiante(this)">
+
+                                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
+
+                                        <i data-lucide="graduation-cap"
+                                           class="h-4 w-4">
+                                        </i>
+
+                                    </div>
+
+                                    <div class="min-w-0">
+
+                                        <p class="truncate text-sm font-semibold text-slate-800">
+                                            @est.NombreCompleto
+                                        </p>
+
+                                    </div>
+
+                                </button>
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- PARENTESCO -->
+                    <!-- ================================================= -->
+
+                    <div>
+
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">
+                            Parentesco familiar
+                        </label>
+
+                        <div class="relative">
+
+                            <i data-lucide="heart-handshake"
+                               class="absolute left-4 top-3.5 h-5 w-5 text-slate-400">
+                            </i>
+
+                            <select id="parentescoSelect"
+                                    class="w-full appearance-none rounded-xl border border-slate-300 bg-white py-3 pl-12 pr-10 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                                    onchange="toggleOtroDetalle()">
+
+                                <option value="">
+                                    Seleccionar el parentesco
+                                </option>
+
+                                <option value="Padre">
+                                    Padre
+                                </option>
+
+                                <option value="Madre">
+                                    Madre
+                                </option>
+
+                                <option value="Tutor">
+                                    Tutor
+                                </option>
+
+                                <option value="Otro">
+                                    Otro
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- OTRO -->
+                    <!-- ================================================= -->
+
+                    <div id="otroDetalleContainer"
+                         class="hidden">
+
+                        <label class="mb-2 block text-sm font-semibold text-slate-700">
+                            Especifique el parentesco familiar
+                        </label>
+
+                        <input type="text"
+                               id="parentescoDetalleInput"
+                               maxlength="100"
+                               placeholder="Ej: Tío, Abuelo, Hermano mayor..."
+                               class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm shadow-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100" />
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- ERROR -->
+                    <!-- ================================================= -->
+
+                    <div id="errorModal"
+                         class="hidden rounded-xl border border-red-200 bg-red-50 p-4">
+
+                        <div class="flex items-start gap-3">
+
+                            <i data-lucide="alert-circle"
+                               class="mt-0.5 h-5 w-5 shrink-0 text-red-500">
+                            </i>
+
+                            <p id="mensajeErrorModal"
+                               class="text-sm font-medium text-red-700">
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- FOOTER -->
+            <!-- ================================================= -->
+
+            <div class="flex flex-col gap-3 border-t border-slate-200 px-6 py-5 sm:flex-row sm:justify-end">
+
+                <button type="button"
+                        onclick="cerrarModalAsignacion()"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">
+
+                    <i data-lucide="x"
+                       class="h-4 w-4">
+                    </i>
+
+                    Cancelar
+
+                </button>
+
+
+                <button type="button"
+                        onclick="continuarAsignacion()"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700">
+
+                    Continuar
+
+                    <i data-lucide="arrow-right"
+                       class="h-4 w-4">
+                    </i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================= -->
+<!-- JAVASCRIPT -->
+<!-- ============================================================= -->
+
+<script>
+
+    // =========================================================
+    // VARIABLES
+    // =========================================================
+
+    let apoderadoSeleccionadoId = "";
+    let estudianteSeleccionadoId = "";
+
+
+    // =========================================================
+    // MODAL
+    // =========================================================
+
+    function abrirModalAsignacion() {
+
+        document
+            .getElementById("modalAsignacion")
+            .classList
+            .remove("hidden");
+
+        document.body.classList.add("overflow-hidden");
+
+        restaurarSeleccion();
+
+    }
+
+
+    function cerrarModalAsignacion() {
+
+        document
+            .getElementById("modalAsignacion")
+            .classList
+            .add("hidden");
+
+        document.body.classList.remove("overflow-hidden");
+
+        ocultarError();
+
+    }
+
+
+    // =========================================================
+    // APODERADOS
+    // =========================================================
+
+    function filtrarApoderados() {
+
+        const input =
+            document.getElementById("buscarApoderado");
+
+        const texto =
+            input.value.toLowerCase().trim();
+
+        const resultados =
+            document.getElementById("resultadosApoderados");
+
+        const apoderados =
+            document.querySelectorAll(".apoderado-item");
+
+
+        // SI ESTÁ VACÍO, RESTAURAR TODO
+
+        if (texto === "") {
+
+            resultados.classList.add("hidden");
+
+            apoderados.forEach(apoderado => {
+
+                apoderado.style.display = "flex";
+
+            });
+
+            ocultarSinResultadosApoderados();
+
+            return;
+        }
+
+
+        resultados.classList.remove("hidden");
+
+        let encontrados = 0;
+
+
+        apoderados.forEach(apoderado => {
+
+            const nombre =
+                (apoderado.dataset.nombre || "").toLowerCase();
+
+
+            if (nombre.includes(texto)) {
+
+                apoderado.style.display = "flex";
+
+                encontrados++;
+
+            }
+            else {
+
+                apoderado.style.display = "none";
+
+            }
+
+        });
+
+
+        if (encontrados === 0) {
+
+            mostrarSinResultadosApoderados();
+
+        }
+        else {
+
+            ocultarSinResultadosApoderados();
+
+        }
+
+    }
+
+
+    function mostrarSinResultadosApoderados() {
+
+        document
+            .getElementById("sinResultadosApoderados")
+            .classList
+            .remove("hidden");
+
+    }
+
+
+    function ocultarSinResultadosApoderados() {
+
+        document
+            .getElementById("sinResultadosApoderados")
+            .classList
+            .add("hidden");
+
+    }
+
+
+    function seleccionarApoderado(elemento) {
+
+        apoderadoSeleccionadoId =
+            elemento.dataset.id;
+
+
+        document
+            .getElementById("apoderadoId")
+            .value =
+            apoderadoSeleccionadoId;
+
+
+        document
+            .getElementById("buscarApoderado")
+            .value = "";
+
+
+        document
+            .getElementById("resultadosApoderados")
+            .classList
+            .add("hidden");
+
+
+        document
+            .getElementById("apoderadoSeleccionadoNombre")
+            .textContent =
+            elemento.dataset.nombre;
+
+
+        document
+            .getElementById("apoderadoSeleccionado")
+            .classList
+            .remove("hidden");
+
+
+        ocultarError();
+
+    }
+
+
+    function limpiarApoderado() {
+
+        apoderadoSeleccionadoId = "";
+
+
+        document
+            .getElementById("apoderadoId")
+            .value = "";
+
+
+        document
+            .getElementById("buscarApoderado")
+            .value = "";
+
+
+        document
+            .getElementById("apoderadoSeleccionado")
+            .classList
+            .add("hidden");
+
+
+        document
+            .getElementById("resultadosApoderados")
+            .classList
+            .add("hidden");
+
+
+        document
+            .querySelectorAll(".apoderado-item")
+            .forEach(apoderado => {
+
+                apoderado.style.display = "flex";
+
+            });
+
+
+        ocultarSinResultadosApoderados();
+
+    }
+
+
+    // =========================================================
+    // ESTUDIANTES
+    // =========================================================
+
+    function filtrarEstudiantes() {
+
+        const input =
+            document.getElementById("buscarEstudiante");
+
+        const texto =
+            input.value.toLowerCase().trim();
+
+        const resultados =
+            document.getElementById("resultadosEstudiantes");
+
+        const estudiantes =
+            document.querySelectorAll(".estudiante-item");
+
+
+        if (texto === "") {
+
+            resultados.classList.add("hidden");
+
+            estudiantes.forEach(estudiante => {
+
+                estudiante.style.display = "flex";
+
+            });
+
+            ocultarSinResultadosEstudiantes();
+
+            return;
+        }
+
+
+        resultados.classList.remove("hidden");
+
+        let encontrados = 0;
+
+
+        estudiantes.forEach(estudiante => {
+
+            const nombre =
+                (estudiante.dataset.nombre || "").toLowerCase();
+
+
+            if (nombre.includes(texto)) {
+
+                estudiante.style.display = "flex";
+
+                encontrados++;
+
+            }
+            else {
+
+                estudiante.style.display = "none";
+
+            }
+
+        });
+
+
+        if (encontrados === 0) {
+
+            mostrarSinResultadosEstudiantes();
+
+        }
+        else {
+
+            ocultarSinResultadosEstudiantes();
+
+        }
+
+    }
+
+
+    function mostrarSinResultadosEstudiantes() {
+
+        document
+            .getElementById("sinResultadosEstudiantes")
+            .classList
+            .remove("hidden");
+
+    }
+
+
+    function ocultarSinResultadosEstudiantes() {
+
+        document
+            .getElementById("sinResultadosEstudiantes")
+            .classList
+            .add("hidden");
+
+    }
+
+
+    function seleccionarEstudiante(elemento) {
+
+        estudianteSeleccionadoId =
+            elemento.dataset.id;
+
+
+        document
+            .getElementById("estudianteId")
+            .value =
+            estudianteSeleccionadoId;
+
+
+        document
+            .getElementById("buscarEstudiante")
+            .value = "";
+
+
+        document
+            .getElementById("resultadosEstudiantes")
+            .classList
+            .add("hidden");
+
+
+        document
+            .getElementById("estudianteSeleccionadoNombre")
+            .textContent =
+            elemento.dataset.nombre;
+
+
+        document
+            .getElementById("estudianteSeleccionado")
+            .classList
+            .remove("hidden");
+
+
+        ocultarError();
+
+    }
+
+
+    function limpiarEstudiante() {
+
+        estudianteSeleccionadoId = "";
+
+
+        document
+            .getElementById("estudianteId")
+            .value = "";
+
+
+        document
+            .getElementById("buscarEstudiante")
+            .value = "";
+
+
+        document
+            .getElementById("estudianteSeleccionado")
+            .classList
+            .add("hidden");
+
+
+        document
+            .getElementById("resultadosEstudiantes")
+            .classList
+            .add("hidden");
+
+
+        document
+            .querySelectorAll(".estudiante-item")
+            .forEach(estudiante => {
+
+                estudiante.style.display = "flex";
+
+            });
+
+
+        ocultarSinResultadosEstudiantes();
+
+    }
+
+
+    // =========================================================
+    // PARENTESCO
+    // =========================================================
+
+    function toggleOtroDetalle() {
+
+        const parentesco =
+            document
+                .getElementById("parentescoSelect")
+                .value;
+
+        const container =
+            document
+                .getElementById("otroDetalleContainer");
+
+        const detalle =
+            document
+                .getElementById("parentescoDetalleInput");
+
+
+        if (parentesco === "Otro") {
+
+            container.classList.remove("hidden");
+
+            detalle.required = true;
+
+        }
+        else {
+
+            container.classList.add("hidden");
+
+            detalle.required = false;
+
+            detalle.value = "";
+
+        }
+
+    }
+
+
+    // =========================================================
+    // CONTINUAR
+    // =========================================================
+
+    function continuarAsignacion() {
+
+        const apoderadoId =
+            document
+                .getElementById("apoderadoId")
+                .value;
+
+
+        const estudianteId =
+            document
+                .getElementById("estudianteId")
+                .value;
+
+
+        const parentesco =
+            document
+                .getElementById("parentescoSelect")
+                .value;
+
+
+        const detalle =
+            document
+                .getElementById("parentescoDetalleInput")
+                .value.trim();
+
+
+        // VALIDAR APODERADO
+
+        if (!apoderadoId) {
+
+            mostrarError(
+                "Debes seleccionar un apoderado."
+            );
+
+            return;
+        }
+
+
+        // VALIDAR ESTUDIANTE
+
+        if (!estudianteId) {
+
+            mostrarError(
+                "Debes seleccionar un estudiante."
+            );
+
+            return;
+        }
+
+
+        // VALIDAR PARENTESCO
+
+        if (!parentesco) {
+
+            mostrarError(
+                "Debes seleccionar el parentesco familiar."
+            );
+
+            return;
+        }
+
+
+        // VALIDAR OTRO
+
+        if (parentesco === "Otro" && detalle === "") {
+
+            mostrarError(
+                "Debes especificar el parentesco familiar."
+            );
+
+            return;
+        }
+
+
+        // OBTENER ELEMENTOS
+
+        const apoderado =
+            document.querySelector(
+                `.apoderado-item[data-id="${apoderadoId}"]`
+            );
+
+
+        const estudiante =
+            document.querySelector(
+                `.estudiante-item[data-id="${estudianteId}"]`
+            );
+
+
+        if (!apoderado || !estudiante) {
+
+            mostrarError(
+                "No se pudo obtener la información seleccionada."
+            );
+
+            return;
+        }
+
+
+        // ACTUALIZAR HIDDEN
+
+        document
+            .getElementById("parentesco")
+            .value = parentesco;
+
+
+        document
+            .getElementById("parentescoDetalle")
+            .value =
+            parentesco === "Otro"
+                ? detalle
+                : "";
+
+
+        // ACTUALIZAR RESUMEN
+
+        document
+            .getElementById("resumenApoderadoNombre")
+            .textContent =
+            apoderado.dataset.nombre;
+
+
+        document
+            .getElementById("resumenEstudianteNombre")
+            .textContent =
+            estudiante.dataset.nombre;
+
+
+        document
+            .getElementById("resumenParentesco")
+            .textContent =
+            parentesco === "Otro"
+                ? "Otro: " + detalle
+                : parentesco;
+
+
+        // CAMBIAR ESTADO
+
+        document
+            .getElementById("resumenVacio")
+            .classList
+            .add("hidden");
+
+
+        document
+            .getElementById("resumenAsignacion")
+            .classList
+            .remove("hidden");
+
+
+        document
+            .getElementById("estadoResumen")
+            .classList
+            .remove("hidden");
+
+
+        // CERRAR MODAL
+
+        cerrarModalAsignacion();
+
+
+        // SCROLL
+
+        document
+            .getElementById("resumenAsignacion")
+            .scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+
+        if (typeof lucide !== "undefined") {
+
+            lucide.createIcons();
+
+        }
+
+    }
+
+
+    // =========================================================
+    // RESTAURAR SELECCIÓN
+    // =========================================================
+
+    function restaurarSeleccion() {
+
+        const apoderadoId =
+            document
+                .getElementById("apoderadoId")
+                .value;
+
+
+        const estudianteId =
+            document
+                .getElementById("estudianteId")
+                .value;
+
+
+        const parentesco =
+            document
+                .getElementById("parentesco")
+                .value;
+
+
+        const detalle =
+            document
+                .getElementById("parentescoDetalle")
+                .value;
+
+
+        // APODERADO
+
+        if (apoderadoId) {
+
+            const apoderado =
+                document.querySelector(
+                    `.apoderado-item[data-id="${apoderadoId}"]`
+                );
+
+
+            if (apoderado) {
+
+                document
+                    .getElementById("apoderadoSeleccionadoNombre")
+                    .textContent =
+                    apoderado.dataset.nombre;
+
+
+                document
+                    .getElementById("apoderadoSeleccionado")
+                    .classList
+                    .remove("hidden");
+
+            }
+
+        }
+
+
+        // ESTUDIANTE
+
+        if (estudianteId) {
+
+            const estudiante =
+                document.querySelector(
+                    `.estudiante-item[data-id="${estudianteId}"]`
+                );
+
+
+            if (estudiante) {
+
+                document
+                    .getElementById("estudianteSeleccionadoNombre")
+                    .textContent =
+                    estudiante.dataset.nombre;
+
+
+                document
+                    .getElementById("estudianteSeleccionado")
+                    .classList
+                    .remove("hidden");
+
+            }
+
+        }
+
+
+        // PARENTESCO
+
+        if (parentesco) {
+
+            document
+                .getElementById("parentescoSelect")
+                .value =
+                parentesco;
+
+
+            toggleOtroDetalle();
+
+
+            if (parentesco === "Otro") {
+
+                document
+                    .getElementById("parentescoDetalleInput")
+                    .value =
+                    detalle;
+
+            }
+
+        }
+
+    }
+
+
+    // =========================================================
+    // CANCELAR
+    // =========================================================
+
+    function cancelarAsignacion() {
+
+        apoderadoSeleccionadoId = "";
+
+        estudianteSeleccionadoId = "";
+
+
+        document
+            .getElementById("apoderadoId")
+            .value = "";
+
+
+        document
+            .getElementById("estudianteId")
+            .value = "";
+
+
+        document
+            .getElementById("parentesco")
+            .value = "";
+
+
+        document
+            .getElementById("parentescoDetalle")
+            .value = "";
+
+
+        document
+            .getElementById("parentescoSelect")
+            .value = "";
+
+
+        document
+            .getElementById("parentescoDetalleInput")
+            .value = "";
+
+
+        document
+            .getElementById("otroDetalleContainer")
+            .classList
+            .add("hidden");
+
+
+        document
+            .getElementById("resumenAsignacion")
+            .classList
+            .add("hidden");
+
+
+        document
+            .getElementById("resumenVacio")
+            .classList
+            .remove("hidden");
+
+
+        document
+            .getElementById("estadoResumen")
+            .classList
+            .add("hidden");
+
+
+        limpiarApoderado();
+
+        limpiarEstudiante();
+
+    }
+
+
+    // =========================================================
+    // ERROR
+    // =========================================================
+
+    function mostrarError(mensaje) {
+
+        document
+            .getElementById("mensajeErrorModal")
+            .textContent =
+            mensaje;
+
+
+        document
+            .getElementById("errorModal")
+            .classList
+            .remove("hidden");
+
+    }
+
+
+    function ocultarError() {
+
+        document
+            .getElementById("errorModal")
+            .classList
+            .add("hidden");
+
+    }
+
+
+    // =========================================================
+    // ESCAPE
+    // =========================================================
+
+    document.addEventListener("keydown", function(event) {
+
+        if (event.key === "Escape") {
+
+            const modal =
+                document.getElementById("modalAsignacion");
+
+
+            if (!modal.classList.contains("hidden")) {
+
+                cerrarModalAsignacion();
+
+            }
+
+        }
+
+    });
+
+
+    // =========================================================
+    // LUCIDE
+    // =========================================================
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+        if (typeof lucide !== "undefined") {
+
+            lucide.createIcons();
+
+        }
+
+    });
+
+</script>
