@@ -31,7 +31,7 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Repositories
                 await conn.OpenAsync();
 
                 using (SqlCommand cmd = new SqlCommand(
-                    "usp_SecretariasPaginado",
+                    "usp_ListSecretaria",
                     conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;

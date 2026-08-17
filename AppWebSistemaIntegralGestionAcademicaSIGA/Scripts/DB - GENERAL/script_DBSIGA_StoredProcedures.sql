@@ -522,7 +522,7 @@ BEGIN
     INNER JOIN tb_estudiantes e ON m.estudianteId = e.id
     INNER JOIN tb_usuarios u ON e.id = u.id
     WHERE m.cursoDocenteId = @cursoDocenteId AND m.estado = 'Activo'
-    ORDER BY u.nombreCompleto;
+    ORDER BY u.id ASC, u.nombreCompleto ASC;
 END
 GO
 /*******************************************************************************************/
@@ -688,7 +688,7 @@ BEGIN
     INNER JOIN tb_usuarios u ON e.id = u.id
     LEFT JOIN tb_asistencias a ON a.matriculaId = m.id AND CAST(a.fecha AS DATE) = @fecha
     WHERE m.cursoDocenteId = @cursoDocenteId AND m.estado = 'Activo'
-    ORDER BY u.nombreCompleto;
+    ORDER BY u.id ASC, u.nombreCompleto ASC;
 END
 GO
 /*******************************************************************************************/
@@ -732,7 +732,7 @@ BEGIN
     INNER JOIN tb_estudiantes e ON m.estudianteId = e.id
     INNER JOIN tb_usuarios u ON e.id = u.id
     WHERE m.cursoDocenteId = @cursoDocenteId AND m.estado = 'Activo'
-    ORDER BY u.nombreCompleto;
+    ORDER BY u.id ASC, u.nombreCompleto ASC;
 END
 GO
 /***************************************** CRUD **************************************************/
@@ -2519,6 +2519,328 @@ BEGIN
         WHERE conversacionId = @conversacionId
           AND usuarioId = @usuarioId;
     END
+END
+GO
+/*-------------------------------------------------------------------------------------------------*/
+/*----------------------------------------- PAGINACIÓN -------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------*/
+-- USUARIOS
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'p' AND name = 'usp_ListUsuario')
+    DROP PROCEDURE usp_ListUsuario;
+GO
+
+CREATE PROCEDURE usp_ListUsuario
+    @Pagina INT = 1,
+    @TamanioPagina INT = 10,
+    @Nombre NVARCHAR(100) = NULL,
+    @Email NVARCHAR(100) = NULL,
+    @Rol NVARCHAR(20) = NULL,
+    @Activo BIT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF @Pagina < 1 SET @Pagina = 1;
+    IF @TamanioPagina < 1 SET @TamanioPagina = 10;
+    DECLARE @Offset INT = (@Pagina - 1) * @TamanioPagina;
+
+    SELECT 
+        u.id, 
+        u.nombreCompleto, 
+        u.email, 
+        u.rol, 
+        u.activo, 
+        u.fechaRegistro, 
+        u.numeroIntentos,
+        ISNULL(e.codigoEstudiante, '') AS CodigoEstudiante,
+        ISNULL(d.especialidad, '') AS Especialidad
+    FROM tb_usuarios u
+    LEFT JOIN tb_estudiantes e ON u.id = e.id
+    LEFT JOIN tb_docentes d ON u.id = d.id
+    WHERE u.rol IN ('Director', 'Secretaria', 'Docente', 'Estudiante', 'Apoderado')
+        AND (@Nombre IS NULL OR u.nombreCompleto LIKE '%' + @Nombre + '%')
+        AND (@Email IS NULL OR u.email LIKE '%' + @Email + '%')
+        AND (@Rol IS NULL OR u.rol = @Rol)
+        AND (@Activo IS NULL OR u.activo = @Activo)
+    ORDER BY u.id ASC, u.rol ASC, u.nombreCompleto ASC
+    OFFSET @Offset ROWS
+    FETCH NEXT @TamanioPagina ROWS ONLY;
+
+    SELECT COUNT(*) AS totalRegistros
+    FROM tb_usuarios u
+    LEFT JOIN tb_estudiantes e ON u.id = e.id
+    LEFT JOIN tb_docentes d ON u.id = d.id
+    WHERE u.rol IN ('Director', 'Secretaria', 'Docente', 'Estudiante', 'Apoderado')
+        AND (@Nombre IS NULL OR u.nombreCompleto LIKE '%' + @Nombre + '%')
+        AND (@Email IS NULL OR u.email LIKE '%' + @Email + '%')
+        AND (@Rol IS NULL OR u.rol = @Rol)
+        AND (@Activo IS NULL OR u.activo = @Activo);
+END
+GO
+/*-------------------------------------------------------------------------------------------------*/
+-- SECRETARIAS
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'p' AND name = 'usp_ListSecretaria')
+    DROP PROCEDURE usp_ListSecretaria;
+GO
+
+CREATE PROCEDURE usp_ListSecretaria
+    @Pagina INT = 1,
+    @TamanioPagina INT = 10,
+    @Nombre NVARCHAR(100) = NULL,
+    @Email NVARCHAR(100) = NULL,
+    @Cargo NVARCHAR(100) = NULL,
+    @Telefono NVARCHAR(20) = NULL,
+    @Activo BIT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF @Pagina < 1 SET @Pagina = 1;
+    IF @TamanioPagina < 1 SET @TamanioPagina = 10;
+    DECLARE @Offset INT = (@Pagina - 1) * @TamanioPagina;
+
+    SELECT 
+        u.id,
+        u.nombreCompleto,
+        u.email,
+        u.activo,
+        u.fechaRegistro,
+        s.cargo,
+        s.telefono
+    FROM tb_usuarios u
+    INNER JOIN tb_secretarias s ON u.id = s.id
+    WHERE u.rol = 'Secretaria'
+        AND (@Nombre IS NULL OR u.nombreCompleto LIKE '%' + @Nombre + '%')
+        AND (@Email IS NULL OR u.email LIKE '%' + @Email + '%')
+        AND (@Cargo IS NULL OR s.cargo LIKE '%' + @Cargo + '%')
+        AND (@Telefono IS NULL OR s.telefono LIKE '%' + @Telefono + '%')
+        AND (@Activo IS NULL OR u.activo = @Activo)
+    ORDER BY u.id ASC, u.nombreCompleto ASC
+    OFFSET @Offset ROWS
+    FETCH NEXT @TamanioPagina ROWS ONLY;
+
+    SELECT COUNT(*) AS totalRegistros
+    FROM tb_usuarios u
+    INNER JOIN tb_secretarias s ON u.id = s.id
+    WHERE u.rol = 'Secretaria'
+        AND (@Nombre IS NULL OR u.nombreCompleto LIKE '%' + @Nombre + '%')
+        AND (@Email IS NULL OR u.email LIKE '%' + @Email + '%')
+        AND (@Cargo IS NULL OR s.cargo LIKE '%' + @Cargo + '%')
+        AND (@Telefono IS NULL OR s.telefono LIKE '%' + @Telefono + '%')
+        AND (@Activo IS NULL OR u.activo = @Activo);
+END
+GO
+/*-------------------------------------------------------------------------------------------------*/
+-- DOCENTES
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'p' AND name = 'usp_ListDocente')
+    DROP PROCEDURE usp_ListDocente;
+GO
+
+CREATE PROCEDURE usp_ListDocente
+    @Pagina INT = 1,
+    @TamanioPagina INT = 10,
+    @Nombre NVARCHAR(100) = NULL,
+    @Email NVARCHAR(100) = NULL,
+    @Especialidad NVARCHAR(100) = NULL,
+    @GradoAcademico NVARCHAR(50) = NULL,
+    @Activo BIT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF @Pagina < 1 SET @Pagina = 1;
+    IF @TamanioPagina < 1 SET @TamanioPagina = 10;
+    DECLARE @Offset INT = (@Pagina - 1) * @TamanioPagina;
+
+    SELECT 
+        u.id, 
+        u.nombreCompleto, 
+        u.email, 
+        u.activo,
+        d.especialidad, 
+        d.gradoAcademico
+    FROM tb_usuarios u
+    INNER JOIN tb_docentes d ON u.id = d.id
+    WHERE u.rol = 'Docente'
+        AND (@Nombre IS NULL OR u.nombreCompleto LIKE '%' + @Nombre + '%')
+        AND (@Email IS NULL OR u.email LIKE '%' + @Email + '%')
+        AND (@Especialidad IS NULL OR d.especialidad LIKE '%' + @Especialidad + '%')
+        AND (@GradoAcademico IS NULL OR d.gradoAcademico LIKE '%' + @GradoAcademico + '%')
+        AND (@Activo IS NULL OR u.activo = @Activo)
+    ORDER BY u.id ASC, u.nombreCompleto ASC
+    OFFSET @Offset ROWS
+    FETCH NEXT @TamanioPagina ROWS ONLY;
+
+    SELECT COUNT(*) AS totalRegistros
+    FROM tb_usuarios u
+    INNER JOIN tb_docentes d ON u.id = d.id
+    WHERE u.rol = 'Docente'
+        AND (@Nombre IS NULL OR u.nombreCompleto LIKE '%' + @Nombre + '%')
+        AND (@Email IS NULL OR u.email LIKE '%' + @Email + '%')
+        AND (@Especialidad IS NULL OR d.especialidad LIKE '%' + @Especialidad + '%')
+        AND (@GradoAcademico IS NULL OR d.gradoAcademico LIKE '%' + @GradoAcademico + '%')
+        AND (@Activo IS NULL OR u.activo = @Activo);
+END
+GO
+/*-------------------------------------------------------------------------------------------------*/
+-- ESTUDIANTES
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'p' AND name = 'usp_ListEstudiante')
+    DROP PROCEDURE usp_ListEstudiante;
+GO
+
+CREATE PROCEDURE usp_ListEstudiante
+    @Pagina INT = 1,
+    @TamanioPagina INT = 10,
+    @Nombre NVARCHAR(100) = NULL,
+    @Email NVARCHAR(100) = NULL,
+    @CodigoEstudiante NVARCHAR(20) = NULL,
+    @NombreCarrera NVARCHAR(100) = NULL,
+    @SemestreActual TINYINT = NULL,
+    @Activo BIT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF @Pagina < 1 SET @Pagina = 1;
+    IF @TamanioPagina < 1 SET @TamanioPagina = 10;
+    DECLARE @Offset INT = (@Pagina - 1) * @TamanioPagina;
+
+    SELECT 
+        u.id, 
+        u.nombreCompleto, 
+        u.email, 
+        u.activo,
+        u.fechaRegistro,
+        e.codigoEstudiante, 
+        e.nombreCarrera, 
+        e.semestreActual
+    FROM tb_usuarios u
+    INNER JOIN tb_estudiantes e ON u.id = e.id
+    WHERE u.rol = 'Estudiante'
+        AND (@Nombre IS NULL OR u.nombreCompleto LIKE '%' + @Nombre + '%')
+        AND (@Email IS NULL OR u.email LIKE '%' + @Email + '%')
+        AND (@CodigoEstudiante IS NULL OR e.codigoEstudiante LIKE '%' + @CodigoEstudiante + '%')
+        AND (@NombreCarrera IS NULL OR e.nombreCarrera LIKE '%' + @NombreCarrera + '%')
+        AND (@SemestreActual IS NULL OR e.semestreActual = @SemestreActual)
+        AND (@Activo IS NULL OR u.activo = @Activo)
+    ORDER BY u.id ASC, u.nombreCompleto ASC
+    OFFSET @Offset ROWS
+    FETCH NEXT @TamanioPagina ROWS ONLY;
+
+    SELECT COUNT(*) AS totalRegistros
+    FROM tb_usuarios u
+    INNER JOIN tb_estudiantes e ON u.id = e.id
+    WHERE u.rol = 'Estudiante'
+        AND (@Nombre IS NULL OR u.nombreCompleto LIKE '%' + @Nombre + '%')
+        AND (@Email IS NULL OR u.email LIKE '%' + @Email + '%')
+        AND (@CodigoEstudiante IS NULL OR e.codigoEstudiante LIKE '%' + @CodigoEstudiante + '%')
+        AND (@NombreCarrera IS NULL OR e.nombreCarrera LIKE '%' + @NombreCarrera + '%')
+        AND (@SemestreActual IS NULL OR e.semestreActual = @SemestreActual)
+        AND (@Activo IS NULL OR u.activo = @Activo);
+END
+GO
+/*-------------------------------------------------------------------------------------------------*/
+-- APODERADOS
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'p' AND name = 'usp_ListApoderado')
+    DROP PROCEDURE usp_ListApoderado;
+GO
+
+CREATE PROCEDURE usp_ListApoderado
+    @Pagina INT = 1,
+    @TamanioPagina INT = 10,
+    @Nombre NVARCHAR(100) = NULL,
+    @Email NVARCHAR(100) = NULL,
+    @Dni NVARCHAR(15) = NULL,
+    @Telefono NVARCHAR(20) = NULL,
+    @Direccion NVARCHAR(200) = NULL,
+    @CantidadHijos INT = NULL,
+    @Activo BIT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF @Pagina < 1 SET @Pagina = 1;
+    IF @TamanioPagina < 1 SET @TamanioPagina = 10;
+    DECLARE @Offset INT = (@Pagina - 1) * @TamanioPagina;
+
+    SELECT 
+        u.id,
+        u.nombreCompleto,
+        u.email,
+        u.activo,
+        u.fechaRegistro,
+        ISNULL(NULLIF(LTRIM(RTRIM(a.telefono)), ''), 'Sin teléfono registrado') AS telefono,
+        a.dni,
+        ISNULL(NULLIF(LTRIM(RTRIM(a.direccion)), ''), 'Sin dirección registrada') AS direccion,
+        COUNT(ae.id) AS cantidadHijos
+    FROM tb_usuarios u
+    INNER JOIN tb_apoderados a ON a.id = u.id
+    LEFT JOIN tb_apoderadoEstudiante ae ON ae.apoderadoId = u.id AND ae.activo = 1
+    WHERE u.rol = 'Apoderado'
+        AND (@Nombre IS NULL OR u.nombreCompleto LIKE '%' + @Nombre + '%')
+        AND (@Email IS NULL OR u.email LIKE '%' + @Email + '%')
+        AND (@Dni IS NULL OR a.dni LIKE '%' + @Dni + '%')
+        AND (@Telefono IS NULL OR a.telefono LIKE '%' + @Telefono + '%')
+        AND (@Direccion IS NULL OR a.direccion LIKE '%' + @Direccion + '%')
+        AND (@Activo IS NULL OR u.activo = @Activo)
+    GROUP BY u.id, u.nombreCompleto, u.email, u.activo, u.fechaRegistro, a.telefono, a.dni, a.direccion
+    HAVING (@CantidadHijos IS NULL OR COUNT(ae.id) = @CantidadHijos)
+    ORDER BY u.id ASC, u.nombreCompleto ASC
+    OFFSET @Offset ROWS
+    FETCH NEXT @TamanioPagina ROWS ONLY;
+
+    SELECT COUNT(*) AS totalRegistros
+    FROM (
+        SELECT u.id
+        FROM tb_usuarios u
+        INNER JOIN tb_apoderados a ON a.id = u.id
+        LEFT JOIN tb_apoderadoEstudiante ae ON ae.apoderadoId = u.id AND ae.activo = 1
+        WHERE u.rol = 'Apoderado'
+            AND (@Nombre IS NULL OR u.nombreCompleto LIKE '%' + @Nombre + '%')
+            AND (@Email IS NULL OR u.email LIKE '%' + @Email + '%')
+            AND (@Dni IS NULL OR a.dni LIKE '%' + @Dni + '%')
+            AND (@Telefono IS NULL OR a.telefono LIKE '%' + @Telefono + '%')
+            AND (@Direccion IS NULL OR a.direccion LIKE '%' + @Direccion + '%')
+            AND (@Activo IS NULL OR u.activo = @Activo)
+        GROUP BY u.id
+        HAVING (@CantidadHijos IS NULL OR COUNT(ae.id) = @CantidadHijos)
+    ) AS ApoderadosFiltrados;
+END
+GO
+/*-------------------------------------------------------------------------------------------------*/
+-- CURSOS
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'p' AND name = 'usp_ListCurso')
+    DROP PROCEDURE usp_ListCurso;
+GO
+
+CREATE PROCEDURE usp_ListCurso
+    @Pagina INT = 1,
+    @TamanioPagina INT = 10,
+    @CodigoCurso NVARCHAR(20) = NULL,
+    @NombreCurso NVARCHAR(100) = NULL,
+    @Creditos TINYINT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF @Pagina < 1 SET @Pagina = 1;
+    IF @TamanioPagina < 1 SET @TamanioPagina = 10;
+    DECLARE @Offset INT = (@Pagina - 1) * @TamanioPagina;
+
+    SELECT 
+        id,
+        codigoCurso,
+        nombreCurso,
+        creditos,
+        horasTeoricas,
+        horasPracticas
+    FROM tb_cursos
+    WHERE (@CodigoCurso IS NULL OR codigoCurso LIKE '%' + @CodigoCurso + '%')
+        AND (@NombreCurso IS NULL OR nombreCurso LIKE '%' + @NombreCurso + '%')
+        AND (@Creditos IS NULL OR creditos = @Creditos)
+    ORDER BY codigoCurso ASC
+    OFFSET @Offset ROWS
+    FETCH NEXT @TamanioPagina ROWS ONLY;
+
+    SELECT COUNT(*) AS totalRegistros
+    FROM tb_cursos
+    WHERE (@CodigoCurso IS NULL OR codigoCurso LIKE '%' + @CodigoCurso + '%')
+        AND (@NombreCurso IS NULL OR nombreCurso LIKE '%' + @NombreCurso + '%')
+        AND (@Creditos IS NULL OR creditos = @Creditos);
 END
 GO
 /*-------------------------------------------------------------------------------------------------*/

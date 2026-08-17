@@ -3518,11 +3518,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj",
+      "projectUniqueName": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj",
       "projectName": "AppWebSistemaIntegralGestionAcademicaSIGA.WEB",
-      "projectPath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj",
+      "projectPath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj",
       "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\obj\\",
+      "outputPath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -3544,11 +3544,11 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj": {
-              "projectPath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj"
+            "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj": {
+              "projectPath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj"
             },
-            "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj": {
-              "projectPath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj"
+            "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj": {
+              "projectPath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.ENTITY\\AppWebSistemaIntegralGestionAcademicaSIGA.ENTITY.csproj"
             }
           }
         }

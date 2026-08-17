@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AppWebSistemaIntegralGestionAcademicaSIGA.DAO")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+01c0fa02d1f8969a89a918857c68739793798b4f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+09b0be769cb5ceea025ce88f769e80a33a2f5954")]
 [assembly: System.Reflection.AssemblyProductAttribute("AppWebSistemaIntegralGestionAcademicaSIGA.DAO")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AppWebSistemaIntegralGestionAcademicaSIGA.DAO")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

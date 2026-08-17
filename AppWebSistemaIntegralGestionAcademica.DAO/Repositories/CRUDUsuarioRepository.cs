@@ -29,7 +29,7 @@ namespace AppWebSistemaIntegralGestionAcademicaSIGA.DAO.Repositories
             {
                 await conn.OpenAsync();
 
-                using (SqlCommand cmd = new SqlCommand("usp_UsuariosPaginado", conn))
+                using (SqlCommand cmd = new SqlCommand("usp_ListUsuario", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 

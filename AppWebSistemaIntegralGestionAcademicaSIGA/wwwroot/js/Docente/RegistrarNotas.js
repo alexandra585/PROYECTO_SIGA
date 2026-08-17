@@ -197,7 +197,7 @@ $(document).ready(function () {
 
         $(cambiosPendientes).each(function (index, item) {
             $.ajax({
-                url: '@Url.Action("RegistrarNota", "Docente")',
+                url: (window.Urls && window.Urls.registrarNota) ? window.Urls.registrarNota : '/Docente/RegistrarNota',
                 type: 'POST',
                 data: {
                     matriculaId: item.matriculaId,

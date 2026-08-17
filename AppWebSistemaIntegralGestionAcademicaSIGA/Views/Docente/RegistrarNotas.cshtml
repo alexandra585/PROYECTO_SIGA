@@ -230,4 +230,8 @@
 
 @section Scripts {
     <script src="~/js/Docente/RegistrarNotas.js" asp-append-version="true"></script>
+    <script>
+        window.Urls = window.Urls || {};
+        window.Urls.registrarNota = '@Url.Action("RegistrarNota", "Docente")';
+    </script>
 }

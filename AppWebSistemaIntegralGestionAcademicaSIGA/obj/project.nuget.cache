@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Deu61AMQMyA=",
+  "dgSpecHash": "f/Dm5wCvb7o=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj",
+  "projectFilePath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dell\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\Dell\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
@@ -67,9 +67,9 @@
       "code": "NU1510",
       "level": "Warning",
       "message": "PackageReference Microsoft.AspNetCore.SignalR.Core will not be pruned. This package is automatically available and does not need to be referenced explicitly. Remove the PackageReference item.",
-      "projectPath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj",
+      "projectPath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj",
+      "filePath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj",
       "libraryId": "Microsoft.AspNetCore.SignalR.Core",
       "targetGraphs": [
         "net10.0"
@@ -79,9 +79,9 @@
       "code": "NU1904",
       "level": "Warning",
       "message": "Package 'System.Drawing.Common' 4.7.0 has a known critical severity vulnerability, https://github.com/advisories/GHSA-rxg9-xrhp-64gj",
-      "projectPath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj",
+      "projectPath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj",
+      "filePath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademicaSIGA\\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.csproj",
       "libraryId": "System.Drawing.Common",
       "targetGraphs": [
         "net10.0"

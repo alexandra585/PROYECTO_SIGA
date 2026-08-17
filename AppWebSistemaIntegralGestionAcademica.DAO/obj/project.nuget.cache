@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tdfBJNoEQV4=",
+  "dgSpecHash": "9TDaSVy5FwI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj",
+  "projectFilePath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dell\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\Dell\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
@@ -62,9 +62,9 @@
       "code": "NU1510",
       "level": "Warning",
       "message": "PackageReference Microsoft.AspNetCore.SignalR.Core will not be pruned. This package is automatically available and does not need to be referenced explicitly. Remove the PackageReference item.",
-      "projectPath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj",
+      "projectPath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\Dell\\Desktop\\DSWI\\proyecto-conjunto\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj",
+      "filePath": "C:\\Users\\Dell\\Desktop\\SENATI\\V-ciclo\\DSWI\\PROYECTO-DSWI\\PROYECTO_SIGA\\AppWebSistemaIntegralGestionAcademica.DAO\\AppWebSistemaIntegralGestionAcademicaSIGA.DAO.csproj",
       "libraryId": "Microsoft.AspNetCore.SignalR.Core",
       "targetGraphs": [
         "net10.0"

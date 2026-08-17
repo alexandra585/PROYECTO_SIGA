@@ -479,7 +479,6 @@ C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSist
 C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\we5up4q66r-{0}-rckfqvm1hc-rckfqvm1hc.gz
 C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\hmvu0oyvk6-{0}-b9sayid5wm-b9sayid5wm.gz
 C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\fmbi5dvija-{0}-61n19gt1b8-61n19gt1b8.gz
-C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\79flbdkxrm-{0}-8vzs5uzr3n-8vzs5uzr3n.gz
 C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\66fzay6fax-{0}-cwxmlkltoz-cwxmlkltoz.gz
 C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\p066dktrbo-{0}-sjwqndwjws-sjwqndwjws.gz
 C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\u04uwjqgtt-{0}-d3bl6b6p09-d3bl6b6p09.gz
@@ -1713,3 +1712,11 @@ C:\Users\Dell\Desktop\DSWI\proyecto-conjunto\PROYECTO_SIGA\AppWebSistemaIntegral
 C:\Users\Dell\Desktop\DSWI\proyecto-conjunto\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.pdb
 C:\Users\Dell\Desktop\DSWI\proyecto-conjunto\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.genruntimeconfig.cache
 C:\Users\Dell\Desktop\DSWI\proyecto-conjunto\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\ref\AppWebSistemaIntegralGestionAcademicaSIGA.WEB.dll
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\44h1j1pavs-{0}-63cjfvs64k-63cjfvs64k.gz
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\t3vk631j5c-{0}-mufrkvgw3t-mufrkvgw3t.gz
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\79flbdkxrm-{0}-9o7vn6084v-9o7vn6084v.gz
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\4inasj57dg-{0}-wkldqct7i6-wkldqct7i6.gz
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\0a9xdrmmkk-{0}-3b908rk3bl-3b908rk3bl.gz
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\dxnnjkcm35-{0}-oe4pj62lbr-oe4pj62lbr.gz
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\k79q48z5f1-{0}-2d0jyi332i-2d0jyi332i.gz
+C:\Users\Dell\Desktop\SENATI\V-ciclo\DSWI\PROYECTO-DSWI\PROYECTO_SIGA\AppWebSistemaIntegralGestionAcademicaSIGA\obj\Debug\net10.0\compressed\mf35exlhxb-{0}-3sdey3fpl6-3sdey3fpl6.gz
